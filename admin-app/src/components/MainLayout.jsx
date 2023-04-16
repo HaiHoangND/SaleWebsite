@@ -185,9 +185,9 @@ const MainLayout = () => {
             <div className="d-flex gap-3 align-items-center dropdown">
               <div>
                 <img
-                  width={32}
-                  height={32}
-                  src="https://stroyka-admin.html.themeforest.scompiler.ru/variants/ltr/images/customers/customer-4-64x64.jpg"
+                  width={36}
+                  height={36}
+                  src="https://lh4.googleusercontent.com/-VRkt5Vq-Lzg/V4nLmzOVDgI/AAAAAAAAApE/ahuurvRj7Msu39bkGswiRpzNvBXm-1eSQCLcB/s640/anh-trai-dep-7.jpg"
                   alt=""
                 />
               </div>
@@ -197,8 +197,8 @@ const MainLayout = () => {
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                <h5 className="mb-0">Navdeep</h5>
-                <p className="mb-0">navdeepdahiya753@gmail.com</p>
+                <h5 className="mb-0">Nguyễn Văn Hiển</h5>
+                <p className="mb-0">nguyenvanhien08052002@gmail.com</p>
               </div>
               <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
                 <li>
@@ -216,7 +216,7 @@ const MainLayout = () => {
                     style={{ height: "auto", lineHeight: "20px" }}
                     to="/"
                   >
-                    Signout
+                    Sign Out
                   </Link>
                 </li>
               </div>

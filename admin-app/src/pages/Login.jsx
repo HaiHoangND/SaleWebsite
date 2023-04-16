@@ -38,7 +38,7 @@ const Login = () => {
             label="Password"
             id="pass"
           />
-          <div className="mb-3 text-end">
+          <div className="mb-3 mt-1 text-end">
             <Link to="forgot-password" className="">
               Forgot Password?
             </Link>
