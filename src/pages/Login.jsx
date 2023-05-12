@@ -10,20 +10,24 @@ const Login = () => {
   const submit = async (e) => {
     try {
       e.preventDefault();
-      await axios.post("http://localhost:5000/api/user/login", {
+      const data = await axios.post("http://localhost:5000/api/user/login", {
         email: email,
         password: password,
       });
+
       var _email = document.getElementById("email").value;
       var _password = document.getElementById("pass").value;
 
-      if (_email === "admin@gmail.com" && _password === "admin") {
-        window.location.href = "http://localhost:3000/admin";
+      if (data.data?.token) {
+        document.cookie = `access_token=${data.data.token}`;
+        if (_email === "admin@gmail.com" && _password === "admin") {
+          window.location.href = "http://localhost:4000/admin";
+        } else alert("You are not admin!");
       } else {
-        alert("You are not admin!");
+        alert(data.data.data);
       }
     } catch (error) {
-      throw new Error(error);
+      console.error(error);
     }
   };
 

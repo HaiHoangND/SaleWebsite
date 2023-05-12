@@ -13,12 +13,9 @@ const Forgotpassword = () => {
   const submit = async (e) => {
     try {
       e.preventDefault();
-      await axios.post(
-        "http://localhost:5000/api/user/forgot-password",
-        {
-          email: email,
-        }
-      );
+      await axios.post("http://localhost:5000/api/user/forgot-password", {
+        email: email,
+      });
 
       var _email = document.getElementById("email").value;
 

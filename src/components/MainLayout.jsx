@@ -175,7 +175,7 @@ const MainLayout = () => {
             }
           )}
           <div className="d-flex gap-4 align-items-center">
-            <div className="position-relative">
+            <div role="button" className="position-relative">
               <IoIosNotifications className="fs-4" />
               <span className="badge bg-warning rounded-circle p-1 position-absolute">
                 3
@@ -183,22 +183,25 @@ const MainLayout = () => {
             </div>
 
             <div className="d-flex gap-3 align-items-center dropdown">
-              <div>
-                <img
-                  width={36}
-                  height={36}
-                  src="https://lh4.googleusercontent.com/-VRkt5Vq-Lzg/V4nLmzOVDgI/AAAAAAAAApE/ahuurvRj7Msu39bkGswiRpzNvBXm-1eSQCLcB/s640/anh-trai-dep-7.jpg"
-                  alt=""
-                />
-              </div>
               <div
                 role="button"
                 id="dropdownMenuLink"
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
+                className="d-flex justify-content-between gap-3"
               >
-                <h5 className="mb-0">Nguyễn Văn Hiển</h5>
-                <p className="mb-0">nguyenvanhien08052002@gmail.com</p>
+                <span>
+                  <img
+                    width={36}
+                    height={36}
+                    src="https://lh4.googleusercontent.com/-VRkt5Vq-Lzg/V4nLmzOVDgI/AAAAAAAAApE/ahuurvRj7Msu39bkGswiRpzNvBXm-1eSQCLcB/s640/anh-trai-dep-7.jpg"
+                    alt=""
+                  />
+                </span>
+                <div className="d-flex flex-column justify-content-center">
+                  <h5 className="mb-0">Nguyễn Văn Hiển</h5>
+                  <p className="mb-0">nguyenvanhien08052002@gmail.com</p>
+                </div>
               </div>
               <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
                 <li>
@@ -231,17 +234,6 @@ const MainLayout = () => {
             background: colorBgContainer,
           }}
         >
-          {/* <ToastContainer
-            position="top-right"
-            autoClose={250}
-            hideProgressBar={false}
-            newestOnTop={true}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            theme="light"
-          /> */}
           <Outlet />
         </Content>
       </Layout>
