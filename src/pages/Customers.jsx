@@ -6,12 +6,15 @@ const Customers = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const token = localStorage.getItem("token");
+
         const response = await axios.get(
           "http://localhost:5000/api/user/all-users",
           {
             headers: {
               Authorization:
-                "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NWE2ODk4Yjg3NDk2MjdjMDc4ODE3MCIsImlhdCI6MTY4MzkwMjQxNCwiZXhwIjoxNjgzOTg4ODE0fQ.2Qr4Od4_hHxsRFnVpTWuwhogGFfae5HLZd15SYYeMhI",
+                // "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NWE2ODk4Yjg3NDk2MjdjMDc4ODE3MCIsImlhdCI6MTY4MzkwMjQxNCwiZXhwIjoxNjgzOTg4ODE0fQ.2Qr4Od4_hHxsRFnVpTWuwhogGFfae5HLZd15SYYeMhI",
+                `Bearer ${token}`,
             },
           }
         );
@@ -25,10 +28,11 @@ const Customers = () => {
   return (
     <div>
       <h3 className="mb-4 title">Customers</h3>
-      <div className="container">
-        <table className="table table-bordered">
+      <div className="container table-responsive">
+        <table className="table table-bordered table-hover">
           <thead className="table-dark">
             <tr>
+              <th scope="col">No.</th>
               <th scope="col">First Name</th>
               <th scope="col">Last Name</th>
               <th scope="col">Email</th>
@@ -43,8 +47,9 @@ const Customers = () => {
             </tr>
           </thead>
           <tbody>
-            {data.map((value) => (
-              <tr>
+            {data.map((value, index) => (
+              <tr key={value._id}>
+                <td>{index + 1}</td>
                 <td>{value.firstname}</td>
                 <td>{value.lastname}</td>
                 <td>{value.email}</td>

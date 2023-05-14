@@ -6,12 +6,13 @@ const Couponlist = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
+        const token = localStorage.getItem("token");
         const response = await axios.get("http://localhost:5000/api/coupon/", {
           headers: {
             Authorization:
-              "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NWE2ODk4Yjg3NDk2MjdjMDc4ODE3MCIsImlhdCI6MTY4MzkwMjQxNCwiZXhwIjoxNjgzOTg4ODE0fQ.2Qr4Od4_hHxsRFnVpTWuwhogGFfae5HLZd15SYYeMhI",
+              // "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NWE2ODk4Yjg3NDk2MjdjMDc4ODE3MCIsImlhdCI6MTY4MzkwMjQxNCwiZXhwIjoxNjgzOTg4ODE0fQ.2Qr4Od4_hHxsRFnVpTWuwhogGFfae5HLZd15SYYeMhI",
+              `Bearer ${token}`,
           },
-          
         });
         setData(response.data);
       } catch (error) {
@@ -24,18 +25,20 @@ const Couponlist = () => {
   return (
     <div>
       <h3 className="mb-4 title">Coupons List</h3>
-      <div className="container">
-        <table className="table table-bordered">
+      <div className="container table-responsive">
+        <table className="table table-bordered table-hover">
           <thead className="table-dark">
             <tr>
+              <th scope="col">No.</th>
               <th scope="col">Name</th>
               <th scope="col">Expiry</th>
               <th scope="col">Discount</th>
             </tr>
           </thead>
           <tbody>
-            {data.map((value) => (
-              <tr>
+            {data.map((value, index) => (
+              <tr key={value._id}>
+                <td>{index + 1}</td>
                 <td>{value.name}</td>
                 <td>{value.expiry}</td>
                 <td>{value.discount}</td>
