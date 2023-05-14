@@ -9,15 +9,13 @@ const Header = () => {
         <div className="container-xxl">
           <div className="row">
             <div className="col-6">
-              <p className="text-white mb-0">
-                Free Shipping Over $100 & Free Returns
-              </p>
+              <p className="text-white mb-0">Banner-Title</p>
             </div>
             <div className="col-6">
               <p className="text-end text-white mb-0">
                 Hotline:
                 <a className="text-white" href="tel:+91 8264954234">
-                  +91 8264954234
+                  00000000000
                 </a>
               </p>
             </div>
@@ -29,10 +27,10 @@ const Header = () => {
           <div className="row align-items-center">
             <div className="col-2">
               <h2>
-                <Link className="text-white">Dev Corner</Link>
+                <Link className="text-white">Group 16</Link>
               </h2>
             </div>
-            <div className="col-5">
+            <div className="col-4">
               <div className="input-group">
                 <input
                   type="text"
@@ -46,7 +44,7 @@ const Header = () => {
                 </span>
               </div>
             </div>
-            <div className="col-5">
+            <div className="col-6">
               <div className="header-upper-links d-flex align-items-center justify-content-between">
                 <div>
                   <Link
@@ -77,7 +75,19 @@ const Header = () => {
                   >
                     <img src="images/user.svg" alt="user" />
                     <p className="mb-0">
-                      Log in <br /> My Account
+                      My <br />
+                      Account
+                    </p>
+                  </Link>
+                </div>
+                <div>
+                  <Link
+                    to="/my-account"
+                    className="d-flex align-items-center gap-10 text-white"
+                  >
+                    <img src="images/login01.svg" alt="user" />
+                    <p className="mb-0">
+                      Log in <br /> Register
                     </p>
                   </Link>
                 </div>
@@ -123,28 +133,29 @@ const Header = () => {
                     >
                       <li>
                         <Link className="dropdown-item text-white" to="">
-                          Action
+                          Product category 1
                         </Link>
                       </li>
                       <li>
                         <Link className="dropdown-item text-white" to="">
-                          Another action
+                          Product category 2
                         </Link>
                       </li>
                       <li>
                         <Link className="dropdown-item text-white" to="">
-                          Something else here
+                          Product category 3
                         </Link>
                       </li>
                     </ul>
                   </div>
                 </div>
                 <div className="menu-links">
-                  <div className="d-flex align-items-center gap-15">
+                  <div className="d-flex align-items-center gap-30">
                     <NavLink to="/">Home</NavLink>
-                    <NavLink to="/store">Our Store</NavLink>
+                    <NavLink to="/our-store">Our Store</NavLink>
                     <NavLink to="/blogs">Blogs</NavLink>
                     <NavLink to="/contact">Contact</NavLink>
+                    <NavLink to="/Event">Event</NavLink>
                   </div>
                 </div>
               </div>
