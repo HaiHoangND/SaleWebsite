@@ -76,7 +76,7 @@ const Brandlist = () => {
                 <td>{value.title}</td>
                 <td>{value.createdAt}</td>
                 <td>{value.updatedAt}</td>
-                <td className="gap-3">
+                <td>
                   <button
                     className="btn btn-success mx-2"
                     onClick={() => handleShowModal(value._id, value.title)}

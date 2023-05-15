@@ -1,26 +1,82 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { Modal } from "react-bootstrap";
 
 const Bloglist = () => {
   const [data, setData] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [categories, setCategories] = useState([]);
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchCategories = async () => {
       try {
-        const token = localStorage.getItem("token");
-        const response = await axios.get("http://localhost:5000/api/blog/", {
-          headers: {
-            Authorization:
-              // "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NWE2ODk4Yjg3NDk2MjdjMDc4ODE3MCIsImlhdCI6MTY4MzkwMjQxNCwiZXhwIjoxNjgzOTg4ODE0fQ.2Qr4Od4_hHxsRFnVpTWuwhogGFfae5HLZd15SYYeMhI",
-              `Bearer ${token}`,
-          },
-        });
-        setData(response.data);
+        const response = await axios.get(
+          "http://localhost:5000/api/blogcategory/"
+        );
+        setCategories(response.data);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    fetchCategories();
+  }, []);
+  const [updateData, setUpdateData] = useState({
+    id: "",
+    title: "",
+    category: "",
+    description: "",
+  });
+  const fetchData = async () => {
+    try {
+      const token = localStorage.getItem("token");
+      const response = await axios.get("http://localhost:5000/api/blog/", {
+        headers: {
+          Authorization:
+            // "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NWE2ODk4Yjg3NDk2MjdjMDc4ODE3MCIsImlhdCI6MTY4MzkwMjQxNCwiZXhwIjoxNjgzOTg4ODE0fQ.2Qr4Od4_hHxsRFnVpTWuwhogGFfae5HLZd15SYYeMhI",
+            `Bearer ${token}`,
+        },
+      });
+      setData(response.data);
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
+  useEffect(() => {
+    fetchData();
+  }, []);
+  const onDeleteBlog = async (id, e) => {
+    if (window.confirm("Bạn có chắc chắn muốn xóa dữ liệu này không?")) {
+      try {
+        await axios.delete(`http://localhost:5000/api/blog/${id}`);
+        fetchData();
       } catch (error) {
         throw new Error(error);
       }
-    };
-    fetchData();
-  }, []);
+    }
+  };
+  const handleShowModal = (id, title, category, description) => {
+    setUpdateData({
+      id,
+      title,
+      category,
+      description,
+    });
+    setShowModal(true);
+  };
+  const handleUpdateBlog = async (e) => {
+    const { id, title, category, description } = updateData;
+    try {
+      await axios.put(`http://localhost:5000/api/blog/${id}`, {
+        title,
+        category,
+        description,
+      });
+      handleCloseModal();
+      fetchData();
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
+  const handleCloseModal = () => setShowModal(false);
   return (
     <div>
       <h3 className="mb-4 title">Blogs List</h3>
@@ -30,13 +86,14 @@ const Bloglist = () => {
             <tr>
               <th scope="col">No.</th>
               <th scope="col">Title</th>
-              <th scope="col">Description</th>
               <th scope="col">Category</th>
+              <th scope="col">Description</th>
               <th scope="col">numViews</th>
               <th scope="col">Likes</th>
               <th scope="col">Dislikes</th>
               <th scope="col">Created At</th>
               <th scope="col">Updated At</th>
+              <th scope="col">Action</th>
             </tr>
           </thead>
           <tbody>
@@ -44,8 +101,8 @@ const Bloglist = () => {
               <tr key={value._id}>
                 <td>{index + 1}</td>
                 <td> {value.title} </td>
-                <td> {value.description} </td>
                 <td> {value.category} </td>
+                <td> {value.description} </td>
                 <td> {value.numViews} </td>
                 <td>
                   {value.likes.map((like, index) => (
@@ -59,11 +116,103 @@ const Bloglist = () => {
                 </td>
                 <td> {value.createdAt} </td>
                 <td> {value.updatedAt} </td>
+                <td>
+                  <button
+                    className="btn btn-success my-2"
+                    onClick={() =>
+                      handleShowModal(
+                        value._id,
+                        value.title,
+                        value.category,
+                        value.description
+                      )
+                    }
+                  >
+                    Update
+                  </button>
+                  <button
+                    className="btn btn-success my-2"
+                    onClick={(e) => onDeleteBlog(value._id, e)}
+                  >
+                    Delete
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>
         </table>
       </div>
+      <Modal show={showModal} onHide={handleCloseModal}>
+        <Modal.Header closeButton>
+          <Modal.Title>Edit Blog</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          <form>
+            <div className="mb-3">
+              <label htmlFor="title" className="form-label">
+                Title:
+              </label>
+              <input
+                type="text"
+                className="form-control mb-4"
+                id="title"
+                value={updateData.title}
+                onChange={(e) =>
+                  setUpdateData({ ...updateData, title: e.target.value })
+                }
+              />
+              <label htmlFor="title" className="form-label">
+                Category:
+              </label>
+              <select
+                name="category"
+                className="form-control mb-4"
+                id="category"
+                value={data.category}
+                onChange={(e) =>
+                  setUpdateData({ ...updateData, category: e.target.value })
+                }
+              >
+                <option value="">Select Blog Category</option>
+                {categories.map((category) => (
+                  <option key={category._id}>{category.title}</option>
+                ))}
+              </select>
+              <label htmlFor="description" className="form-label">
+                Description:
+              </label>
+              <input
+                type="text"
+                className="form-control mb-4"
+                id="description"
+                value={updateData.description}
+                onChange={(e) =>
+                  setUpdateData({ ...updateData, description: e.target.value })
+                }
+              />
+            </div>
+          </form>
+        </Modal.Body>
+        <Modal.Footer>
+          <button className="btn btn-secondary" onClick={handleCloseModal}>
+            Cancel
+          </button>
+          <button
+            className="btn btn-primary"
+            onClick={(e) =>
+              handleUpdateBlog(
+                updateData.id,
+                updateData.title,
+                updateData.category,
+                updateData.description,
+                e
+              )
+            }
+          >
+            Update
+          </button>
+        </Modal.Footer>
+      </Modal>
     </div>
   );
 };
