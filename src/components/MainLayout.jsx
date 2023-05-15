@@ -4,11 +4,8 @@ import {
   AiOutlineDashboard,
   AiOutlineShoppingCart,
   AiOutlineUser,
-  AiOutlineBgColors,
 } from "react-icons/ai";
 import { RiCouponLine } from "react-icons/ri";
-// import { ToastContainer } from "react-toastify";
-// import "react-toastify/dist/ReactToastify.css";
 import { Link } from "react-router-dom";
 import { Outlet } from "react-router-dom";
 import { ImBlog } from "react-icons/im";
@@ -89,16 +86,6 @@ const MainLayout = () => {
                   key: "list-category",
                   icon: <BiCategoryAlt className="fs-4" />,
                   label: "Category List",
-                },
-                {
-                  key: "color",
-                  icon: <AiOutlineBgColors className="fs-4" />,
-                  label: "Color",
-                },
-                {
-                  key: "list-color",
-                  icon: <AiOutlineBgColors className="fs-4" />,
-                  label: "Color List",
                 },
               ],
             },

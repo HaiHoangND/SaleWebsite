@@ -161,7 +161,7 @@ const Bloglist = () => {
                   setUpdateData({ ...updateData, title: e.target.value })
                 }
               />
-              <label htmlFor="title" className="form-label">
+              <label htmlFor="category" className="form-label">
                 Category:
               </label>
               <select

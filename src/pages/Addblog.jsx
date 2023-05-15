@@ -24,13 +24,13 @@ const props = {
   },
 };
 const Addblog = () => {
+  const [message, setMessage] = useState("");
   const [data, setData] = useState({
     title: "",
     category: "",
     description: "",
   });
   const [categories, setCategories] = useState([]);
-  const [message, setMessage] = useState("");
   useEffect(() => {
     const fetchCategories = async () => {
       try {
