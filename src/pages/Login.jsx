@@ -1,34 +1,21 @@
 import React, { useState } from "react";
-// import CustomInput from "../components/CustomInput";
-import { Link } from "react-router-dom";
-import axios from "axios";
+import { Link, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { loginUser } from "../redux/apiRequest";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const submit = async (e) => {
-    try {
       e.preventDefault();
-      const data = await axios.post("http://localhost:5000/api/user/login", {
+      const newUser = {
         email: email,
         password: password,
-      });
-
-      var _email = document.getElementById("email").value;
-      var _password = document.getElementById("pass").value;
-
-      if (data.data?.token) {
-        document.cookie = `access_token=${data.data.token}`;
-        if (_email === "admin@gmail.com" && _password === "admin") {
-          window.location.href = "http://localhost:4000/admin";
-        } else alert("You are not admin!");
-      } else {
-        alert(data.data.data);
-      }
-    } catch (error) {
-      console.error(error);
-    }
+      };
+      loginUser(newUser, dispatch, navigate);
   };
 
   return (
@@ -40,8 +27,6 @@ const Login = () => {
         <h3 className="text-center title">Login</h3>
         <p className="text-center">Login to your account to continue.</p>
         <form action="">
-          {/* <CustomInput type="text" label="Email Address" id="email" />
-          <CustomInput type="password" label="Password" id="pass" /> */}
           <input
             type="email"
             name="email"

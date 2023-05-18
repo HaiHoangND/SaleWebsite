@@ -10,8 +10,14 @@ const Productlist = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
+        const token = localStorage.getItem("access_token");
         const response = await axios.get(
-          "http://localhost:5000/api/prodcategory/"
+          "http://localhost:5000/api/prodcategory/",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
         setCategories(response.data);
       } catch (error) {
@@ -23,7 +29,12 @@ const Productlist = () => {
   useEffect(() => {
     const fetchBrands = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/brand/");
+      const token = localStorage.getItem("access_token");
+        const response = await axios.get("http://localhost:5000/api/brand/", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setBrands(response.data);
       } catch (error) {
         console.error(error);
@@ -43,12 +54,10 @@ const Productlist = () => {
   });
   const fetchData = async () => {
     try {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("access_token");
       const response = await axios.get("http://localhost:5000/api/product/", {
         headers: {
-          Authorization:
-            // "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NWE2ODk4Yjg3NDk2MjdjMDc4ODE3MCIsImlhdCI6MTY4MzkwMjQxNCwiZXhwIjoxNjgzOTg4ODE0fQ.2Qr4Od4_hHxsRFnVpTWuwhogGFfae5HLZd15SYYeMhI",
-            `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
       });
       setData(response.data);
@@ -62,7 +71,12 @@ const Productlist = () => {
   const onDeleteProduct = async (id, e) => {
     if (window.confirm("Bạn có chắc chắn muốn xóa dữ liệu này không?")) {
       try {
-        await axios.delete(`http://localhost:5000/api/product/${id}`);
+        const token = localStorage.getItem("access_token");
+        await axios.delete(`http://localhost:5000/api/product/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         fetchData();
       } catch (error) {
         throw new Error(error);
@@ -95,15 +109,24 @@ const Productlist = () => {
     const { id, title, description, price, category, brand, quantity, color } =
       updateData;
     try {
-      await axios.put(`http://localhost:5000/api/product/${id}`, {
-        title,
-        description,
-        price,
-        category,
-        brand,
-        quantity,
-        color,
-      });
+      const token = localStorage.getItem("access_token");
+      await axios.put(
+        `http://localhost:5000/api/product/${id}`,
+        {
+          title,
+          description,
+          price,
+          category,
+          brand,
+          quantity,
+          color,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       handleCloseModal();
       fetchData();
     } catch (error) {
@@ -232,7 +255,7 @@ const Productlist = () => {
                 onChange={(e) =>
                   setUpdateData({
                     ...updateData,
-                    description: e.target.value
+                    description: e.target.value,
                   })
                 }
               />
@@ -248,7 +271,7 @@ const Productlist = () => {
                 onChange={(e) =>
                   setUpdateData({
                     ...updateData,
-                    price: e.target.value
+                    price: e.target.value,
                   })
                 }
               />
@@ -300,7 +323,7 @@ const Productlist = () => {
                 onChange={(e) =>
                   setUpdateData({
                     ...updateData,
-                    quantity: e.target.value
+                    quantity: e.target.value,
                   })
                 }
               />

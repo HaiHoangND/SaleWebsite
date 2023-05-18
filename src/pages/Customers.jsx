@@ -3,28 +3,40 @@ import axios from "axios";
 
 const Customers = () => {
   const [data, setData] = useState([]);
+  const fetchData = async () => {
+    try {
+      const token = localStorage.getItem("access_token");
+      const response = await axios.get(
+        "http://localhost:5000/api/user/all-users",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      setData(response.data);
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
   useEffect(() => {
-    const fetchData = async () => {
+    fetchData();
+  }, []);
+  const onDeleteUser = async (id, e) => {
+    if (window.confirm("Bạn có chắc chắn muốn xóa người dùng này không?")) {
       try {
-        const token = localStorage.getItem("token");
-
-        const response = await axios.get(
-          "http://localhost:5000/api/user/all-users",
-          {
-            headers: {
-              Authorization:
-                // "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NWE2ODk4Yjg3NDk2MjdjMDc4ODE3MCIsImlhdCI6MTY4MzkwMjQxNCwiZXhwIjoxNjgzOTg4ODE0fQ.2Qr4Od4_hHxsRFnVpTWuwhogGFfae5HLZd15SYYeMhI",
-                `Bearer ${token}`,
-            },
-          }
-        );
-        setData(response.data);
+        const token = localStorage.getItem("access_token");
+        await axios.delete(`http://localhost:5000/api/user/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        fetchData();
       } catch (error) {
         throw new Error(error);
       }
-    };
-    fetchData();
-  }, []);
+    }
+  };
   return (
     <div>
       <h3 className="mb-4 title">Customers</h3>
@@ -44,6 +56,7 @@ const Customers = () => {
               <th scope="col">WishList</th>
               <th scope="col">Created At</th>
               <th scope="col">Updated At</th>
+              <th scope="col">Action</th>
             </tr>
           </thead>
           <tbody>
@@ -73,6 +86,14 @@ const Customers = () => {
                 </td>
                 <td>{value.createdAt}</td>
                 <td>{value.updatedAt}</td>
+                <td>
+                  <button
+                    className="btn btn-success mx-2"
+                    onClick={(e) => onDeleteUser(value._id, e)}
+                  >
+                    Delete
+                  </button>
+                </td>
               </tr>
             ))}
           </tbody>

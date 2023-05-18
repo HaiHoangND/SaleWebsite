@@ -15,7 +15,7 @@ const Addcat = () => {
   const submit = async (e) => {
     try {
       e.preventDefault();
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("access_token");
       const config = {
         headers: {
           "Content-Type": "application/json",
@@ -50,7 +50,6 @@ const Addcat = () => {
       {message && <div className="alert alert-success">{message}</div>}
       <div>
         <form action="">
-          {/* <CustomInput type="text" label="Enter Category" /> */}
           <input
             type="text"
             name="title"

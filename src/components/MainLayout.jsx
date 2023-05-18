@@ -15,15 +15,18 @@ import { SiBrandfolder } from "react-icons/si";
 import { BiCategoryAlt } from "react-icons/bi";
 import { Layout, Menu, theme } from "antd";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
 const { Header, Sider, Content } = Layout;
+
 const MainLayout = () => {
   const [collapsed, setCollapsed] = useState(false);
   const {
     token: { colorBgContainer },
   } = theme.useToken();
   const navigate = useNavigate();
+  const user = useSelector((state) => state.auth.login?.currentUser);
   return (
-    <Layout /* onContextMenu={(e) => e.preventDefault()} */>
+    <Layout>
       <Sider trigger={null} collapsible collapsed={collapsed}>
         <div className="logo">
           <h2 className="text-white fs-5 text-center py-3 mb-0">
@@ -186,8 +189,12 @@ const MainLayout = () => {
                   />
                 </span>
                 <div className="d-flex flex-column justify-content-center">
-                  <h5 className="mb-0">Nguyễn Văn Hiển</h5>
-                  <p className="mb-0">nguyenvanhien08052002@gmail.com</p>
+                  <h5 className="mb-0">
+                    Hi, <span>{user.lastname}</span>
+                  </h5>
+                  <p className="mb-0">
+                    <span>{user.email}</span>
+                  </p>
                 </div>
               </div>
               <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">

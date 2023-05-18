@@ -11,9 +11,7 @@ const Orders = () => {
           "http://localhost:5000/api/user/get-orders",
           {
             headers: {
-              Authorization:
-                // "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NWE2ODk4Yjg3NDk2MjdjMDc4ODE3MCIsImlhdCI6MTY4MzkwMjQxNCwiZXhwIjoxNjgzOTg4ODE0fQ.2Qr4Od4_hHxsRFnVpTWuwhogGFfae5HLZd15SYYeMhI",
-                `Bearer ${token}`,
+              Authorization: `Bearer ${token}`,
             },
           }
         );
@@ -27,10 +25,11 @@ const Orders = () => {
   return (
     <div>
       <h3 className="mb-4 title">Orders</h3>
-      <div className="container">
-        <table className="table table-bordered">
+      <div className="container table-responsive">
+        <table className="table table-bordered table-hover">
           <thead className="table-dark">
             <tr>
+              <th scope="col">No.</th>
               <th scope="col">Products</th>
               <th scope="col">Payment Intent</th>
               <th scope="col">OrderStatus</th>
@@ -40,8 +39,9 @@ const Orders = () => {
             </tr>
           </thead>
           <tbody>
-            {data.map((value) => (
-              <tr>
+            {data.map((value, index) => (
+              <tr key={value._id}>
+                <td>{index + 1}</td>
                 <td>
                   {value.products.map((product, index) => (
                     <div key={index}>

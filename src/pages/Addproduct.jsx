@@ -38,7 +38,13 @@ const Addproduct = () => {
   useEffect(() => {
     const fetchBrands = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/brand/");
+        const token = localStorage.getItem("access_token");
+        const response = await axios.get("http://localhost:5000/api/brand/", {
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
         setBrands(response.data);
       } catch (error) {
         console.error(error);
@@ -50,8 +56,15 @@ const Addproduct = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
+        const token = localStorage.getItem("access_token");
         const response = await axios.get(
-          "http://localhost:5000/api/prodcategory/"
+          "http://localhost:5000/api/prodcategory/",
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          }
         );
         setCategories(response.data);
       } catch (error) {
@@ -68,7 +81,7 @@ const Addproduct = () => {
   const submit = async (e) => {
     try {
       e.preventDefault();
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("access_token");
       const config = {
         headers: {
           "Content-Type": "application/json",
@@ -105,20 +118,6 @@ const Addproduct = () => {
       {message && <div className="alert alert-success">{message}</div>}
       <div>
         <form action="">
-          <div className="mt-3">
-            <Dragger {...props}>
-              <p className="ant-upload-drag-icon">
-                <InboxOutlined />
-              </p>
-              <p className="ant-upload-text">
-                Click or drag file to this area to upload
-              </p>
-              <p className="ant-upload-hint">
-                Support for a single or bulk upload. Strictly prohibited from
-                uploading company data or other banned files.
-              </p>
-            </Dragger>
-          </div>
           <div className="mt-4 mb-3">
             <input
               type="text"
@@ -207,6 +206,20 @@ const Addproduct = () => {
             <option value="Tràm">Tràm</option>
             <option value="Lục">Lục</option>
           </select>
+          <div className="mt-3">
+            <Dragger {...props}>
+              <p className="ant-upload-drag-icon">
+                <InboxOutlined />
+              </p>
+              <p className="ant-upload-text">
+                Click or drag file to this area to upload
+              </p>
+              <p className="ant-upload-hint">
+                Support for a single or bulk upload. Strictly prohibited from
+                uploading company data or other banned files.
+              </p>
+            </Dragger>
+          </div>
 
           <button
             className="btn btn-success border-0 rounded-3 my-5"

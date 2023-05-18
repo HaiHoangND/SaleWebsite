@@ -17,7 +17,7 @@ const Addcoupon = () => {
   const submit = async (e) => {
     try {
       e.preventDefault();
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("access_token");
       const config = {
         headers: {
           "Content-Type": "application/json",

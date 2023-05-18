@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import axios from "axios";
-// import CustomInput from "../components/CustomInput";
 
 const Addbrand = () => {
   const [data, setData] = useState({
@@ -15,7 +14,7 @@ const Addbrand = () => {
   const submit = async (e) => {
     try {
       e.preventDefault();
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("access_token");
       const config = {
         headers: {
           "Content-Type": "application/json",

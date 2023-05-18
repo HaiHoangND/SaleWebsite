@@ -11,12 +11,10 @@ const Brandlist = () => {
   });
   const fetchData = async () => {
     try {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("access_token");
       const response = await axios.get("http://localhost:5000/api/brand/", {
         headers: {
-          Authorization:
-            // "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY0NWE2ODk4Yjg3NDk2MjdjMDc4ODE3MCIsImlhdCI6MTY4MzkwMjQxNCwiZXhwIjoxNjgzOTg4ODE0fQ.2Qr4Od4_hHxsRFnVpTWuwhogGFfae5HLZd15SYYeMhI",
-            `Bearer ${token}`,
+          Authorization: `Bearer ${token}`,
         },
       });
       setData(response.data);
@@ -30,7 +28,12 @@ const Brandlist = () => {
   const onDeleteBrand = async (id, e) => {
     if (window.confirm("Bạn có chắc chắn muốn xóa dữ liệu này không?")) {
       try {
-        await axios.delete(`http://localhost:5000/api/brand/${id}`);
+        const token = localStorage.getItem("access_token");
+        await axios.delete(`http://localhost:5000/api/brand/${id}`, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
         fetchData();
       } catch (error) {
         throw new Error(error);
@@ -47,7 +50,16 @@ const Brandlist = () => {
   const handleUpdateBrand = async (e) => {
     const { id, title } = updateData;
     try {
-      await axios.put(`http://localhost:5000/api/brand/${id}`, { title });
+      const token = localStorage.getItem("access_token");
+      await axios.put(
+        `http://localhost:5000/api/brand/${id}`,
+        { title },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
       handleCloseModal();
       fetchData();
     } catch (error) {
