@@ -44,7 +44,7 @@ const loginUserCtrl = asyncHandler(async (req, res) => {
     );
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
-      maxAge: 72 * 60 * 60 * 1000,
+      maxAge: 2400 * 60 * 60 * 1000,
     });
     res.json({
       _id: findUser?._id,
@@ -64,7 +64,8 @@ const loginAdmin = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
   //check if user exists or not
   const findAdmin = await User.findOne({ email });
-  if (findAdmin.role !== "admin") throw new Error("You Are Not Authorised");
+  if (findAdmin.role !== "admin")
+    return res.json({ data: "You Are Not Admin!" });
   if (findAdmin && (await findAdmin.isPasswordMatched(password))) {
     const refreshToken = await generateRefreshToken(findAdmin?._id);
     const updateUser = await User.findByIdAndUpdate(
@@ -78,7 +79,7 @@ const loginAdmin = asyncHandler(async (req, res) => {
     );
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
-      maxAge: 72 * 60 * 60 * 1000,
+      maxAge: 2400 * 60 * 60 * 1000,
     });
     res.json({
       _id: findAdmin?._id,
@@ -88,8 +89,10 @@ const loginAdmin = asyncHandler(async (req, res) => {
       mobile: findAdmin?.mobile,
       token: generateToken(findAdmin?._id),
     });
+    // const accessToken = generateToken(findAdmin?._id);
+    // localStorage.setItem("token", accessToken);
   } else {
-    throw new Error("Invalid Credentials");
+    return res.json({ data: "Invalid Credentials" });
   }
 });
 
@@ -120,7 +123,7 @@ const logout = asyncHandler(async (req, res) => {
       httpOnly: true,
       secure: true,
     });
-    return res.sendStatus(204); //forbidden
+    return res.status(200).json("Logged out!"); //forbidden
   }
   await User.findOneAndUpdate(refreshToken, {
     refreshToken: "",
@@ -129,7 +132,7 @@ const logout = asyncHandler(async (req, res) => {
     httpOnly: true,
     secure: true,
   });
-  res.sendStatus(204); //forbidden
+  res.status(200).json("Logged out!"); //forbidden
 });
 
 //Update a user
@@ -204,10 +207,14 @@ const deleteaUser = asyncHandler(async (req, res) => {
   const { id } = req.params;
   validateMongoDbId(id);
   try {
-    const deleteaUser = await User.findByIdAndDelete(id);
-    res.json({
-      deleteaUser,
-    });
+    if (req.user.id === id || req.user.role === "admin") {
+      const deleteaUser = await User.findByIdAndDelete(id);
+      res.json({
+        deleteaUser,
+      });
+    } else {
+      res.json("You are not allowed to delete other!");
+    }
   } catch (error) {
     throw new Error(error);
   }
@@ -450,7 +457,7 @@ const createOrder = asyncHandler(async (req, res) => {
   }
 });
 
-const getOrders = asyncHandler(async (req, res) => {
+const getUserOrders = asyncHandler(async (req, res) => {
   const { _id } = req.user;
   validateMongoDbId(_id);
   try {
@@ -458,6 +465,15 @@ const getOrders = asyncHandler(async (req, res) => {
       .populate("products.product")
       .exec();
     res.json(userorders);
+  } catch (error) {
+    throw new Error(error);
+  }
+});
+
+const getAllOrders = asyncHandler(async (req, res) => {
+  try {
+    const getAllOrders = await Order.find();
+    res.json(getAllOrders);
   } catch (error) {
     throw new Error(error);
   }
@@ -508,6 +524,7 @@ module.exports = {
   emptyCart,
   applyCoupon,
   createOrder,
-  getOrders,
+  getUserOrders,
+  getAllOrders,
   updateOrderStatus,
 };

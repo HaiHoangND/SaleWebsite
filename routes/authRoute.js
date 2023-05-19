@@ -1,28 +1,29 @@
 const express = require("express");
-const { 
-    createUser, 
-    loginUserCtrl, 
-    getallUser, 
-    getaUser, 
-    deleteaUser, 
-    updatedUser,
-    blockUser,
-    unblockUser,
-    handleRefreshToken,
-    logout,
-    updatePassword,
-    forgotPasswordToken,
-    resetPassword,
-    loginAdmin,
-    getWishlist,
-    saveAddress,
-    userCart,
-    getUserCart,
-    emptyCart,
-    applyCoupon,
-    createOrder,
-    getOrders,
-    updateOrderStatus, 
+const {
+  createUser,
+  loginUserCtrl,
+  getallUser,
+  getaUser,
+  deleteaUser,
+  updatedUser,
+  blockUser,
+  unblockUser,
+  handleRefreshToken,
+  logout,
+  updatePassword,
+  forgotPasswordToken,
+  resetPassword,
+  loginAdmin,
+  getWishlist,
+  saveAddress,
+  userCart,
+  getUserCart,
+  emptyCart,
+  applyCoupon,
+  createOrder,
+  getUserOrders,
+  getAllOrders,
+  updateOrderStatus,
 } = require("../controller/userCtrl");
 const { authMiddleware, isAdmin } = require("../middlewares/authMiddleware");
 const router = express.Router();
@@ -30,7 +31,12 @@ const router = express.Router();
 router.post("/register", createUser);
 router.post("/forgot-password", forgotPasswordToken);
 router.put("/reset-password/:token", resetPassword);
-router.put("/order/update-order/:id", authMiddleware, isAdmin, updateOrderStatus);
+router.put(
+  "/order/update-order/:id",
+  authMiddleware,
+  isAdmin,
+  updateOrderStatus
+);
 
 router.put("/password", authMiddleware, updatePassword);
 router.post("/login", loginUserCtrl);
@@ -39,15 +45,16 @@ router.post("/cart", authMiddleware, userCart);
 router.post("/cart/applycoupon", authMiddleware, applyCoupon);
 router.post("/cart/cash-order", authMiddleware, createOrder);
 router.get("/all-users", getallUser);
-router.get("/get-orders",authMiddleware, getOrders);
+router.get("/get-user-orders", authMiddleware, getUserOrders);
+router.get("/get-all-orders", authMiddleware, isAdmin, getAllOrders);
 router.get("/refresh", handleRefreshToken);
-router.get("/logout", logout);
+router.post("/logout", authMiddleware, logout);
 router.get("/wishlist", authMiddleware, getWishlist);
 router.get("/cart", authMiddleware, getUserCart);
 
 router.get("/:id", authMiddleware, isAdmin, getaUser);
 router.delete("/empty-cart", authMiddleware, emptyCart);
-router.delete("/:id", deleteaUser);
+router.delete("/:id", authMiddleware, isAdmin, deleteaUser);
 
 router.put("/edit-user", authMiddleware, updatedUser);
 router.put("/save-address", authMiddleware, saveAddress);

@@ -16,8 +16,7 @@ const {
 } = require("../middlewares/uploadImages");
 const router = express.Router();
 
-// router.post("/", authMiddleware, isAdmin, createProduct);
-router.post("/", createProduct);
+router.post("/", authMiddleware, isAdmin, createProduct);
 router.put(
     "/upload/:id",
     authMiddleware,
@@ -30,10 +29,8 @@ router.get("/:id", getaProduct);
 router.put("/wishlist", authMiddleware, addToWishList);
 router.put("/rating", authMiddleware, rating);
 
-// router.put("/:id", authMiddleware, isAdmin, updateProduct);
-router.put("/:id", updateProduct);
-// router.delete("/:id", authMiddleware, isAdmin, deleteProduct);
-router.delete("/:id", deleteProduct);
-router.get("/", getAllProduct);
+router.put("/:id", authMiddleware, isAdmin, updateProduct);
+router.delete("/:id", authMiddleware, isAdmin, deleteProduct);
+router.get("/", authMiddleware,isAdmin, getAllProduct);
 
 module.exports = router;
