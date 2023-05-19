@@ -61,7 +61,6 @@ const Addblog = () => {
       const token = localStorage.getItem("access_token");
       const config = {
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
       };
@@ -73,16 +72,13 @@ const Addblog = () => {
       await axios.post("http://localhost:5000/api/blog/", formData, config);
       setMessage("Blog created successfully!");
     } catch (error) {
-      if (error.response.status === 401) {
-        // token hết hạn
-        setMessage("Not Authorized token expired, Please Login again.");
-        // xóa token khỏi localStorage và chuyển hướng đến trang đăng nhập
-        localStorage.removeItem("token");
-        window.location.href = "/";
-      } else {
-        console.error(error);
-        setMessage("Error creating blog. Please try again.");
-      }
+     if (error.response.status === 403) {
+       alert("You are not admin. Please login again.");
+       window.location.href = "/";
+     } else {
+       console.error(error);
+       setMessage("Error creating brand. Please try again.");
+     }
     }
   };
   return (

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import axios from "axios";
-// import CustomInput from "../components/CustomInput";
 
 const Addcoupon = () => {
   const [data, setData] = useState({
@@ -20,7 +19,6 @@ const Addcoupon = () => {
       const token = localStorage.getItem("access_token");
       const config = {
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
       };
@@ -32,15 +30,12 @@ const Addcoupon = () => {
       await axios.post("http://localhost:5000/api/coupon/", formData, config);
       setMessage("Coupon created successfully!");
     } catch (error) {
-      if (error.response.status === 401) {
-        // token hết hạn
-        setMessage("Not Authorized token expired, Please Login again.");
-        // xóa token khỏi localStorage và chuyển hướng đến trang đăng nhập
-        localStorage.removeItem("token");
+      if (error.response.status === 403) {
+        alert("You are not admin. Please login again.");
         window.location.href = "/";
       } else {
         console.error(error);
-        setMessage("Error creating coupon. Please try again.");
+        setMessage("Error creating brand. Please try again.");
       }
     }
   };

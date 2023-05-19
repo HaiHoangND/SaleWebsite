@@ -6,9 +6,9 @@ const Orders = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const token = localStorage.getItem("token");
+        const token = localStorage.getItem("access_token");
         const response = await axios.get(
-          "http://localhost:5000/api/user/get-orders",
+          "http://localhost:5000/api/user/get-all-orders",
           {
             headers: {
               Authorization: `Bearer ${token}`,

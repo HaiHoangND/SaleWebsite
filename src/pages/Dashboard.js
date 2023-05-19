@@ -86,9 +86,9 @@ const Dashboard = () => {
     },
   };
   const [countProduct, setCountProduct] = useState(0);
-  const fetchData = async () => {
+  const fetchProducts = async () => {
     try {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("access_token");
       const response = await axios.get("http://localhost:5000/api/product/", {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -101,7 +101,29 @@ const Dashboard = () => {
     }
   };
   useEffect(() => {
-    fetchData();
+    fetchProducts();
+  }, []);
+
+  const [countOrder, setCountOrder] = useState(0);
+  const fetchOrders = async () => {
+    try {
+      const token = localStorage.getItem("access_token");
+      const response = await axios.get(
+        "http://localhost:5000/api/user/get-all-orders",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      const totalOrders = response.data.length;
+      setCountOrder(totalOrders);
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
+  useEffect(() => {
+    fetchOrders();
   }, []);
   return (
     <div>
@@ -122,7 +144,7 @@ const Dashboard = () => {
           </div>
           <div>
             <p className="desc">Total Orders</p>
-            <h4 className="mb-0 sub-title">12</h4>
+            <h4 className="mb-0 sub-title">{countOrder}</h4>
           </div>
         </div>
         <div className="d-flex flex-grow-1 bg-white p-3 roudned-3 gap-3">
@@ -131,9 +153,7 @@ const Dashboard = () => {
           </div>
           <div>
             <p className="desc">Total Products</p>
-            <h4 className="mb-0 sub-title" id="total-product">
-              {countProduct}
-            </h4>
+            <h4 className="mb-0 sub-title">{countProduct}</h4>
           </div>
         </div>
       </div>

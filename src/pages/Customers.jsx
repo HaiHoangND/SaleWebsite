@@ -52,7 +52,6 @@ const Customers = () => {
               <th scope="col">Address</th>
               <th scope="col">Role</th>
               <th scope="col">isBlocked</th>
-              <th scope="col">Cart</th>
               <th scope="col">WishList</th>
               <th scope="col">Created At</th>
               <th scope="col">Updated At</th>
@@ -70,13 +69,6 @@ const Customers = () => {
                 <td>{value.address}</td>
                 <td>{value.role}</td>
                 <td>{value.isBlocked}</td>
-                <td>
-                  {value.cart.map((cart, index) => (
-                    <div key={index}>
-                      <p>{cart}</p>
-                    </div>
-                  ))}
-                </td>
                 <td>
                   {value.wishlist.map((wishlist, index) => (
                     <div key={index}>

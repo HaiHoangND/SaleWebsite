@@ -17,7 +17,6 @@ const Addblogcat = () => {
       const token = localStorage.getItem("access_token");
       const config = {
         headers: {
-          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
       };
@@ -31,15 +30,12 @@ const Addblogcat = () => {
       );
       setMessage("Blog Category created successfully!");
     } catch (error) {
-      if (error.response.status === 401) {
-        // token hết hạn
-        setMessage("Not Authorized token expired, Please Login again.");
-        // xóa token khỏi localStorage và chuyển hướng đến trang đăng nhập
-        localStorage.removeItem("token");
+      if (error.response.status === 403) {
+        alert("You are not admin. Please login again.");
         window.location.href = "/";
       } else {
         console.error(error);
-        setMessage("Error creating blog category. Please try again.");
+        setMessage("Error creating brand. Please try again.");
       }
     }
   };
