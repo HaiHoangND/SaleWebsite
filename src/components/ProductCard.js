@@ -28,16 +28,16 @@ const ProductCard = (props) => {
           />
         </div>
         <div className="product-details">
-          <h6 className="brand">Havels</h6>
-          <h5 className="product-title">Product Title</h5>
+          <h6 className="brand">{props.product.brand}</h6>
+          <h5 className="product-title">{props.product.title}</h5>
           <ReactStars
             count={5}
             size={24}
-            value={3}
+            value={props.product.totalrating}
             edit={false}
             activeColor="#ffd700"
           />
-          <p className="price">10000$</p>
+          <p className="price">{props.product.price}$</p>
         </div>
         <div className="action-bar position-absolute">
           <div className="d-flex flex-column gap-15">
