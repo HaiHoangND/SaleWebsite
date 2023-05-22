@@ -142,7 +142,7 @@ const Categorylist = () => {
               handleUpdateProdCategory(updateData.id, updateData.title, e)
             }
           >
-            Update
+            Save Changes
           </button>
         </Modal.Footer>
       </Modal>

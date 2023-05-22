@@ -15,7 +15,7 @@ import { SiBrandfolder } from "react-icons/si";
 import { BiCategoryAlt } from "react-icons/bi";
 import { Layout, Menu, theme } from "antd";
 import { useNavigate } from "react-router-dom";
-import { useSelector } from "react-redux";
+// import { useSelector } from "react-redux";
 const { Header, Sider, Content } = Layout;
 
 const MainLayout = () => {
@@ -24,7 +24,7 @@ const MainLayout = () => {
     token: { colorBgContainer },
   } = theme.useToken();
   const navigate = useNavigate();
-  const user = useSelector((state) => state.auth.login?.currentUser);
+  // const user = useSelector((state) => state.auth.login?.currentUser);
   return (
     <Layout>
       <Sider trigger={null} collapsible collapsed={collapsed}>
@@ -190,10 +190,10 @@ const MainLayout = () => {
                 </span>
                 <div className="d-flex flex-column justify-content-center">
                   <h5 className="mb-0">
-                    Hi, <span>{user.lastname}</span>
+                    Hi, <span>Admin</span>
                   </h5>
                   <p className="mb-0">
-                    <span>{user.email}</span>
+                    <span>admin@gmail.com</span>
                   </p>
                 </div>
               </div>

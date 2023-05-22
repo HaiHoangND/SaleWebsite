@@ -53,7 +53,7 @@ const Blogcatlist = () => {
   const handleUpdateBlogCategory = async (e) => {
     const { id, title } = updateData;
     try {
-        const token = localStorage.getItem("access_token");
+      const token = localStorage.getItem("access_token");
       await axios.put(
         `http://localhost:5000/api/blogcategory/${id}`,
         {
@@ -144,7 +144,7 @@ const Blogcatlist = () => {
               handleUpdateBlogCategory(updateData.id, updateData.title, e)
             }
           >
-            Update
+            Save Changes
           </button>
         </Modal.Footer>
       </Modal>

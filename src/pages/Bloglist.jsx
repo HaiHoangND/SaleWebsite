@@ -1,6 +1,9 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Modal } from "react-bootstrap";
+// import cloudinary from "cloudinary-core";
+
+// const cl = new cloudinary.Cloudinary({ cloud_name: "dwsf1m3lf" });
 
 const Bloglist = () => {
   const [data, setData] = useState([]);
@@ -62,6 +65,7 @@ const Bloglist = () => {
       }
     }
   };
+
   const handleShowModal = (id, title, category, description) => {
     setUpdateData({
       id,
@@ -96,6 +100,23 @@ const Bloglist = () => {
     }
   };
   const handleCloseModal = () => setShowModal(false);
+
+  const handleUploadImage = async (id, e) => {
+    try {
+      const token = localStorage.getItem("access_token");
+      const formData = new FormData();
+      formData.append("images", e.target.files[0]);
+      await axios.put(`http://localhost:5000/api/blog/upload/${id}`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data", // Đặt header "Content-Type" là "multipart/form-data" để gửi dữ liệu dạng form-data
+        },
+      });
+      fetchData();
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
   return (
     <div>
       <h3 className="mb-4 title">Blogs List</h3>
@@ -107,6 +128,7 @@ const Bloglist = () => {
               <th scope="col">Title</th>
               <th scope="col">Category</th>
               <th scope="col">Description</th>
+              <th scope="col">Image</th>
               <th scope="col">numViews</th>
               <th scope="col">Likes</th>
               <th scope="col">Dislikes</th>
@@ -118,10 +140,26 @@ const Bloglist = () => {
           <tbody>
             {data.map((value, index) => (
               <tr key={value._id}>
-                <td>{index + 1}</td>
+                <td> {index + 1} </td>
                 <td> {value.title} </td>
                 <td> {value.category} </td>
                 <td> {value.description} </td>
+                <td>
+                  {value.images.map((image, index) => (
+                    <img
+                      key={index}
+                      src={image.url}
+                      // src={cl.url(image.public_id, {
+                      //   width: 50,
+                      //   height: 50,
+                      //   crop: "fill",
+                      // })}
+                      alt="Hình ảnh"
+                      width="50px"
+                      height="50px"
+                    />
+                  ))}
+                </td>
                 <td> {value.numViews} </td>
                 <td>
                   {value.likes.map((like, index) => (
@@ -155,6 +193,14 @@ const Bloglist = () => {
                   >
                     Delete
                   </button>
+                  <label className="btn btn-success my-2">
+                    Upload Image
+                    <input
+                      type="file"
+                      style={{ display: "none" }}
+                      onChange={(e) => handleUploadImage(value._id, e)}
+                    />
+                  </label>
                 </td>
               </tr>
             ))}
@@ -187,7 +233,7 @@ const Bloglist = () => {
                 name="category"
                 className="form-control mb-4"
                 id="category"
-                value={data.category}
+                value={updateData.category}
                 onChange={(e) =>
                   setUpdateData({ ...updateData, category: e.target.value })
                 }
@@ -228,7 +274,7 @@ const Bloglist = () => {
               )
             }
           >
-            Update
+            Save Changes
           </button>
         </Modal.Footer>
       </Modal>

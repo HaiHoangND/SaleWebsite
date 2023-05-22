@@ -134,6 +134,23 @@ const Productlist = () => {
     }
   };
   const handleCloseModal = () => setShowModal(false);
+
+  const handleUploadImage = async (id, e) => {
+    try {
+      const token = localStorage.getItem("access_token");
+      const formData = new FormData();
+      formData.append("images", e.target.files[0]);
+      await axios.put(`http://localhost:5000/api/product/upload/${id}`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          "Content-Type": "multipart/form-data", // Đặt header "Content-Type" là "multipart/form-data" để gửi dữ liệu dạng form-data
+        },
+      });
+      fetchData();
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
   return (
     <div>
       <h3 className="mb-4 title">Products</h3>
@@ -175,10 +192,10 @@ const Productlist = () => {
                   {value.images.map((image, index) => (
                     <img
                       key={index}
-                      src={image}
+                      src={image.url}
                       alt="Hình ảnh"
-                      width="5px"
-                      height="5px"
+                      width="50px"
+                      height="50px"
                     />
                   ))}
                 </td>
@@ -219,6 +236,14 @@ const Productlist = () => {
                   >
                     Delete
                   </button>
+                  <label className="btn btn-success my-2">
+                    Upload Image
+                    <input
+                      type="file"
+                      style={{ display: "none" }}
+                      onChange={(e) => handleUploadImage(value._id, e)}
+                    />
+                  </label>
                 </td>
               </tr>
             ))}
@@ -283,7 +308,7 @@ const Productlist = () => {
                 name="category"
                 className="form-control mb-4"
                 id="category"
-                value={data.category}
+                value={updateData.category}
                 onChange={(e) =>
                   setUpdateData({ ...updateData, category: e.target.value })
                 }
@@ -301,7 +326,7 @@ const Productlist = () => {
                 name="brand"
                 className="form-control mb-4"
                 id="brand"
-                value={data.brand}
+                value={updateData.brand}
                 onChange={(e) =>
                   setUpdateData({ ...updateData, brand: e.target.value })
                 }
@@ -335,7 +360,7 @@ const Productlist = () => {
                 name="color"
                 className="form-control py-3 mb-3"
                 id="color"
-                value={data.color}
+                value={updateData.color}
                 onChange={(e) =>
                   setUpdateData({ ...updateData, color: e.target.value })
                 }
@@ -372,7 +397,7 @@ const Productlist = () => {
               )
             }
           >
-            Update
+            Save Changes
           </button>
         </Modal.Footer>
       </Modal>

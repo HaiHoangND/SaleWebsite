@@ -185,7 +185,7 @@ const Couponlist = () => {
               )
             }
           >
-            Update
+            Save Changes
           </button>
         </Modal.Footer>
       </Modal>

@@ -10,6 +10,8 @@
     "@testing-library/user-event": "^13.5.0",
     "antd": "^5.4.2",
     "axios": "^1.4.0",
+    "cloudinary": "^1.37.0",
+    "cloudinary-core": "^2.13.0",
     "datatables.net": "^1.13.4",
     "datatables.net-dt": "^1.13.4",
     "dt": "^0.0.1",

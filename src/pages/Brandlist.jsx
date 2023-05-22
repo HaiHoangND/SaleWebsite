@@ -139,7 +139,7 @@ const Brandlist = () => {
               handleUpdateBrand(updateData.id, updateData.title, e)
             }
           >
-            Update
+            Save Changes
           </button>
         </Modal.Footer>
       </Modal>
