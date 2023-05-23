@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Modal } from "react-bootstrap";
+import { MdDeleteForever } from "react-icons/md";
+import { AiOutlineEdit, AiOutlineCloudUpload } from "react-icons/ai";
 
 const Productlist = () => {
   const [data, setData] = useState([]);
@@ -228,15 +230,18 @@ const Productlist = () => {
                       )
                     }
                   >
+                    <AiOutlineEdit className="mb-1 mr-2 fs-5" />
                     Update
                   </button>
                   <button
                     className="btn btn-success my-2"
                     onClick={(e) => onDeleteProduct(value._id, e)}
                   >
+                    <MdDeleteForever className="mb-1 mr-2 fs-5" />
                     Delete
                   </button>
                   <label className="btn btn-success my-2">
+                    <AiOutlineCloudUpload />
                     Upload Image
                     <input
                       type="file"

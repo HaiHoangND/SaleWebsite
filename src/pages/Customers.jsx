@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { MdDeleteForever } from "react-icons/md";
 
 const Customers = () => {
   const [data, setData] = useState([]);
@@ -83,6 +84,7 @@ const Customers = () => {
                     className="btn btn-success mx-2"
                     onClick={(e) => onDeleteUser(value._id, e)}
                   >
+                    <MdDeleteForever className="mb-1 mr-2 fs-5" />
                     Delete
                   </button>
                 </td>

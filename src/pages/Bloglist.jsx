@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Modal } from "react-bootstrap";
-// import cloudinary from "cloudinary-core";
-
-// const cl = new cloudinary.Cloudinary({ cloud_name: "dwsf1m3lf" });
+import { MdDeleteForever } from "react-icons/md";
+import { AiOutlineEdit, AiOutlineCloudUpload } from "react-icons/ai";
 
 const Bloglist = () => {
   const [data, setData] = useState([]);
@@ -149,11 +148,6 @@ const Bloglist = () => {
                     <img
                       key={index}
                       src={image.url}
-                      // src={cl.url(image.public_id, {
-                      //   width: 50,
-                      //   height: 50,
-                      //   crop: "fill",
-                      // })}
                       alt="Hình ảnh"
                       width="50px"
                       height="50px"
@@ -185,15 +179,18 @@ const Bloglist = () => {
                       )
                     }
                   >
+                    <AiOutlineEdit className="mb-1 mr-2 fs-5" />
                     Update
                   </button>
                   <button
                     className="btn btn-success my-2"
                     onClick={(e) => onDeleteBlog(value._id, e)}
                   >
+                    <MdDeleteForever className="mb-1 mr-2 fs-5" />
                     Delete
                   </button>
                   <label className="btn btn-success my-2">
+                    <AiOutlineCloudUpload/>
                     Upload Image
                     <input
                       type="file"

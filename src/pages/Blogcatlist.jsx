@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { Modal } from "react-bootstrap";
+import { MdDeleteForever } from "react-icons/md";
+import { AiOutlineEdit } from "react-icons/ai";
 
 const Blogcatlist = () => {
   const [data, setData] = useState([]);
@@ -98,12 +100,14 @@ const Blogcatlist = () => {
                     className="btn btn-success mx-2"
                     onClick={() => handleShowModal(value._id, value.title)}
                   >
+                    <AiOutlineEdit className="mb-1 mr-2 fs-5" />
                     Update
                   </button>
                   <button
                     className="btn btn-success mx-2"
                     onClick={(e) => onDeleteBlogCategory(value._id, e)}
                   >
+                    <MdDeleteForever className="mb-1 mr-2 fs-5" />
                     Delete
                   </button>
                 </td>
