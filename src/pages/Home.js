@@ -375,10 +375,10 @@ const Home = () => {
             <div className="col-12">
               <h3 className="section-heading">Blog Card</h3>
             </div>
-            <BlogCard></BlogCard>
-            <BlogCard></BlogCard>
-            <BlogCard></BlogCard>
-            <BlogCard></BlogCard>
+            <BlogCard/>
+            <BlogCard/>
+            <BlogCard/>
+            <BlogCard/>
           </div>
         </div>
       </section>
