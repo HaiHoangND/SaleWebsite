@@ -324,11 +324,13 @@ const Home = () => {
               <h3 className="section-heading">Our Popular Products</h3>
             </div>
             {/* <div className="row">
+
               <ProductCard></ProductCard>
               <ProductCard></ProductCard>
               <ProductCard></ProductCard>
               <ProductCard></ProductCard>
             </div> */}
+
           </div>
         </div>
       </section>
@@ -379,6 +381,7 @@ const Home = () => {
             <BlogCard/>
             <BlogCard/>
             <BlogCard/>
+
           </div>
         </div>
       </section>
