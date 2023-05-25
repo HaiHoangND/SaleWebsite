@@ -7,9 +7,7 @@ const ProductCard = (props) => {
   let location = useLocation();
   return (
     <div
-      className={` ${
-        location.pathname === '/our-store' ? `gr-${grid}` : 'col-3'
-      } `}
+      className={` ${location.pathname == '/store' ? `gr-${grid}` : 'col-3'} `}
     >
       <Link className="product-card position-relative">
         <div className="wishlist-icon position-absolute">
@@ -18,20 +16,28 @@ const ProductCard = (props) => {
           </Link>
         </div>
         <div className="product-image">
-          <img src="images/ip01.jpg" alt="product" className="img-fluid" />
-          <img src="images/ip02.jpg" alt="product" className="img-fluid" />
+          <img
+            src="images/watch.jpg"
+            alt="product image"
+            className="img-fluid"
+          />
+          <img
+            src="images/watch-1.avif"
+            alt="product image"
+            className="img-fluid"
+          />
         </div>
         <div className="product-details">
-          <h6 className="brand">Brand</h6>
-          <h5 className="product-title">Product Title</h5>
+          <h6 className="brand">{props.product.brand}</h6>
+          <h5 className="product-title">{props.product.title}</h5>
           <ReactStars
             count={5}
             size={24}
-            value={5}
+            value={props.product.totalrating}
             edit={false}
             activeColor="#ffd700"
           />
-          <p className="price">10000$</p>
+          <p className="price">{props.product.price}$</p>
         </div>
         <div className="action-bar position-absolute">
           <div className="d-flex flex-column gap-15">

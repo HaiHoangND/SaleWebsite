@@ -8,7 +8,7 @@ import Container from '../components/Container';
 const Contact = () => {
   return (
     <>
-      <Meta title={'Contact Us'} />
+          <Meta title={'Contact Us'} />
       <BreadCrumb title="Contact Us" />
       <Container class1="contact-wrapper py-5 home-wrapper-2">
         <div className="row">
@@ -73,21 +73,25 @@ const Contact = () => {
                       <AiOutlineHome className="fs-5" />
                       <address className="mb-0">
                         Address: 01 Dai Co Viet, Hai Ba Trung, Ha Noi.
+
                       </address>
                     </li>
                     <li className="mb-3 d-flex gap-15 align-items-center">
                       <BiPhoneCall className="fs-5" />
                       <a href="tel:+91 8264954234">+84 0000000000</a>
+
                     </li>
                     <li className="mb-3 d-flex gap-15 align-items-center">
                       <AiOutlineMail className="fs-5" />
                       <a href="mailto:navdeepdahiya753@gmail.com">
                         bachkhoahanoi@gmail.com
+
                       </a>
                     </li>
                     <li className="mb-3 d-flex gap-15 align-items-center">
                       <BiInfoCircle className="fs-5" />
                       <p className="mb-0">Monday – Friday 7 AM – 10 PM</p>
+
                     </li>
                   </ul>
                 </div>

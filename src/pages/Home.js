@@ -1,11 +1,28 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import Marquee from 'react-fast-marquee';
-import ProductCard from '../components/ProductCard';
-import BlogCard from '../components/BlogCard';
-import SpecialProducts from '../components/SpecialProducts';
+import React from "react";
+import { Link } from "react-router-dom";
+import Marquee from "react-fast-marquee";
+import ProductCard from "../components/ProductCard";
+import BlogCard from "../components/BlogCard";
+import SpecialProducts from "../components/SpecialProducts";
+import { useState } from "react";
+import { useEffect } from "react";
+import axios from "axios";
 
 const Home = () => {
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/api/product");
+        setProducts(response.data);
+      } catch (error) {
+        console.error("Error fetching products:", error);
+      }
+    };
+
+    fetchProducts();
+  }, [products]);
   return (
     <>
       <section className="home-wrapper-1 py-5">
@@ -211,10 +228,9 @@ const Home = () => {
               <h3 className="section-heading"> Featured Collection</h3>
             </div>
             <div className="row">
-              <ProductCard></ProductCard>
-              <ProductCard></ProductCard>
-              <ProductCard></ProductCard>
-              <ProductCard></ProductCard>
+              {products.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
             </div>
           </div>
         </div>
@@ -307,12 +323,12 @@ const Home = () => {
             <div className="col-12">
               <h3 className="section-heading">Our Popular Products</h3>
             </div>
-            <div className="row">
+            {/* <div className="row">
               <ProductCard></ProductCard>
               <ProductCard></ProductCard>
               <ProductCard></ProductCard>
               <ProductCard></ProductCard>
-            </div>
+            </div> */}
           </div>
         </div>
       </section>
@@ -359,10 +375,10 @@ const Home = () => {
             <div className="col-12">
               <h3 className="section-heading">Blog Card</h3>
             </div>
-            <BlogCard></BlogCard>
-            <BlogCard></BlogCard>
-            <BlogCard></BlogCard>
-            <BlogCard></BlogCard>
+            <BlogCard/>
+            <BlogCard/>
+            <BlogCard/>
+            <BlogCard/>
           </div>
         </div>
       </section>

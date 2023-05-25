@@ -1,12 +1,29 @@
 import React from 'react';
 import BreadCrumb from '../components/BreadCrumb';
+import { Helmet } from 'react-helmet';
 import Meta from '../components/Meta';
 import ReactStars from 'react-stars';
 import { useState } from 'react';
 import ProductCard from '../components/ProductCard';
+import { useEffect } from 'react';
+import axios from 'axios';
 
 const OurStore = () => {
   const [grid, setGrid] = useState(4);
+  const [products, setProducts] = useState([]);
+
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const response = await axios.get('http://localhost:5000/api/product');
+        setProducts(response.data);
+      } catch (error) {
+        console.error('Error fetching products:', error);
+      }
+    };
+
+    fetchProducts();
+  }, [products]);
   return (
     <>
       <Meta title={'Our Store'} />
@@ -217,7 +234,7 @@ const OurStore = () => {
                     </select>
                   </div>
                   <div className="d-flex align-items-center gap-10">
-                    <p className="totalproducts mb-0">21 products</p>
+                    <p className="totalproducts mb-0">21 prooducts</p>
                     <div className="d-flex align-items-center gap-10 grid">
                       <img
                         onClick={() => {
@@ -244,7 +261,7 @@ const OurStore = () => {
                         className="d-block img-fluid"
                       />
                       <img
-                        onClick={() => {
+             onClick={() => {
                           setGrid(12);
                         }}
                         src="images/gr.svg"
@@ -257,12 +274,9 @@ const OurStore = () => {
               </div>
               <div className="products-list pb-5">
                 <div className="d-flex flex-wrap gap-10">
-                  <ProductCard grid={grid} />
-                  <ProductCard grid={grid} />
-                  <ProductCard grid={grid} />
-                  <ProductCard grid={grid} />
-                  <ProductCard grid={grid} />
-                  <ProductCard grid={grid} />
+                  {products.map((product) => (
+                    <ProductCard key={product.id} product={product} />
+                  ))}
                 </div>
               </div>
             </div>
