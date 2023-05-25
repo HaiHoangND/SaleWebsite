@@ -23,7 +23,7 @@ const OurStore = () => {
     };
 
     fetchProducts();
-  }, [products]);
+  }, []);
   return (
     <>
       <Meta title={'Our Store'} />

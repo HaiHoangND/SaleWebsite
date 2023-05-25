@@ -6,6 +6,7 @@ import Container from "../components/Container";
 import { useState } from "react";
 import axios from "axios";
 import { useEffect } from "react";
+import { useLocation } from "react-router-dom";
 
 const Blog = () => {
   const [categories, setCategories] = useState([]);
@@ -33,7 +34,7 @@ const Blog = () => {
 
     fetchCategories();
     fetchBlogs();
-  }, [categories, blogs]);
+  }, []);
   return (
     <>
       <Meta title={"Blogs"} />

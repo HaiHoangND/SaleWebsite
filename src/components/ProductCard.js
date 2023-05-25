@@ -1,13 +1,13 @@
-import React from 'react';
-import ReactStars from 'react-stars';
-import { Link, useLocation } from 'react-router-dom';
+import React from "react";
+import ReactStars from "react-stars";
+import { Link, useLocation } from "react-router-dom";
 
 const ProductCard = (props) => {
   const { grid } = props;
   let location = useLocation();
   return (
     <div
-      className={` ${location.pathname == '/store' ? `gr-${grid}` : 'col-3'} `}
+      className={` ${location.pathname == "/store" ? `gr-${grid}` : "col-3"} `}
     >
       <Link className="product-card position-relative">
         <div className="wishlist-icon position-absolute">

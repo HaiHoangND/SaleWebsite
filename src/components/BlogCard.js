@@ -10,8 +10,8 @@ const BlogCard = (props) => {
         </div>
         <div className="blog-content">
           <h5 className="title"> {props.blog.title}</h5>
-          <p className="desc">{props.blog.description}</p>
-          <Link to="/blog/:id" className="button">
+          {/* <p className="desc">{props.blog.description}</p> */}
+          <Link to={"/blog/" + props.blog.id }className="button">
             Read More
           </Link>
         </div>
