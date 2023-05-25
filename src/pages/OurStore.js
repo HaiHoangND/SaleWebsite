@@ -1,6 +1,5 @@
 import React from 'react';
 import BreadCrumb from '../components/BreadCrumb';
-import { Helmet } from 'react-helmet';
 import Meta from '../components/Meta';
 import ReactStars from 'react-stars';
 import { useState } from 'react';
@@ -218,7 +217,7 @@ const OurStore = () => {
                     </select>
                   </div>
                   <div className="d-flex align-items-center gap-10">
-                    <p className="totalproducts mb-0">21 prooducts</p>
+                    <p className="totalproducts mb-0">21 products</p>
                     <div className="d-flex align-items-center gap-10 grid">
                       <img
                         onClick={() => {
@@ -258,6 +257,11 @@ const OurStore = () => {
               </div>
               <div className="products-list pb-5">
                 <div className="d-flex flex-wrap gap-10">
+                  <ProductCard grid={grid} />
+                  <ProductCard grid={grid} />
+                  <ProductCard grid={grid} />
+                  <ProductCard grid={grid} />
+                  <ProductCard grid={grid} />
                   <ProductCard grid={grid} />
                 </div>
               </div>

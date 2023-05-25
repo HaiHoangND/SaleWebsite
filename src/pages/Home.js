@@ -14,31 +14,32 @@ const Home = () => {
             <div className="col-6">
               <div className="main-banner position-relative ">
                 <img
-                  src="images/main-banner-1.jpg"
+                  src="images/banner02.jpg"
                   className="img-fluid rounded-3"
                   alt="main banner"
                 />
                 <div className="main-banner-content position-absolute">
-                  <h4>SUPERCHARGED FOR PROS.</h4>
-                  <h5>iPad S13+ Pro.</h5>
-                  <p>From $999.00 or $41.62/mo.</p>
+                  <h4>Title for products</h4>
+                  <h5>Product's name</h5>
+                  <p>Original price/Promotional price</p>
                   <Link className="button">BUY NOW</Link>
                 </div>
               </div>
             </div>
             <div className="col-6">
-              <div className="d-flex flex-wrap gap-15-10 justify-content-between align-items-center">
+              <div className="d-flex flex-wrap gap-10 justify-content-between align-items-center">
                 <div className="small-banner position-relative">
                   <img
-                    src="images/catbanner-01.jpg"
+                    src="images/catbanner-05.jpg"
                     className="img-fluid rounded-3"
                     alt="main banner"
                   />
                   <div className="small-banner-content position-absolute">
-                    <h4>Best Sake</h4>
-                    <h5>iPad S13+ Pro.</h5>
+                    <h4>Title for products</h4>
+                    <h5>Product's name</h5>
                     <p>
-                      From $999.00 <br /> or $41.62/mo.
+                      Original price <br />
+                      Promotional price
                     </p>
                   </div>
                 </div>
@@ -49,10 +50,11 @@ const Home = () => {
                     alt="main banner"
                   />
                   <div className="small-banner-content position-absolute">
-                    <h4>NEW ARRIVAL</h4>
-                    <h5>But IPad Air</h5>
+                    <h4>Title for products</h4>
+                    <h5>Product's name</h5>
                     <p>
-                      From $999.00 <br /> or $41.62/mo.
+                      Original price <br />
+                      Promotional price
                     </p>
                   </div>
                 </div>
@@ -63,10 +65,11 @@ const Home = () => {
                     alt="main banner"
                   />
                   <div className="small-banner-content position-absolute">
-                    <h4>NEW ARRIVAL</h4>
-                    <h5>But IPad Air</h5>
+                    <h4>Title for products</h4>
+                    <h5>Product's name</h5>
                     <p>
-                      From $999.00 <br /> or $41.62/mo.
+                      Original price <br />
+                      Promotional price
                     </p>
                   </div>
                 </div>
@@ -77,10 +80,11 @@ const Home = () => {
                     alt="main banner"
                   />
                   <div className="small-banner-content position-absolute">
-                    <h4>NEW ARRIVAL</h4>
-                    <h5>But IPad Air</h5>
+                    <h4>Title for products</h4>
+                    <h5>Product's name</h5>
                     <p>
-                      From $999.00 <br /> or $41.62/mo.
+                      Original price <br />
+                      Promotional price
                     </p>
                   </div>
                 </div>
@@ -134,17 +138,17 @@ const Home = () => {
           </div>
         </div>
       </section>
-      <section className="home-wrapper-2 py-5">
+      <section className="home-wrapper-1 py-5">
         <div className="container-xxl">
           <div className="row">
             <div className="col-12">
               <div className="categories d-flex justify-content-between flex-wrap align-items-center">
                 <div className="d-flex gap align-items-center">
                   <div>
-                    <h6>Music & Gaming</h6>
-                    <p>10 Items</p>
+                    <h6>Computers</h6>
+                    <p>15 Items</p>
                   </div>
-                  <img src="images/camera.jpg" alt="camera" />
+                  <img src="images/cart110.png" alt="camera" />
                 </div>
                 <div className="d-flex gap align-items-center">
                   <div>
@@ -155,45 +159,45 @@ const Home = () => {
                 </div>
                 <div className="d-flex gap align-items-center">
                   <div>
-                    <h6>Smart Tv</h6>
+                    <h6>Speakers</h6>
                     <p>10 Items</p>
                   </div>
-                  <img src="images/tv.jpg" alt="camera" />
+                  <img src="images/cart1101.png" alt="camera" />
+                </div>
+                <div className="d-flex gap align-items-center">
+                  <div>
+                    <h6>Tablets</h6>
+                    <p>15 Items</p>
+                  </div>
+                  <img src="images/cart1102.png" alt="camera" />
+                </div>
+                <div className="d-flex gap align-items-center">
+                  <div>
+                    <h6>Airpods</h6>
+                    <p>10 Items</p>
+                  </div>
+                  <img src="images/cart1103.png" alt="camera" />
+                </div>
+                <div className="d-flex gap align-items-center">
+                  <div>
+                    <h6>Iphones</h6>
+                    <p>15 Items</p>
+                  </div>
+                  <img src="images/cart1105.png" alt="camera" />
+                </div>
+                <div className="d-flex gap align-items-center">
+                  <div>
+                    <h6>Headphones</h6>
+                    <p>15 Items</p>
+                  </div>
+                  <img src="images/cart1106.png" alt="camera" />
                 </div>
                 <div className="d-flex gap align-items-center">
                   <div>
                     <h6>Smart Watches</h6>
                     <p>10 Items</p>
                   </div>
-                  <img src="images/headphone.jpg" alt="camera" />
-                </div>
-                <div className="d-flex gap align-items-center">
-                  <div>
-                    <h6>Music & Gaming</h6>
-                    <p>10 Items</p>
-                  </div>
-                  <img src="images/camera.jpg" alt="camera" />
-                </div>
-                <div className="d-flex gap align-items-center">
-                  <div>
-                    <h6>Cameras</h6>
-                    <p>10 Items</p>
-                  </div>
-                  <img src="images/camera.jpg" alt="camera" />
-                </div>
-                <div className="d-flex gap align-items-center">
-                  <div>
-                    <h6>Smart Tv</h6>
-                    <p>10 Items</p>
-                  </div>
-                  <img src="images/tv.jpg" alt="camera" />
-                </div>
-                <div className="d-flex gap align-items-center">
-                  <div>
-                    <h6>Smart Watches</h6>
-                    <p>10 Items</p>
-                  </div>
-                  <img src="images/headphone.jpg" alt="camera" />
+                  <img src="images/cart1104.png" alt="camera" />
                 </div>
               </div>
             </div>
@@ -216,10 +220,13 @@ const Home = () => {
         </div>
       </section>
       <section className="famous-wrapper home-wrapper-2 py-5">
-        <div className="container">
+        <div className="container-xxl">
+          <div className="col-12">
+            <h3 className="section-heading">Latest product</h3>
+          </div>
           <div className="row">
             <div className="col-3">
-              <div className="famous-card position-relative">
+              <div className="famous-card position-relative bg-ededed">
                 <img
                   src="images/famous-1.webp"
                   className="img-fluid"
