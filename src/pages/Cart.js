@@ -1,15 +1,15 @@
-import React from "react";
-import BreadCrumb from "../components/BreadCrumb";
-import Meta from "../components/Meta";
-import watch from "../images/watch.jpg";
-import { AiFillDelete } from "react-icons/ai";
-import { Link } from "react-router-dom";
-import Container from "../components/Container";
+import React from 'react';
+import BreadCrumb from '../components/BreadCrumb';
+import Meta from '../components/Meta';
+import watch from '../images/watch.jpg';
+import { AiFillDelete } from 'react-icons/ai';
+import { Link } from 'react-router-dom';
+import Container from '../components/Container';
 
 const Cart = () => {
   return (
     <>
-      <Meta title={"Cart"} />
+      <Meta title={'Cart'} />
       <BreadCrumb title="Cart" />
       <Container class1="cart-wrapper home-wrapper-2 py-5">
         <div className="row">
@@ -23,7 +23,7 @@ const Cart = () => {
             <div className="cart-data py-3 mb-2 d-flex justify-content-between align-items-center">
               <div className="cart-col-1 gap-15 d-flex align-items-center">
                 <div className="w-25">
-                  <img src={watch} className="img-fluid" alt="product image" />
+                  <img src={watch} className="img-fluid" alt="product" />
                 </div>
                 <div className="w-75">
                   <p>GDffdhg</p>

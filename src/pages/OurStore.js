@@ -1,6 +1,5 @@
 import React from 'react';
 import BreadCrumb from '../components/BreadCrumb';
-import { Helmet } from 'react-helmet';
 import Meta from '../components/Meta';
 import ReactStars from 'react-stars';
 import { useState } from 'react';
@@ -261,7 +260,7 @@ const OurStore = () => {
                         className="d-block img-fluid"
                       />
                       <img
-             onClick={() => {
+                        onClick={() => {
                           setGrid(12);
                         }}
                         src="images/gr.svg"

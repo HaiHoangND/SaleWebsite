@@ -1,12 +1,12 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import Marquee from "react-fast-marquee";
-import ProductCard from "../components/ProductCard";
-import BlogCard from "../components/BlogCard";
-import SpecialProducts from "../components/SpecialProducts";
-import { useState } from "react";
-import { useEffect } from "react";
-import axios from "axios";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import Marquee from 'react-fast-marquee';
+import ProductCard from '../components/ProductCard';
+import BlogCard from '../components/BlogCard';
+import SpecialProducts from '../components/SpecialProducts';
+import { useState } from 'react';
+import { useEffect } from 'react';
+import axios from 'axios';
 
 const Home = () => {
   const [products, setProducts] = useState([]);
@@ -14,10 +14,10 @@ const Home = () => {
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/api/product");
+        const response = await axios.get('http://localhost:5000/api/product');
         setProducts(response.data);
       } catch (error) {
-        console.error("Error fetching products:", error);
+        console.error('Error fetching products:', error);
       }
     };
 
@@ -375,10 +375,10 @@ const Home = () => {
             <div className="col-12">
               <h3 className="section-heading">Blog Card</h3>
             </div>
+            {/* <BlogCard/>
             <BlogCard/>
             <BlogCard/>
-            <BlogCard/>
-            <BlogCard/>
+            <BlogCard/> */}
           </div>
         </div>
       </section>

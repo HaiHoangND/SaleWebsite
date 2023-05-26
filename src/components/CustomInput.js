@@ -1,8 +1,8 @@
-import React from "react";
+import React from 'react';
 
 const CustomInput = (props) => {
-    {/*destructuring assignment*/}
-  const { type, name, placeholder, classname } = props;
+  /*{destructuring assignment} */
+  const { type, name, placeholder, classname, value, onChange, onBlur } = props;
   return (
     <div>
       <input
@@ -10,6 +10,9 @@ const CustomInput = (props) => {
         name={name}
         placeholder={placeholder}
         className={`form-control ${classname}`}
+        value={value}
+        onChange={onChange}
+        onBlur={onBlur}
       />
     </div>
   );

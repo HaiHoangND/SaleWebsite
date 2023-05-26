@@ -489,3 +489,6 @@ footer:not(:first-child) {
   font-size: 14px;
 }
 /* Blogs end */
+.error {
+  color: red;
+}
