@@ -6,14 +6,17 @@ import CustomInput from '../components/CustomInput';
 import { useFormik } from 'formik';
 import * as yup from 'yup';
 import { useDispatch } from 'react-redux';
-import { registerUser } from '../features/user/userSlide';
+import { registerUser } from '../features/user/userSlice';
 
 const signUpSchema = yup.object({
+  firstname: yup.string().required('First name is required'),
+  lastname: yup.string().default('').required('Last name is required'),
   email: yup
     .string()
     .nullable()
     .email('Email should be valid')
     .required('Email is required'),
+  mobile: yup.string().required('Mobile No is require'),
   password: yup.string().required('Password is required'),
 });
 const Signup = () => {
@@ -60,7 +63,7 @@ const Signup = () => {
                   type="text"
                   name="lastname"
                   placeholder="Last Name"
-                  value={formik.values.firstname}
+                  value={formik.values.lastname}
                   onChange={formik.handleChange('lastname')}
                   onBlur={formik.handleBlur('lastname')}
                 />

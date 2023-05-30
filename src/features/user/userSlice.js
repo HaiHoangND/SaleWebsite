@@ -14,7 +14,7 @@ export const registerUser = createAsyncThunk(
 );
 
 export const loginUser = createAsyncThunk(
-  'auth/register',
+  'auth/login',
   async (userData, thunkAPI) => {
     try {
       return await authService.login(userData);
@@ -32,17 +32,18 @@ const initialState = {
   message: '',
 };
 
-export const authSlide = createSlice({
+export const authSlice = createSlice({
   name: 'auth',
   initialState: initialState,
-  reducers: {},
+  reducers: {
+    setUser: (state, action) => {
+      state.user = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(registerUser.pending, (state) => {
         state.isLoading = true;
-        state.isError = false;
-        state.isSuccess = false;
-        state.message = '';
       })
       .addCase(registerUser.fulfilled, (state, action) => {
         state.isLoading = false;
@@ -59,6 +60,7 @@ export const authSlide = createSlice({
         state.isSuccess = false;
         state.message = action.error;
         if (state.isError === true) {
+          toast.error('User Create failed');
           toast.error(action.error);
         }
       })
@@ -90,4 +92,4 @@ export const authSlide = createSlice({
   },
 });
 
-export default authService.reducer;
+export default authSlice.reducer;
