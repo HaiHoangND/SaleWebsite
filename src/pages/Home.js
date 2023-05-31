@@ -1,28 +1,28 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import Marquee from "react-fast-marquee";
-import ProductCard from "../components/ProductCard";
-import BlogCard from "../components/BlogCard";
-import SpecialProducts from "../components/SpecialProducts";
-import { useState } from "react";
-import { useEffect } from "react";
-import axios from "axios";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import Marquee from 'react-fast-marquee';
+import ProductCard from '../components/ProductCard';
+import BlogCard from '../components/BlogCard';
+import SpecialProducts from '../components/SpecialProducts';
+import { useState } from 'react';
+import { useEffect } from 'react';
+import axios from 'axios';
 
 const Home = () => {
-  const [products, setProducts] = useState([]);
+  // const [products, setProducts] = useState([]);
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      try {
-        const response = await axios.get("http://localhost:5000/api/product");
-        setProducts(response.data);
-      } catch (error) {
-        console.error("Error fetching products:", error);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchProducts = async () => {
+  //     try {
+  //       const response = await axios.get('http://localhost:5000/api/product');
+  //       setProducts(response.data);
+  //     } catch (error) {
+  //       console.error('Error fetching products:', error);
+  //     }
+  //   };
 
-    fetchProducts();
-  }, []);
+  //   fetchProducts();
+  // }, []);
   return (
     <>
       <section className="home-wrapper-1 py-5">
@@ -228,9 +228,9 @@ const Home = () => {
               <h3 className="section-heading"> Featured Collection</h3>
             </div>
             <div className="row">
-              {products.map((product) => (
+              {/* {products.map((product) => (
                 <ProductCard key={product.id} product={product} />
-              ))}
+              ))} */}
             </div>
           </div>
         </div>

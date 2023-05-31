@@ -1,38 +1,41 @@
-import React, { useState } from "react";
-import ReactStars from "react-rating-stars-component";
-import BreadCrumb from "../components/BreadCrumb";
-import Meta from "../components/Meta";
-import ProductCard from "../components/ProductCard";
-import ReactImageZoom from "react-image-zoom";
-import Color from "../components/Color";
-import { TbGitCompare } from "react-icons/tb";
-import { AiOutlineHeart } from "react-icons/ai";
-import { Link } from "react-router-dom";
-import watch from "../images/watch.jpg";
-import Container from "../components/Container";
+import React, { useState } from 'react';
+import ReactStars from 'react-rating-stars-component';
+import BreadCrumb from '../components/BreadCrumb';
+import Meta from '../components/Meta';
+import ProductCard from '../components/ProductCard';
+import ReactImageZoom from 'react-image-zoom';
+import Color from '../components/Color';
+import { TbGitCompare } from 'react-icons/tb';
+import { AiOutlineHeart } from 'react-icons/ai';
+import { Link } from 'react-router-dom';
+import watch from '../images/watch.jpg';
+import Container from '../components/Container';
 const SingleProduct = () => {
   const props = {
     width: 594,
     height: 600,
     zoomWidth: 600,
 
-    img: "https://images.pexels.com/photos/190819/pexels-photo-190819.jpeg?cs=srgb&dl=pexels-fernando-arcos-190819.jpg&fm=jpg",
+    img: 'https://images.pexels.com/photos/190819/pexels-photo-190819.jpeg?cs=srgb&dl=pexels-fernando-arcos-190819.jpg&fm=jpg',
   };
 
   const [orderedProduct, setorderedProduct] = useState(true);
-  const copyToClipboard = async (text) => {{/*thay thế chỗ này*/}
-    console.log("text", text);
+  const copyToClipboard = async (text) => {
+    {
+      /*thay thế chỗ này*/
+    }
+    console.log('text', text);
     try {
       await navigator.clipboard.writeText(text);
-      console.log("Copied to clipboard!");
+      console.log('Copied to clipboard!');
     } catch (err) {
-      console.error("Failed to copy: ", err);
+      console.error('Failed to copy: ', err);
     }
   };
   const closeModal = () => {};
   return (
     <>
-      <Meta title={"Product Name"} />
+      <Meta title={'Product Name'} />
       <BreadCrumb title="Product Name" />
       <Container class1="main-product-wrapper py-5 home-wrapper-2">
         <div className="row">
@@ -147,7 +150,7 @@ const SingleProduct = () => {
                       min={1}
                       max={10}
                       className="form-control"
-                      style={{ width: "70px" }}
+                      style={{ width: '70px' }}
                       id=""
                     />
                   </div>
@@ -165,12 +168,12 @@ const SingleProduct = () => {
                 </div>
                 <div className="d-flex align-items-center gap-15">
                   <div>
-                    <a href="">
+                    <a href="/">
                       <TbGitCompare className="fs-5 me-2" /> Add to Compare
                     </a>
                   </div>
                   <div>
-                    <a href="">
+                    <a href="/">
                       <AiOutlineHeart className="fs-5 me-2" /> Add to Wishlist
                     </a>
                   </div>
@@ -186,10 +189,10 @@ const SingleProduct = () => {
                 <div className="d-flex gap-10 align-items-center my-3">
                   <h3 className="product-heading">Product Link:</h3>
                   <a
-                    href="javascript:void(0);"
+                    href="/"
                     onClick={() => {
                       copyToClipboard(
-                        "https://images.pexels.com/photos/190819/pexels-photo-190819.jpeg?cs=srgb&dl=pexels-fernando-arcos-190819.jpg&fm=jpg"
+                        'https://images.pexels.com/photos/190819/pexels-photo-190819.jpeg?cs=srgb&dl=pexels-fernando-arcos-190819.jpg&fm=jpg'
                       );
                     }}
                   >
@@ -238,7 +241,7 @@ const SingleProduct = () => {
                 {/*cho phép người dùng viết đánh giá (review) nếu biến orderedProduct có giá trị true*/}
                 {orderedProduct && (
                   <div>
-                    <a className="text-dark text-decoration-underline" href="">
+                    <a className="text-dark text-decoration-underline" href="/">
                       Write a Review
                     </a>
                   </div>

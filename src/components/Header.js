@@ -68,7 +68,7 @@ const Header = () => {
                     </p>
                   </Link>
                 </div>
-                {/* <div>
+                <div>
                   <Link
                     to="/login"
                     className="d-flex align-items-center gap-10 text-white"
@@ -79,10 +79,11 @@ const Header = () => {
                       Account
                     </p>
                   </Link>
-                </div> */}
+                </div>
                 <div>
                   <Link
-                    to="/login"
+                    to="/my-account"
+
                     className="d-flex align-items-center gap-10 text-white"
                   >
                     <img src="images/login01.svg" alt="user" />
@@ -155,7 +156,7 @@ const Header = () => {
                     <NavLink to="/product">Our Store</NavLink>
                     <NavLink to="/blogs">Blogs</NavLink>
                     <NavLink to="/contact">Contact</NavLink>
-                    {/* <NavLink to="/Event">Event</NavLink> */}
+                    <NavLink to="/Event">Event</NavLink>
                   </div>
                 </div>
               </div>
