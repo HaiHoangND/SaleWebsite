@@ -5,25 +5,24 @@ import ReactStars from 'react-stars';
 import { useState } from 'react';
 import ProductCard from '../components/ProductCard';
 import { useEffect } from 'react';
-import axios from 'axios';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllProducts } from '../features/products/productSlice';
 import Container from '../components/Container';
 
 const OurStore = () => {
   const [grid, setGrid] = useState(4);
-  const productState = useSelector((state) => state.product.product)
+  const productState = useSelector((state) => state.product.product);
   const dispatch = useDispatch();
   const getProducts = () => {
-    dispatch(getAllProducts())
-  }
-  useEffect(()=>{
+    dispatch(getAllProducts());
+  };
+  useEffect(() => {
     getProducts();
-  }, [])
-  
+  }, []);
+
   return (
     <>
-      <Meta title={"Our Store"} />
+      <Meta title={'Our Store'} />
       <BreadCrumb title="Our Store" />
       <Container class1="store-wrapper home-wrapper-2 py-5">
         <div className="row">
@@ -89,9 +88,7 @@ const OurStore = () => {
                   </div>
                 </div>
                 <h5 className="sub-title">Colors</h5>
-                <div>
-                  {/* <Color /> */}
-                </div>
+                <div>{/* <Color /> */}</div>
                 <h5 className="sub-title">Size</h5>
                 <div>
                   <div className="form-check">
@@ -192,12 +189,12 @@ const OurStore = () => {
             <div className="filter-sort-grid mb-4">
               <div className="d-flex justify-content-between align-items-center">
                 <div className="d-flex align-items-center gap-10">
-                  <p className="mb-0 d-block" style={{ width: "100px" }}>
+                  <p className="mb-0 d-block" style={{ width: '100px' }}>
                     Sort By:
                   </p>
                   <select
                     name=""
-                    defaultValue={"manula"}
+                    defaultValue={'manula'}
                     className="form-control form-select"
                     id=""
                   >
@@ -255,7 +252,7 @@ const OurStore = () => {
             </div>
             <div className="products-list pb-5">
               <div className="d-flex gap-10 flex-wrap">
-                <ProductCard data={productState||[]} grid={grid} />
+                <ProductCard data={productState || []} grid={grid} />
               </div>
             </div>
           </div>

@@ -1,12 +1,12 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import Marquee from 'react-fast-marquee';
-import ProductCard from '../components/ProductCard';
-import BlogCard from '../components/BlogCard';
+// import ProductCard from '../components/ProductCard';
+// import BlogCard from '../components/BlogCard';
 import SpecialProducts from '../components/SpecialProducts';
-import { useState } from 'react';
-import { useEffect } from 'react';
-import axios from 'axios';
+// import { useState } from 'react';
+// import { useEffect } from 'react';
+// import axios from 'axios';
 
 const Home = () => {
   // const [products, setProducts] = useState([]);

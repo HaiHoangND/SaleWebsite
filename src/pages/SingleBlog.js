@@ -1,17 +1,17 @@
-import React from "react";
-import { Link, useLocation, useParams } from "react-router-dom";
-import BreadCrumb from "../components/BreadCrumb";
-import { HiOutlineArrowLeft } from "react-icons/hi";
-import Meta from "../components/Meta";
-import blog from "../images/blog-1.jpg";
-import Container from "../components/Container";
-import { useEffect } from "react";
-import { useState } from "react";
-import axios from "axios";
+import React from 'react';
+import { Link, useLocation } from 'react-router-dom';
+import BreadCrumb from '../components/BreadCrumb';
+import { HiOutlineArrowLeft } from 'react-icons/hi';
+import Meta from '../components/Meta';
+import blog from '../images/blog-1.jpg';
+import Container from '../components/Container';
+import { useEffect } from 'react';
+import { useState } from 'react';
+import axios from 'axios';
 
 const SingleBlog = () => {
   const location = useLocation();
-  const id = location.pathname.split("/")[2];
+  const id = location.pathname.split('/')[2];
   const [blogData, setBlogData] = useState([]);
 
   useEffect(() => {
@@ -22,7 +22,7 @@ const SingleBlog = () => {
         );
         setBlogData(response.data);
       } catch (error) {
-        console.error("Error fetching blog data:", error);
+        console.error('Error fetching blog data:', error);
       }
     };
 

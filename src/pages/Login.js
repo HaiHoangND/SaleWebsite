@@ -8,7 +8,7 @@ import * as yup from 'yup';
 import { useFormik } from 'formik';
 import { useDispatch } from 'react-redux';
 import { loginUser } from '../features/user/userSlice';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
 const loginSchema = yup.object({
   email: yup
@@ -21,8 +21,7 @@ const loginSchema = yup.object({
 
 const Login = () => {
   const dispatch = useDispatch();
-  const history = useHistory();
-
+  const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -34,7 +33,7 @@ const Login = () => {
 
       if (loginUser.fulfilled.match()) {
         // Redirect to the homepage
-        history.push('/'); // Replace '/' with the path of your homepage if it's different
+        navigate('/'); // Replace '/' with the path of your homepage if it's different
       }
     },
   });
