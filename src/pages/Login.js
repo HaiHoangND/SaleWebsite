@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import BreadCrumb from '../components/BreadCrumb';
 import Meta from '../components/Meta';
 import Container from '../components/Container';
@@ -20,6 +21,8 @@ const loginSchema = yup.object({
 
 const Login = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
+
   const formik = useFormik({
     initialValues: {
       email: '',
@@ -28,6 +31,11 @@ const Login = () => {
     validationSchema: loginSchema,
     onSubmit: (values) => {
       dispatch(loginUser(values));
+
+      if (loginUser.fulfilled.match()) {
+        // Redirect to the homepage
+        history.push('/'); // Replace '/' with the path of your homepage if it's different
+      }
     },
   });
 
