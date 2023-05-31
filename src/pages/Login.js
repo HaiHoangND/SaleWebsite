@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { useHistory } from 'react-router-dom';
 import BreadCrumb from '../components/BreadCrumb';
 import Meta from '../components/Meta';
 import Container from '../components/Container';
@@ -9,6 +8,7 @@ import * as yup from 'yup';
 import { useFormik } from 'formik';
 import { useDispatch } from 'react-redux';
 import { loginUser } from '../features/user/userSlice';
+import { useHistory } from 'react-router-dom';
 
 const loginSchema = yup.object({
   email: yup

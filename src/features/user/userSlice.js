@@ -24,8 +24,12 @@ export const loginUser = createAsyncThunk(
   }
 );
 
+const getCustomerFromLocalStorage = localStorage.getItem('customer')
+  ? JSON.parse(localStorage.getItem('customer'))
+  : null;
+
 const initialState = {
-  user: '',
+  user: getCustomerFromLocalStorage,
   isError: false,
   isSuccess: false,
   isLoading: false,
@@ -86,6 +90,7 @@ export const authSlice = createSlice({
         state.isSuccess = false;
         state.message = action.error;
         if (state.isError === true) {
+          toast.error('User Create failed');
           toast.error(action.error);
         }
       });

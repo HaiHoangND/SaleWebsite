@@ -296,8 +296,6 @@ footer:not(:first-child) {
   border-radius: 10px;
   background-color: white;
 }
-.special-product-card .badge {
-}
 /* special product end */
 /* famous-card */
 .famous-card .famous-content {
@@ -492,6 +490,7 @@ footer:not(:first-child) {
 .error {
   color: red;
 }
+
 /* login and signup */
 .auth-card {
   padding: 20px;
@@ -531,4 +530,5 @@ footer:not(:first-child) {
   background-color: var(--color-131921);
   color: white;
 }
+
 /* login end */
