@@ -13,13 +13,24 @@ const Brandlist = () => {
   });
   const fetchData = async () => {
     try {
-      const token = localStorage.getItem("access_token");
-      const response = await axios.get("http://localhost:5000/api/brand/", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      setData(response.data);
+      const token = JSON.parse(localStorage.getItem("access_token"));
+      if (
+        token &&
+        token.expirationDate &&
+        new Date() > new Date(token.expirationDate)
+      ) {
+        // Token đã hết hạn, xử lý tương ứng (ví dụ: đăng nhập lại)
+        alert("Token is expired, please login again.");
+      } else {
+        // Token còn hiệu lực, tiếp tục sử dụng
+       const response = await axios.get("http://localhost:5000/api/brand/", {
+         headers: {
+           Authorization: `Bearer ${token}`,
+         },
+       });
+       setData(response.data);
+      }
+      
     } catch (error) {
       throw new Error(error);
     }
@@ -30,13 +41,23 @@ const Brandlist = () => {
   const onDeleteBrand = async (id, e) => {
     if (window.confirm("Bạn có chắc chắn muốn xóa dữ liệu này không?")) {
       try {
-        const token = localStorage.getItem("access_token");
-        await axios.delete(`http://localhost:5000/api/brand/${id}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        fetchData();
+        const token = JSON.parse(localStorage.getItem("access_token"));
+        if (
+          token &&
+          token.expirationDate &&
+          new Date() > new Date(token.expirationDate)
+        ) {
+          // Token đã hết hạn, xử lý tương ứng (ví dụ: đăng nhập lại)
+          alert("Token is expired, please login again.");
+        } else {
+          // Token còn hiệu lực, tiếp tục sử dụng
+          await axios.delete(`http://localhost:5000/api/brand/${id}`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          fetchData();
+        }
       } catch (error) {
         throw new Error(error);
       }
@@ -52,18 +73,28 @@ const Brandlist = () => {
   const handleUpdateBrand = async (e) => {
     const { id, title } = updateData;
     try {
-      const token = localStorage.getItem("access_token");
-      await axios.put(
-        `http://localhost:5000/api/brand/${id}`,
-        { title },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      handleCloseModal();
-      fetchData();
+      const token = JSON.parse(localStorage.getItem("access_token"));
+      if (
+        token &&
+        token.expirationDate &&
+        new Date() > new Date(token.expirationDate)
+      ) {
+        // Token đã hết hạn, xử lý tương ứng (ví dụ: đăng nhập lại)
+        alert("Token is expired, please login again.");
+      } else {
+        // Token còn hiệu lực, tiếp tục sử dụng
+        await axios.put(
+          `http://localhost:5000/api/brand/${id}`,
+          { title },
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        handleCloseModal();
+        fetchData();
+      }
     } catch (error) {
       throw new Error(error);
     }
