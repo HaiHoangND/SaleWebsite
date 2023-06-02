@@ -16,26 +16,36 @@ const Addcoupon = () => {
   const submit = async (e) => {
     try {
       e.preventDefault();
-      const token = localStorage.getItem("access_token");
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      };
-      const formData = {
-        name: data.name,
-        expiry: data.expiry,
-        discount: data.discount,
-      };
-      await axios.post("http://localhost:5000/api/coupon/", formData, config);
-      setMessage("Coupon created successfully!");
+      const token = JSON.parse(localStorage.getItem("access_token"));
+      if (
+        token &&
+        token.expirationDate &&
+        new Date() > new Date(token.expirationDate)
+      ) {
+        // Token đã hết hạn, xử lý tương ứng (ví dụ: đăng nhập lại)
+        alert("Token is expired, please login again.");
+      } else {
+        // Token còn hiệu lực, tiếp tục sử dụng
+        const config = {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+        const formData = {
+          name: data.name,
+          expiry: data.expiry,
+          discount: data.discount,
+        };
+        await axios.post("http://localhost:5000/api/coupon/", formData, config);
+        setMessage("Coupon created successfully!");
+      }
     } catch (error) {
       if (error.response.status === 403) {
         alert("You are not admin. Please login again.");
         window.location.href = "/";
       } else {
         console.error(error);
-        setMessage("Error creating brand. Please try again.");
+        setMessage("Error creating coupon. Please try again.");
       }
     }
   };

@@ -64,35 +64,37 @@ const loginAdmin = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
   //check if user exists or not
   const findAdmin = await User.findOne({ email });
-  if (findAdmin.role !== "admin")
-    return res.json({ data: "You Are Not Admin!" });
-  if (findAdmin && (await findAdmin.isPasswordMatched(password))) {
-    const refreshToken = await generateRefreshToken(findAdmin?._id);
-    const updateUser = await User.findByIdAndUpdate(
-      findAdmin.id,
-      {
-        refreshToken: refreshToken,
-      },
-      {
-        new: true,
-      }
-    );
-    res.cookie("refreshToken", refreshToken, {
-      httpOnly: true,
-      maxAge: 2400 * 60 * 60 * 1000,
-    });
-    res.json({
-      _id: findAdmin?._id,
-      firstname: findAdmin?.firstname,
-      lastname: findAdmin?.lastname,
-      email: findAdmin?.email,
-      mobile: findAdmin?.mobile,
-      token: generateToken(findAdmin?._id),
-    });
-    // const accessToken = generateToken(findAdmin?._id);
-    // localStorage.setItem("token", accessToken);
-  } else {
-    return res.json({ data: "Invalid Credentials" });
+  if (!findAdmin) return res.json({ data: "Not exist this account!" });
+  else {
+    if (findAdmin.role !== "admin")
+      return res.json({ data: "You Are Not Admin!" });
+    if (findAdmin && (await findAdmin.isPasswordMatched(password))) {
+      const refreshToken = await generateRefreshToken(findAdmin?._id);
+      const updateUser = await User.findByIdAndUpdate(
+        findAdmin.id,
+        {
+          refreshToken: refreshToken,
+        },
+        {
+          new: true,
+        }
+      );
+      res.cookie("refreshToken", refreshToken, {
+        httpOnly: true,
+        maxAge: 2400 * 60 * 60 * 1000,
+      });
+      res.json({
+        _id: findAdmin?._id,
+        firstname: findAdmin?.firstname,
+        lastname: findAdmin?.lastname,
+        email: findAdmin?.email,
+        mobile: findAdmin?.mobile,
+        role: findAdmin?.role,
+        token: generateToken(findAdmin?._id),
+      });
+    } else {
+      return res.json({ data: "Invalid Credentials" });
+    }
   }
 });
 
