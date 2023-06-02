@@ -1,37 +1,32 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
-// import { useDispatch } from "react-redux";
-// import { loginUser } from "../redux/apiRequest";
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  // const dispatch = useDispatch();
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
 
   const submit = async (e) => {
     try {
       e.preventDefault();
-      // const newUser = {
-      //   email: email,
-      //   password: password,
-      // };
-      // loginUser(newUser, dispatch, navigate);
       const response = await axios.post(
-        "http://localhost:5000/api/user/login",
+        "http://localhost:5000/api/user/admin-login",
         {
           email: email,
           password: password,
         }
       );
-      var _email = document.getElementById("email").value;
-      var _password = document.getElementById("pass").value;
+      localStorage.setItem(
+        "access_token",
+        JSON.stringify(response.data?.token)
+      );
       if (response.data?.token) {
-        document.cookie = `access_token=${response.data.token}`;
-        if (_email === "admin@gmail.com" && _password === "admin") {
-          window.location.href = "http://localhost:4000/admin";
-        } else alert("You are not admin!");
+        if (response.data?.role === "admin") {
+          navigate("/admin");
+        } else {
+          alert(response.data.data);
+        }
       } else {
         alert(response.data.data);
       }
