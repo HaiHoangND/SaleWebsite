@@ -1,28 +1,32 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import Marquee from 'react-fast-marquee';
-import ProductCard from '../components/ProductCard';
-import BlogCard from '../components/BlogCard';
 import SpecialProducts from '../components/SpecialProducts';
-import { useState } from 'react';
-import { useEffect } from 'react';
-import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllProducts } from '../features/products/productSlice';
+
+import ReactStars from 'react-rating-stars-component';
+import prodcompare from '../images/prodcompare.svg';
+import wish from '../images/wish.svg';
+import addcart from '../images/add-cart.svg';
+import view from '../images/view.svg';
+import { addToWishList } from '../features/products/productSlice';
 
 const Home = () => {
-  // const [products, setProducts] = useState([]);
+  const productState = useSelector((state) => state.product.product);
 
-  // useEffect(() => {
-  //   const fetchProducts = async () => {
-  //     try {
-  //       const response = await axios.get('http://localhost:5000/api/product');
-  //       setProducts(response.data);
-  //     } catch (error) {
-  //       console.error('Error fetching products:', error);
-  //     }
-  //   };
+  const dispatch = useDispatch();
+  useEffect(() => {
+    getallProducts();
+  });
 
-  //   fetchProducts();
-  // }, []);
+  const getallProducts = () => {
+    dispatch(getAllProducts());
+  };
+
+  const addToWish = (id) => {
+    dispatch(addToWishList(id));
+  };
   return (
     <>
       <section className="home-wrapper-1 py-5">
@@ -310,10 +314,22 @@ const Home = () => {
             </div>
           </div>
           <div className="row">
-            <SpecialProducts></SpecialProducts>
-            <SpecialProducts></SpecialProducts>
-            <SpecialProducts></SpecialProducts>
-            <SpecialProducts></SpecialProducts>
+            {productState &&
+              productState?.map((item, index) => {
+                if (item.tags === 'special') {
+                  return (
+                    <SpecialProducts
+                      key={index}
+                      title={item?.item}
+                      brand={item?.brand}
+                      totalrating={item?.totalrating.toString()}
+                      price={item?.price}
+                      sold={item?.sold}
+                      quantity={item?.quantity}
+                    />
+                  );
+                }
+              })}
           </div>
         </div>
       </section>
@@ -323,12 +339,75 @@ const Home = () => {
             <div className="col-12">
               <h3 className="section-heading">Our Popular Products</h3>
             </div>
-            {/* <div className="row">
-              <ProductCard></ProductCard>
-              <ProductCard></ProductCard>
-              <ProductCard></ProductCard>
-              <ProductCard></ProductCard>
-            </div> */}
+            <div className="row">
+              {productState &&
+                productState?.map((item, index) => {
+                  return (
+                    <div key={index} className="col-3">
+                      <Link
+                        // to={`${
+                        //   location.pathname == "/"
+                        //     ? "/product/:id"
+                        //     : location.pathname == "/product/:id"
+                        //     ? "/product/:id"
+                        //     : ":id"
+                        // }`}
+                        className="product-card position-relative"
+                      >
+                        <div className="wishlist-icon position-absolute">
+                          <button
+                            className="border-0 bg-transparent"
+                            onClick={(e) => {
+                              addToWish(item?._id);
+                            }}
+                          >
+                            <img src={wish} alt="wishlist" />
+                          </button>
+                        </div>
+                        <div className="product-image">
+                          <img
+                            src={item?.images[0].url}
+                            className="img-fluid mx-auto"
+                            alt="product"
+                            width={160}
+                          />
+                          <img
+                            src={item?.images[1].url}
+                            className="img-fluid mx-auto"
+                            alt="product"
+                            width={160}
+                          />
+                        </div>
+                        <div className="product-details">
+                          <h6 className="brand">{item?.brand}</h6>
+                          <h5 className="product-title">{item?.title}</h5>
+                          <ReactStars
+                            count={5}
+                            size={24}
+                            value={item?.totalrating}
+                            edit={false}
+                            activeColor="#ffd700"
+                          />
+                          <p className="price">{item?.price}$</p>
+                        </div>
+                        <div className="action-bar position-absolute">
+                          <div className="d-flex flex-column gap-15">
+                            <button className="border-0 bg-transparent">
+                              <img src={prodcompare} alt="compare" />
+                            </button>
+                            <button className="border-0 bg-transparent">
+                              <img src={view} alt="view" />
+                            </button>
+                            <button className="border-0 bg-transparent">
+                              <img src={addcart} alt="addcart" />
+                            </button>
+                          </div>
+                        </div>
+                      </Link>
+                    </div>
+                  );
+                })}
+            </div>
           </div>
         </div>
       </section>
