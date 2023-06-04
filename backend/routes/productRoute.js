@@ -31,6 +31,6 @@ router.put("/rating", authMiddleware, rating);
 
 router.put("/:id", authMiddleware, isAdmin, updateProduct);
 router.delete("/:id", authMiddleware, isAdmin, deleteProduct);
-router.get("/", authMiddleware,isAdmin, getAllProduct);
+router.get("/", getAllProduct);
 
 module.exports = router;

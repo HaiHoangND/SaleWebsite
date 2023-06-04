@@ -1,40 +1,21 @@
-import React from "react";
+import React, { useEffect } from "react";
 import BreadCrumb from "../components/BreadCrumb";
 import Meta from "../components/Meta";
 import BlogCard from "../components/BlogCard";
 import Container from "../components/Container";
-import { useState } from "react";
-import axios from "axios";
-import { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllBlogs } from "../features/blogs/blogSlice";
+import moment from "moment";
 
 const Blog = () => {
-  const [categories, setCategories] = useState([]);
-  const [blogs, setBlogs] = useState([]);
-
+  const blogState = useSelector((state) => state?.blog?.blog);
   useEffect(() => {
-    const fetchCategories = async () => {
-      try {
-        const response = await axios.get(
-          "http://localhost:5000/api/blogcategory"
-        );
-        setCategories(response.data);
-      } catch (error) {
-        console.error("Error fetching categories:", error);
-      }
-    };
-    const fetchBlogs = async () => {
-      try {
-        const response = await axios.get("http://localhost:5000/api/blog");
-        setBlogs(response.data);
-      } catch (error) {
-        console.error("Error fetching blogs:", error);
-      }
-    };
-
-    fetchCategories();
-    fetchBlogs();
+    getBlogs();
   }, []);
+  const dispatch = useDispatch();
+  const getBlogs = () => {
+    dispatch(getAllBlogs());
+  };
   return (
     <>
       <Meta title={"Blogs"} />
@@ -46,20 +27,31 @@ const Blog = () => {
               <h3 className="filter-title">Find By Categories</h3>
               <div>
                 <ul className="ps-0">
-                  {categories.map((category) => (
-                    <li key={category.id}>{category.title}</li>
-                  ))}
+                  <li>Watch</li>
+                  <li>Tv</li>
+                  <li>Camera</li>
+                  <li>Laptop</li>
                 </ul>
               </div>
             </div>
           </div>
           <div className="col-9">
             <div className="row">
-              <div className="d-flex flex-wrap gap-10">
-                {blogs.map((blog) => (
-                  <BlogCard key={blog.id} blog={blog} />
-                ))}
-              </div>
+              {(blogState || [])?.map((item, index) => {
+                return (
+                  <div className="col-6 mb-3" key={index}>
+                    <BlogCard
+                      id={item?._id}
+                      title={item?.title}
+                      description={item?.description}
+                      image={item?.images[0]}
+                      date={moment(item?.createdAt).format(
+                        "MMMM Do YYYY, h:mm a"
+                      )}
+                    />
+                  </div>
+                );
+              })}
             </div>
           </div>
         </div>

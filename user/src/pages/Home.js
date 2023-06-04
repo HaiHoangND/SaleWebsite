@@ -1,28 +1,25 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import Marquee from 'react-fast-marquee';
-import ProductCard from '../components/ProductCard';
-import BlogCard from '../components/BlogCard';
-import SpecialProducts from '../components/SpecialProducts';
-import { useState } from 'react';
-import { useEffect } from 'react';
-import axios from 'axios';
+import React from "react";
+import { Link } from "react-router-dom";
+import Marquee from "react-fast-marquee";
+import ProductCard from "../components/ProductCard";
+import BlogCard from "../components/BlogCard";
+import SpecialProducts from "../components/SpecialProducts";
+import { useState } from "react";
+import { useEffect } from "react";
+import axios from "axios";
+import moment from "moment";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllBlogs } from "../features/blogs/blogSlice";
 
 const Home = () => {
-  // const [products, setProducts] = useState([]);
-
-  // useEffect(() => {
-  //   const fetchProducts = async () => {
-  //     try {
-  //       const response = await axios.get('http://localhost:5000/api/product');
-  //       setProducts(response.data);
-  //     } catch (error) {
-  //       console.error('Error fetching products:', error);
-  //     }
-  //   };
-
-  //   fetchProducts();
-  // }, []);
+  const blogState = useSelector((state) => state?.blog?.blog);
+  useEffect(() => {
+    getBlogs();
+  }, []);
+  const dispatch = useDispatch();
+  const getBlogs = () => {
+    dispatch(getAllBlogs());
+  };
   return (
     <>
       <section className="home-wrapper-1 py-5">
@@ -375,10 +372,23 @@ const Home = () => {
             <div className="col-12">
               <h3 className="section-heading">Blog Card</h3>
             </div>
-            {/* <BlogCard/>
-            <BlogCard/>
-            <BlogCard/>
-            <BlogCard/> */}
+            {(blogState || [])?.map((item, index) => {
+              if(index < 5){
+                return (
+                  <div className="col-3 " key={index}>
+                    <BlogCard
+                      id={item?._id}
+                      title={item?.title}
+                      description={item?.description}
+                      image={item?.images[0]}
+                      date={moment(item?.createdAt).format(
+                        "MMMM Do YYYY, h:mm a"
+                      )}
+                    />
+                  </div>
+                );
+              }
+            })}
           </div>
         </div>
       </section>
