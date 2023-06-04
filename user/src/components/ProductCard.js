@@ -1,15 +1,15 @@
-import React from "react";
-import ReactStars from "react-rating-stars-component";
-import { Link, useLocation } from "react-router-dom";
-import prodcompare from "../images/prodcompare.svg";
-import wish from "../images/wish.svg";
-import wishlist from "../images/wishlist.svg";
-import watch from "../images/watch.jpg";
-import watch2 from "../images/watch-1.avif";
-import addcart from "../images/add-cart.svg";
-import view from "../images/view.svg";
-import { useDispatch, useSelector } from "react-redux";
-import { addToWishList } from "../features/products/productSlice";
+import React from 'react';
+import ReactStars from 'react-rating-stars-component';
+import { Link, useLocation } from 'react-router-dom';
+import prodcompare from '../images/prodcompare.svg';
+import wish from '../images/wish.svg';
+// import wishlist from '../images/wishlist.svg';
+// import watch from '../images/watch.jpg';
+// import watch2 from '../images/watch-1.avif';
+import addcart from '../images/add-cart.svg';
+import view from '../images/view.svg';
+import { useDispatch } from 'react-redux';
+import { addToWishList } from '../features/products/productSlice';
 const ProductCard = (props) => {
   const { grid, data } = props;
   // console.log(grid);
@@ -26,7 +26,7 @@ const ProductCard = (props) => {
           <div
             key={index}
             className={` ${
-              location.pathname == "/product" ? `gr-${grid}` : "col-3"
+              location.pathname == '/product' ? `gr-${grid}` : 'col-3'
             } `}
           >
             <Link
@@ -53,13 +53,13 @@ const ProductCard = (props) => {
                 <img
                   src={item?.images[0].url}
                   className="img-fluid mx-auto"
-                  alt="product image"
+                  alt="product"
                   width={160}
                 />
                 <img
                   src={item?.images[1].url}
                   className="img-fluid mx-auto"
-                  alt="product image"
+                  alt="product"
                   width={160}
                 />
               </div>
@@ -75,7 +75,7 @@ const ProductCard = (props) => {
                 />
                 <p
                   className={`description ${
-                    grid === 12 ? "d-block" : "d-none"
+                    grid === 12 ? 'd-block' : 'd-none'
                   }`}
                   dangerouslySetInnerHTML={{ __html: item?.description }}
                 ></p>
