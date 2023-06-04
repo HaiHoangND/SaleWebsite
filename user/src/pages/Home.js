@@ -4,21 +4,31 @@ import Marquee from 'react-fast-marquee';
 import SpecialProducts from '../components/SpecialProducts';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllProducts } from '../features/products/productSlice';
-
+import { getAllBlogs } from '../features/blogs/blogSlice';
 import ReactStars from 'react-rating-stars-component';
 import prodcompare from '../images/prodcompare.svg';
 import wish from '../images/wish.svg';
 import addcart from '../images/add-cart.svg';
+import BlogCard from '../components/BlogCard';
 import view from '../images/view.svg';
 import { addToWishList } from '../features/products/productSlice';
+import moment from 'moment';
 
 const Home = () => {
   const productState = useSelector((state) => state.product.product);
+  const blogState = useSelector((state) => state?.blog?.blog);
+  useEffect(() => {
+    getBlogs();
+  }, []);
 
   const dispatch = useDispatch();
   useEffect(() => {
     getallProducts();
   });
+
+  const getBlogs = () => {
+    dispatch(getAllBlogs());
+  };
 
   const getallProducts = () => {
     dispatch(getAllProducts());
@@ -454,10 +464,23 @@ const Home = () => {
             <div className="col-12">
               <h3 className="section-heading">Blog Card</h3>
             </div>
-            {/* <BlogCard/>
-            <BlogCard/>
-            <BlogCard/>
-            <BlogCard/> */}
+            {(blogState || [])?.map((item, index) => {
+              if (index < 5) {
+                return (
+                  <div className="col-3 " key={index}>
+                    <BlogCard
+                      id={item?._id}
+                      title={item?.title}
+                      description={item?.description}
+                      image={item?.images[0]}
+                      date={moment(item?.createdAt).format(
+                        'MMMM Do YYYY, h:mm a'
+                      )}
+                    />
+                  </div>
+                );
+              }
+            })}
           </div>
         </div>
       </section>

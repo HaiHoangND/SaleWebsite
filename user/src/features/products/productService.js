@@ -20,12 +20,12 @@ const getProducts = async (userData) => {
 const addToWishList = async (prodId) => {
   const response = await axios.put(
     `${base_url}product/wishlist`,
-    { prodId },
-    {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
-    }
+    { prodId }
+    // {
+    //   headers: {
+    //     Authorization: `Bearer ${localStorage.getItem('token')}`,
+    //   },
+    // }
   );
   if (response.data) {
     return response.data;

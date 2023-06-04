@@ -16,14 +16,24 @@ const Addproduct = () => {
   useEffect(() => {
     const fetchBrands = async () => {
       try {
-        const token = localStorage.getItem("access_token");
-        const response = await axios.get("http://localhost:5000/api/brand/", {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        });
-        setBrands(response.data);
+        const token = JSON.parse(localStorage.getItem("access_token"));
+        if (
+          token &&
+          token.expirationDate &&
+          new Date() > new Date(token.expirationDate)
+        ) {
+          // Token đã hết hạn, xử lý tương ứng (ví dụ: đăng nhập lại)
+          alert("Token is expired, please login again.");
+        } else {
+          // Token còn hiệu lực, tiếp tục sử dụng
+          const response = await axios.get("http://localhost:5000/api/brand/", {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          setBrands(response.data);
+        }
       } catch (error) {
         console.error(error);
       }
@@ -34,17 +44,27 @@ const Addproduct = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const token = localStorage.getItem("access_token");
-        const response = await axios.get(
-          "http://localhost:5000/api/prodcategory/",
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        setCategories(response.data);
+        const token = JSON.parse(localStorage.getItem("access_token"));
+        if (
+          token &&
+          token.expirationDate &&
+          new Date() > new Date(token.expirationDate)
+        ) {
+          // Token đã hết hạn, xử lý tương ứng (ví dụ: đăng nhập lại)
+          alert("Token is expired, please login again.");
+        } else {
+          // Token còn hiệu lực, tiếp tục sử dụng
+          const response = await axios.get(
+            "http://localhost:5000/api/prodcategory/",
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          setCategories(response.data);
+        }
       } catch (error) {
         console.error(error);
       }
@@ -59,23 +79,37 @@ const Addproduct = () => {
   const submit = async (e) => {
     try {
       e.preventDefault();
-      const token = localStorage.getItem("access_token");
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      };
-      const formData = {
-        title: data.title,
-        description: data.description,
-        price: data.price,
-        category: data.category,
-        brand: data.brand,
-        quantity: data.quantity,
-        color: data.color,
-      };
-      await axios.post("http://localhost:5000/api/product/", formData, config);
-      setMessage("Product created successfully!");
+      const token = JSON.parse(localStorage.getItem("access_token"));
+      if (
+        token &&
+        token.expirationDate &&
+        new Date() > new Date(token.expirationDate)
+      ) {
+        // Token đã hết hạn, xử lý tương ứng (ví dụ: đăng nhập lại)
+        alert("Token is expired, please login again.");
+      } else {
+        // Token còn hiệu lực, tiếp tục sử dụng
+        const config = {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+        const formData = {
+          title: data.title,
+          description: data.description,
+          price: data.price,
+          category: data.category,
+          brand: data.brand,
+          quantity: data.quantity,
+          color: data.color,
+        };
+        await axios.post(
+          "http://localhost:5000/api/product/",
+          formData,
+          config
+        );
+        setMessage("Product created successfully!");
+      }
     } catch (error) {
       if (error.response.status === 403) {
         alert("You are not admin. Please login again.");

@@ -13,16 +13,26 @@ const Addblog = () => {
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const token = localStorage.getItem("access_token");
-        const response = await axios.get(
-          "http://localhost:5000/api/blogcategory/",
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-        setCategories(response.data);
+        const token = JSON.parse(localStorage.getItem("access_token"));
+        if (
+          token &&
+          token.expirationDate &&
+          new Date() > new Date(token.expirationDate)
+        ) {
+          // Token đã hết hạn, xử lý tương ứng (ví dụ: đăng nhập lại)
+          alert("Token is expired, please login again.");
+        } else {
+          // Token còn hiệu lực, tiếp tục sử dụng
+          const response = await axios.get(
+            "http://localhost:5000/api/blogcategory/",
+            {
+              headers: {
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          setCategories(response.data);
+        }
       } catch (error) {
         console.error(error);
       }
@@ -38,20 +48,30 @@ const Addblog = () => {
   const submit = async (e) => {
     try {
       e.preventDefault();
-      const token = localStorage.getItem("access_token");
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      };
+      const token = JSON.parse(localStorage.getItem("access_token"));
+      if (
+        token &&
+        token.expirationDate &&
+        new Date() > new Date(token.expirationDate)
+      ) {
+        // Token đã hết hạn, xử lý tương ứng (ví dụ: đăng nhập lại)
+        alert("Token is expired, please login again.");
+      } else {
+        // Token còn hiệu lực, tiếp tục sử dụng
+        const config = {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
 
-      const formData = {
-        title: data.title,
-        category: data.category,
-        description: data.description,
-      };
-      await axios.post("http://localhost:5000/api/blog/", formData, config);
-      setMes("Blog created successfully!");
+        const formData = {
+          title: data.title,
+          category: data.category,
+          description: data.description,
+        };
+        await axios.post("http://localhost:5000/api/blog/", formData, config);
+        setMes("Blog created successfully!");
+      }
     } catch (error) {
       if (error.response.status === 403) {
         alert("You are not admin. Please login again.");

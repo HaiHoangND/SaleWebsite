@@ -64,35 +64,37 @@ const loginAdmin = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
   //check if user exists or not
   const findAdmin = await User.findOne({ email });
-  if (findAdmin.role !== "admin")
-    return res.json({ data: "You Are Not Admin!" });
-  if (findAdmin && (await findAdmin.isPasswordMatched(password))) {
-    const refreshToken = await generateRefreshToken(findAdmin?._id);
-    const updateUser = await User.findByIdAndUpdate(
-      findAdmin.id,
-      {
-        refreshToken: refreshToken,
-      },
-      {
-        new: true,
-      }
-    );
-    res.cookie("refreshToken", refreshToken, {
-      httpOnly: true,
-      maxAge: 2400 * 60 * 60 * 1000,
-    });
-    res.json({
-      _id: findAdmin?._id,
-      firstname: findAdmin?.firstname,
-      lastname: findAdmin?.lastname,
-      email: findAdmin?.email,
-      mobile: findAdmin?.mobile,
-      token: generateToken(findAdmin?._id),
-    });
-    // const accessToken = generateToken(findAdmin?._id);
-    // localStorage.setItem("token", accessToken);
-  } else {
-    return res.json({ data: "Invalid Credentials" });
+  if (!findAdmin) return res.json({ data: "Not exist this account!" });
+  else {
+    if (findAdmin.role !== "admin")
+      return res.json({ data: "You Are Not Admin!" });
+    if (findAdmin && (await findAdmin.isPasswordMatched(password))) {
+      const refreshToken = await generateRefreshToken(findAdmin?._id);
+      const updateUser = await User.findByIdAndUpdate(
+        findAdmin.id,
+        {
+          refreshToken: refreshToken,
+        },
+        {
+          new: true,
+        }
+      );
+      res.cookie("refreshToken", refreshToken, {
+        httpOnly: true,
+        maxAge: 2400 * 60 * 60 * 1000,
+      });
+      res.json({
+        _id: findAdmin?._id,
+        firstname: findAdmin?.firstname,
+        lastname: findAdmin?.lastname,
+        email: findAdmin?.email,
+        mobile: findAdmin?.mobile,
+        role: findAdmin?.role,
+        token: generateToken(findAdmin?._id),
+      });
+    } else {
+      return res.json({ data: "Invalid Credentials" });
+    }
   }
 });
 
@@ -329,6 +331,23 @@ const getWishlist = asyncHandler(async (req, res) => {
     throw new Error(error);
   }
 });
+
+// const getWishlist = asyncHandler(async (req, res) => {
+//   const userId = req.user;
+
+//   try {
+//     const user = await User.findById(userId).populate("wishlist");
+//     if (!user) {
+//       return res.status(404).json({ message: "User not found" });
+//     }
+
+//     const wishlist = user.wishlist;
+//     res.json({ wishlist });
+//   } catch (error) {
+//     console.error(error);
+//     res.status(500).json({ message: "Server error" });
+//   }
+// });
 
 const userCart = asyncHandler(async (req, res) => {
   const { cart } = req.body;

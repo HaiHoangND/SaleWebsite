@@ -89,14 +89,24 @@ const Dashboard = () => {
   const [countProduct, setCountProduct] = useState(0);
   const fetchProducts = async () => {
     try {
-      const token = localStorage.getItem("access_token");
-      const response = await axios.get("http://localhost:5000/api/product/", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      });
-      const totalProducts = response.data.length;
-      setCountProduct(totalProducts);
+      const token = JSON.parse(localStorage.getItem("access_token"));
+      if (
+        token &&
+        token.expirationDate &&
+        new Date() > new Date(token.expirationDate)
+      ) {
+        // Token đã hết hạn, xử lý tương ứng (ví dụ: đăng nhập lại)
+        alert("Token is expired, please login again.");
+      } else {
+        // Token còn hiệu lực, tiếp tục sử dụng
+        const response = await axios.get("http://localhost:5000/api/product/", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        const totalProducts = response.data.length;
+        setCountProduct(totalProducts);
+      }
     } catch (error) {
       throw new Error(error);
     }
@@ -108,17 +118,27 @@ const Dashboard = () => {
   const [countOrder, setCountOrder] = useState(0);
   const fetchOrders = async () => {
     try {
-      const token = localStorage.getItem("access_token");
-      const response = await axios.get(
-        "http://localhost:5000/api/user/get-all-orders",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      const totalOrders = response.data.length;
-      setCountOrder(totalOrders);
+      const token = JSON.parse(localStorage.getItem("access_token"));
+      if (
+        token &&
+        token.expirationDate &&
+        new Date() > new Date(token.expirationDate)
+      ) {
+        // Token đã hết hạn, xử lý tương ứng (ví dụ: đăng nhập lại)
+        alert("Token is expired, please login again.");
+      } else {
+        // Token còn hiệu lực, tiếp tục sử dụng
+        const response = await axios.get(
+          "http://localhost:5000/api/user/get-all-orders",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const totalOrders = response.data.length;
+        setCountOrder(totalOrders);
+      }
     } catch (error) {
       throw new Error(error);
     }
