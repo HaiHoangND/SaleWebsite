@@ -32,6 +32,79 @@ const Orders = () => {
     };
     fetchData();
   }, []);
+
+  const [dataOneProduct, setDataOneProduct] = useState({});
+  const fetchDataOneProduct = async (id) => {
+    try {
+      const token = JSON.parse(localStorage.getItem("access_token"));
+      if (
+        token &&
+        token.expirationDate &&
+        new Date() > new Date(token.expirationDate)
+      ) {
+        // Token đã hết hạn, xử lý tương ứng (ví dụ: đăng nhập lại)
+        alert("Token is expired, please login again.");
+      } else {
+        // Token còn hiệu lực, tiếp tục sử dụng
+        const response = await axios.get(
+          `http://localhost:5000/api/product/${id}`
+        );
+        const productTitle = response.data.title;
+        setDataOneProduct((prevData) => ({
+          ...prevData,
+          [id]: productTitle,
+        }));
+      }
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
+  useEffect(() => {
+    // Gọi fetchDataOneProduct cho từng sản phẩm trong data
+    data.forEach((order) => {
+      order.products.forEach((product) => {
+        fetchDataOneProduct(product.product);
+      });
+    });
+  }, [data]);
+
+  const [dataBuyer, setDataBuyer] = useState({});
+  const fetchDataBuyer = async (id) => {
+    try {
+      const token = JSON.parse(localStorage.getItem("access_token"));
+      if (
+        token &&
+        token.expirationDate &&
+        new Date() > new Date(token.expirationDate)
+      ) {
+        // Token đã hết hạn, xử lý tương ứng (ví dụ: đăng nhập lại)
+        alert("Token is expired, please login again.");
+      } else {
+        // Token còn hiệu lực, tiếp tục sử dụng
+        const response = await axios.get(
+          `http://localhost:5000/api/user/${id}`,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const nameBuyer = response.data.getaUser.lastname;
+        setDataBuyer((prevData) => ({
+          ...prevData,
+          [id]: nameBuyer,
+        }));
+      }
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
+  useEffect(() => {
+    data.forEach((order) => {
+      fetchDataBuyer(order.orderby);
+    });
+  }, [data]);
+
   return (
     <div>
       <h3 className="mb-4 title">Orders</h3>
@@ -55,7 +128,7 @@ const Orders = () => {
                 <td>
                   {value.products.map((product, index) => (
                     <div key={index}>
-                      <p>Product: {product.product}</p>
+                      <p>Product: {dataOneProduct[product.product]}</p>
                       <p>Count: {product.count}</p>
                       <p>Color: {product.color}</p>
                     </div>
@@ -63,7 +136,7 @@ const Orders = () => {
                 </td>
                 <td>{value.paymentIntent.status}</td>
                 <td> {value.orderStatus} </td>
-                <td> {value.orderby} </td>
+                <td> {dataBuyer[value.orderby]} </td>
                 <td> {value.createdAt} </td>
                 <td> {value.updatedAt} </td>
               </tr>

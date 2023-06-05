@@ -150,17 +150,27 @@ const Dashboard = () => {
   const [countUser, setCountUser] = useState(0);
   const fetchUsers = async () => {
     try {
-      const token = localStorage.getItem("access_token");
-      const response = await axios.get(
-        "http://localhost:5000/api/user/all-users",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      const totalUsers = response.data.length;
-      setCountUser(totalUsers);
+      const token = JSON.parse(localStorage.getItem("access_token"));
+      if (
+        token &&
+        token.expirationDate &&
+        new Date() > new Date(token.expirationDate)
+      ) {
+        // Token đã hết hạn, xử lý tương ứng (ví dụ: đăng nhập lại)
+        alert("Token is expired, please login again.");
+      } else {
+        // Token còn hiệu lực, tiếp tục sử dụng
+        const response = await axios.get(
+          "http://localhost:5000/api/user/all-users",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const totalUsers = response.data.length;
+        setCountUser(totalUsers);
+      }
     } catch (error) {
       throw new Error(error);
     }
