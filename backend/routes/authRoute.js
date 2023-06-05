@@ -15,7 +15,6 @@ const {
   resetPassword,
   loginAdmin,
   getWishlist,
-  saveAddress,
   userCart,
   getUserCart,
   emptyCart,
@@ -57,7 +56,6 @@ router.delete("/empty-cart", authMiddleware, emptyCart);
 router.delete("/:id", authMiddleware, isAdmin, deleteaUser);
 
 router.put("/edit-user", authMiddleware, updatedUser);
-router.put("/save-address", authMiddleware, saveAddress);
 router.put("/block-user/:id", authMiddleware, isAdmin, blockUser);
 router.put("/unblock-user/:id", authMiddleware, isAdmin, unblockUser);
 

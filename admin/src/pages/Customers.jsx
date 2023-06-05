@@ -33,6 +33,41 @@ const Customers = () => {
   useEffect(() => {
     fetchData();
   }, []);
+
+  const [dataOneProduct, setDataOneProduct] = useState({});
+  const fetchDataOneProduct = async (id) => {
+    try {
+      const token = JSON.parse(localStorage.getItem("access_token"));
+      if (
+        token &&
+        token.expirationDate &&
+        new Date() > new Date(token.expirationDate)
+      ) {
+        // Token đã hết hạn, xử lý tương ứng (ví dụ: đăng nhập lại)
+        alert("Token is expired, please login again.");
+      } else {
+        // Token còn hiệu lực, tiếp tục sử dụng
+        const response = await axios.get(
+          `http://localhost:5000/api/product/${id}`
+        );
+        const productTitle = response.data.title;
+        setDataOneProduct((prevData) => ({
+          ...prevData,
+          [id]: productTitle,
+        }));
+      }
+    } catch (error) {
+      throw new Error(error);
+    }
+  };
+  useEffect(() => {
+    data.forEach((user) => {
+      user.wishlist.forEach((product) => {
+        fetchDataOneProduct(product);
+      });
+    });
+  }, [data]);
+
   const onDeleteUser = async (id, e) => {
     if (window.confirm("Bạn có chắc chắn muốn xóa người dùng này không?")) {
       try {
@@ -92,8 +127,12 @@ const Customers = () => {
                 <td>{value.isBlocked}</td>
                 <td>
                   {value.wishlist.map((wishlist, index) => (
-                    <div key={index}>
-                      <p>{wishlist}</p>
+                    <div key={index} className="text-left">
+                      <ul>
+                        <li>
+                          <p>{dataOneProduct[wishlist]}</p>
+                        </li>
+                      </ul>
                     </div>
                   ))}
                 </td>

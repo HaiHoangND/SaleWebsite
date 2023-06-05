@@ -52,6 +52,7 @@ const loginUserCtrl = asyncHandler(async (req, res) => {
       lastname: findUser?.lastname,
       email: findUser?.email,
       mobile: findUser?.mobile,
+      role: findUser?.role,
       token: generateToken(findUser?._id),
     });
   } else {
@@ -147,28 +148,9 @@ const updatedUser = asyncHandler(async (req, res) => {
       {
         firstname: req?.body?.firstname,
         lastname: req?.body?.lastname,
+        address:req?.body?.address,
         email: req?.body?.email,
         mobile: req?.body?.mobile,
-      },
-      {
-        new: true,
-      }
-    );
-    res.json(updatedUser);
-  } catch (error) {
-    throw new Error(error);
-  }
-});
-
-//save user Address
-const saveAddress = asyncHandler(async (req, res, next) => {
-  const { _id } = req.user;
-  validateMongoDbId(_id);
-  try {
-    const updatedUser = await User.findByIdAndUpdate(
-      _id,
-      {
-        address: req?.body?.address,
       },
       {
         new: true,
@@ -520,7 +502,6 @@ module.exports = {
   resetPassword,
   loginAdmin,
   getWishlist,
-  saveAddress,
   userCart,
   getUserCart,
   emptyCart,
