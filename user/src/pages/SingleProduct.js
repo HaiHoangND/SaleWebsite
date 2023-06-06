@@ -1,27 +1,39 @@
-import React, { useEffect, useState } from 'react';
-import ReactStars from 'react-rating-stars-component';
-import BreadCrumb from '../components/BreadCrumb';
-import Meta from '../components/Meta';
-import ProductCard from '../components/ProductCard';
-import ReactImageZoom from 'react-image-zoom';
-import Color from '../components/Color';
-import { TbGitCompare } from 'react-icons/tb';
-import { AiOutlineHeart } from 'react-icons/ai';
-import { Link, useLocation } from 'react-router-dom';
-import watch from '../images/watch.jpg';
-import Container from '../components/Container';
-import { useDispatch, useSelector } from 'react-redux';
-import { getAProducts } from '../features/products/productSlice';
+import React, { useEffect, useState } from "react";
+import ReactStars from "react-rating-stars-component";
+import BreadCrumb from "../components/BreadCrumb";
+import Meta from "../components/Meta";
+import ProductCard from "../components/ProductCard";
+import ReactImageZoom from "react-image-zoom";
+import Color from "../components/Color";
+import { TbGitCompare } from "react-icons/tb";
+import { AiOutlineHeart } from "react-icons/ai";
+import { Link, useLocation } from "react-router-dom";
+import watch from "../images/watch.jpg";
+import Container from "../components/Container";
+import { useDispatch, useSelector } from "react-redux";
+import { getAProducts } from "../features/products/productSlice";
+import { addProdToCart } from "../features/user/userSlice";
 
 const SingleProduct = () => {
+  const [quantity, setQuantity] = useState(1);
   const location = useLocation();
-  const getProductId = location.pathname.split('/')[2];
+  const getProductId = location.pathname.split("/")[2];
   const dispatch = useDispatch();
-  const productState = useSelector((state) => state.product.singleproduct);
+  const productState = useSelector((state) => state?.product?.singleproduct);
   console.log(productState);
   useEffect(() => {
     dispatch(getAProducts(getProductId));
   }, []);
+
+  const uploadCart = () => {
+    dispatch(
+      addProdToCart({
+        productId: productState?._id,
+        quantity,
+        price: productState?.price,
+      })
+    );
+  };
   const props = {
     width: 594,
     height: 600,
@@ -29,7 +41,7 @@ const SingleProduct = () => {
 
     img: productState?.images[0]?.url
       ? productState?.images[0]?.url
-      : 'https://images.pexels.com/photos/190819/pexels-photo-190819.jpeg?cs=srgb&dl=pexels-fernando-arcos-190819.jpg&fm=jpg',
+      : "https://images.pexels.com/photos/190819/pexels-photo-190819.jpeg?cs=srgb&dl=pexels-fernando-arcos-190819.jpg&fm=jpg",
   };
 
   const [orderedProduct, setorderedProduct] = useState(true);
@@ -37,18 +49,18 @@ const SingleProduct = () => {
     {
       /*thay thế chỗ này*/
     }
-    console.log('text', text);
+    console.log("text", text);
     try {
       await navigator.clipboard.writeText(text);
-      console.log('Copied to clipboard!');
+      console.log("Copied to clipboard!");
     } catch (err) {
-      console.error('Failed to copy: ', err);
+      console.error("Failed to copy: ", err);
     }
   };
   const closeModal = () => {};
   return (
     <>
-      <Meta title={'Product Name'} />
+      <Meta title={"Product Name"} />
       <BreadCrumb title="Product Name" />
       <Container class1="main-product-wrapper py-5 home-wrapper-2">
         <div className="row">
@@ -140,16 +152,21 @@ const SingleProduct = () => {
                       min={1}
                       max={10}
                       className="form-control"
-                      style={{ width: '70px' }}
+                      style={{ width: "70px" }}
                       id=""
+                      onChange={(e) => setQuantity(e.target.value)}
+                      value={quantity}
                     />
                   </div>
                   <div className="d-flex align-items-center gap-30 ms-5">
                     <button
                       className="button border-0"
-                      data-bs-toggle="modal"
-                      data-bs-target="#staticBackdrop"
+                      // data-bs-toggle="modal"
+                      // data-bs-target="#staticBackdrop"
                       type="button"
+                      onClick={() => {
+                        uploadCart(productState?._id);
+                      }}
                     >
                       Add to Cart
                     </button>

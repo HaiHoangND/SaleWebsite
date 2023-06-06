@@ -35,7 +35,7 @@ const SpecialProducts = (props) => {
               </div>
             </div>
             <div className="prod-count my-3">
-              <p>Ptoduct: {quantity}</p>
+              <p>Product: {quantity}</p>
               <div className="progress">
                 <div
                   className="progress-bar"
