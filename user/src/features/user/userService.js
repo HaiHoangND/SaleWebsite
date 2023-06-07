@@ -1,12 +1,12 @@
-import axios from "axios";
-import { base_url, config } from "../../utils/axiosConfig";
+import axios from 'axios';
+import { base_url, config } from '../../utils/axiosConfig';
 
 const register = async (userData) => {
   try {
     const response = await axios.post(`${base_url}user/register`, userData);
     if (response.data) {
       if (response.data) {
-        localStorage.setItem("customer", JSON.stringify(response.data));
+        localStorage.setItem('customer', JSON.stringify(response.data));
       }
       return response.data;
     }
@@ -52,6 +52,24 @@ const getCart = async () => {
     return response.data;
   }
 };
+const removeProductFromCart = async (cartItemId) => {
+  const response = await axios.delete(
+    `${base_url}user/delete-product-cart/${cartItemId}`,
+    config
+  );
+  if (response.data) {
+    return response.data;
+  }
+};
+const updateProductFromCart = async (cartDetail) => {
+  const response = await axios.delete(
+    `${base_url}user/update-product-cart/${cartDetail.cartItemId}/${cartDetail.quantity}`,
+    config
+  );
+  if (response.data) {
+    return response.data;
+  }
+};
 
 export const authService = {
   register,
@@ -59,4 +77,6 @@ export const authService = {
   getUserWishlist,
   addToCart,
   getCart,
+  removeProductFromCart,
+  updateProductFromCart,
 };
