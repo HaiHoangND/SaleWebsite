@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import jwt_decode from "jwt-decode";
+import Cookies from "js-cookie";
 
 const Addproduct = () => {
   const [message, setMessage] = useState("");
@@ -17,13 +19,29 @@ const Addproduct = () => {
     const fetchBrands = async () => {
       try {
         const token = JSON.parse(localStorage.getItem("access_token"));
-        if (
-          token &&
-          token.expirationDate &&
-          new Date() > new Date(token.expirationDate)
-        ) {
+        const decodedToken = jwt_decode(token);
+        const currentTime = Date.now() / 1000; // Chuyển đổi thời gian hiện tại sang đơn vị giây
+
+        if (decodedToken.exp < currentTime) {
           // Token đã hết hạn, xử lý tương ứng (ví dụ: đăng nhập lại)
-          alert("Token is expired, please login again.");
+          Cookies.get("refreshToken");
+          const response = await axios.get(
+            "http://localhost:5000/api/user/refresh",
+            {
+              withCredentials: true, // Gửi các cookie cùng với yêu cầu
+            }
+          );
+          const newToken = response.data.accessToken;
+
+          localStorage.setItem("access_token", JSON.stringify(newToken));
+          // Tiếp tục sử dụng token mới
+          const res = await axios.get("http://localhost:5000/api/brand/", {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${newToken}`,
+            },
+          });
+          setBrands(res.data);
         } else {
           // Token còn hiệu lực, tiếp tục sử dụng
           const response = await axios.get("http://localhost:5000/api/brand/", {
@@ -45,13 +63,32 @@ const Addproduct = () => {
     const fetchCategories = async () => {
       try {
         const token = JSON.parse(localStorage.getItem("access_token"));
-        if (
-          token &&
-          token.expirationDate &&
-          new Date() > new Date(token.expirationDate)
-        ) {
+        const decodedToken = jwt_decode(token);
+        const currentTime = Date.now() / 1000; // Chuyển đổi thời gian hiện tại sang đơn vị giây
+
+        if (decodedToken.exp < currentTime) {
           // Token đã hết hạn, xử lý tương ứng (ví dụ: đăng nhập lại)
-          alert("Token is expired, please login again.");
+          Cookies.get("refreshToken");
+          const response = await axios.get(
+            "http://localhost:5000/api/user/refresh",
+            {
+              withCredentials: true, // Gửi các cookie cùng với yêu cầu
+            }
+          );
+          const newToken = response.data.accessToken;
+
+          localStorage.setItem("access_token", JSON.stringify(newToken));
+          // Tiếp tục sử dụng token mới
+          const res = await axios.get(
+            "http://localhost:5000/api/prodcategory/",
+            {
+              headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${token}`,
+              },
+            }
+          );
+          setCategories(res.data);
         } else {
           // Token còn hiệu lực, tiếp tục sử dụng
           const response = await axios.get(
@@ -80,13 +117,42 @@ const Addproduct = () => {
     try {
       e.preventDefault();
       const token = JSON.parse(localStorage.getItem("access_token"));
-      if (
-        token &&
-        token.expirationDate &&
-        new Date() > new Date(token.expirationDate)
-      ) {
+      const decodedToken = jwt_decode(token);
+      const currentTime = Date.now() / 1000; // Chuyển đổi thời gian hiện tại sang đơn vị giây
+
+      if (decodedToken.exp < currentTime) {
         // Token đã hết hạn, xử lý tương ứng (ví dụ: đăng nhập lại)
-        alert("Token is expired, please login again.");
+        Cookies.get("refreshToken");
+        const response = await axios.get(
+          "http://localhost:5000/api/user/refresh",
+          {
+            withCredentials: true, // Gửi các cookie cùng với yêu cầu
+          }
+        );
+        const newToken = response.data.accessToken;
+
+        localStorage.setItem("access_token", JSON.stringify(newToken));
+        // Tiếp tục sử dụng token mới
+        const config = {
+          headers: {
+            Authorization: `Bearer ${newToken}`,
+          },
+        };
+        const formData = {
+          title: data.title,
+          description: data.description,
+          price: data.price,
+          category: data.category,
+          brand: data.brand,
+          quantity: data.quantity,
+          color: data.color,
+        };
+        await axios.post(
+          "http://localhost:5000/api/product/",
+          formData,
+          config
+        );
+        setMessage("Product created successfully!");
       } else {
         // Token còn hiệu lực, tiếp tục sử dụng
         const config = {
@@ -111,12 +177,12 @@ const Addproduct = () => {
         setMessage("Product created successfully!");
       }
     } catch (error) {
-      if (error.response.status === 403) {
+      if (error.response && error.response.status === 403) {
         alert("You are not admin. Please login again.");
         window.location.href = "/";
       } else {
         console.error(error);
-        setMessage("Error creating product. Please try again.");
+        setMessage("Error creating brand. Please try again.");
       }
     }
   };

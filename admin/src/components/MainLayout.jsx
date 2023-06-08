@@ -14,6 +14,8 @@ import { SiBrandfolder } from "react-icons/si";
 import { BiCategoryAlt } from "react-icons/bi";
 import { Layout, Menu, theme } from "antd";
 import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
+
 const { Header, Sider, Content } = Layout;
 
 const MainLayout = () => {
@@ -25,6 +27,7 @@ const MainLayout = () => {
 
   const handleSignOut = () => {
     localStorage.removeItem("access_token");
+    Cookies.remove("refreshToken");
     navigate("/");
   };
   return (
