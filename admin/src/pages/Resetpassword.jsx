@@ -1,25 +1,18 @@
 import React, { useState } from "react";
 import axios from "axios";
-// import CustomInput from "../components/CustomInput";
 
 const Resetpassword = () => {
-  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [repassword, setRePassword] = useState("");
 
   const submit = async (e) => {
     try {
       e.preventDefault();
-      const token = await axios.post(
-        "http://localhost:5000/api/user/forgot-password",
-        {
-          email: email,
-        }
-      );
+      const token = JSON.parse(localStorage.getItem("TokenResetPassword"));
+      console.log(token);
       await axios.put(
-        `http://localhost:5000/api/user/reset-password/${token.data}`,
+        `http://localhost:5000/api/user/reset-password/${token}`,
         {
-          email: email,
           password: password,
           repassword: repassword,
         }
@@ -33,7 +26,7 @@ const Resetpassword = () => {
         alert("Password and confirm password must be the same!");
       }
     } catch (error) {
-      throw new Error(error);
+      console.log(error);
     }
   };
 
@@ -46,17 +39,6 @@ const Resetpassword = () => {
         <h3 className="text-center title"> Reset Password</h3>
         <p className="text-center">Please Enter your new password.</p>
         <form action="">
-          {/* <CustomInput type="password" label="New Password" id="pass" />
-          <CustomInput type="password" label="Confirm Password" id="confirmpass" /> */}
-          <input
-            type="email"
-            name="email"
-            placeholder="Email Address"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="form-control form-floating mt-3"
-          />
           <input
             type="password"
             name="password"
