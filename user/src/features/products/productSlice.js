@@ -1,9 +1,9 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { toast } from "react-toastify";
-import { productService } from "./productService";
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { toast } from 'react-toastify';
+import { productService } from './productService';
 
 export const getAllProducts = createAsyncThunk(
-  "product/get",
+  'product/get',
   async (thunkAPI) => {
     try {
       return await productService.getProducts();
@@ -13,8 +13,19 @@ export const getAllProducts = createAsyncThunk(
   }
 );
 
+export const getAProducts = createAsyncThunk(
+  'product/getAProduct',
+  async (id, thunkAPI) => {
+    try {
+      return await productService.getSingleProducts(id);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
 export const addToWishList = createAsyncThunk(
-  "product/wishlist",
+  'product/wishlist',
   async (prodId, thunkAPI) => {
     try {
       return await productService.addToWishList(prodId);
@@ -25,15 +36,15 @@ export const addToWishList = createAsyncThunk(
 );
 
 const productState = {
-  product: "",
+  product: '',
   isError: false,
   isSuccess: false,
   isLoading: false,
-  message: "",
+  message: '',
 };
 
 export const productSlice = createSlice({
-  name: "product",
+  name: 'product',
   initialState: productState,
   reducers: {},
   extraReducers: (builder) => {
@@ -53,20 +64,38 @@ export const productSlice = createSlice({
         state.isSuccess = false;
         state.message = action.error;
       })
-      .addCase(addToWishList.pending, (state)=>{
+      .addCase(addToWishList.pending, (state) => {
         state.isLoading = true;
-      }).addCase(addToWishList.fulfilled, (state, action)=>{
+      })
+      .addCase(addToWishList.fulfilled, (state, action) => {
         state.isLoading = false;
         state.isError = false;
         state.isSuccess = true;
         state.addToWishList = action.payload;
-        state.message="Product added to wishlist !"
-      }).addCase(addToWishList.rejected, (state,action)=>{
+        state.message = 'Product added to wishlist !';
+      })
+      .addCase(addToWishList.rejected, (state, action) => {
         action.isLoading = false;
         action.isError = true;
         state.isSuccess = false;
         state.message = action.error;
       })
+      .addCase(getAProducts.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getAProducts.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.isSuccess = true;
+        state.singleproduct = action.payload;
+        state.message = 'Product fetched susscessfully!';
+      })
+      .addCase(getAProducts.rejected, (state, action) => {
+        action.isLoading = false;
+        action.isError = true;
+        state.isSuccess = false;
+        state.message = action.error;
+      });
   },
 });
 

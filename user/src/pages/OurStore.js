@@ -1,26 +1,26 @@
-import React from 'react';
-import BreadCrumb from '../components/BreadCrumb';
-import Meta from '../components/Meta';
-import ReactStars from 'react-stars';
-import { useState } from 'react';
-import ProductCard from '../components/ProductCard';
-import { useEffect } from 'react';
-import axios from 'axios';
-import { useDispatch, useSelector } from 'react-redux';
-import { getAllProducts } from '../features/products/productSlice';
-import Container from '../components/Container';
+import React from "react";
+import BreadCrumb from "../components/BreadCrumb";
+import Meta from "../components/Meta";
+import ReactStars from "react-stars";
+import { useState } from "react";
+import ProductCard from "../components/ProductCard";
+import { useEffect } from "react";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllProducts } from "../features/products/productSlice";
+import Container from "../components/Container";
 
 const OurStore = () => {
   const [grid, setGrid] = useState(4);
-  const productState = useSelector((state) => state.product.product)
+  const productState = useSelector((state) => state.product.product);
+  useEffect(() => {
+    getProducts();
+  }, []);
   const dispatch = useDispatch();
   const getProducts = () => {
-    dispatch(getAllProducts())
-  }
-  useEffect(()=>{
-    getProducts();
-  }, [])
-  
+    dispatch(getAllProducts());
+  };
+
   return (
     <>
       <Meta title={"Our Store"} />
@@ -89,9 +89,7 @@ const OurStore = () => {
                   </div>
                 </div>
                 <h5 className="sub-title">Colors</h5>
-                <div>
-                  {/* <Color /> */}
-                </div>
+                <div>{/* <Color /> */}</div>
                 <h5 className="sub-title">Size</h5>
                 <div>
                   <div className="form-check">
@@ -255,7 +253,7 @@ const OurStore = () => {
             </div>
             <div className="products-list pb-5">
               <div className="d-flex gap-10 flex-wrap">
-                <ProductCard data={productState||[]} grid={grid} />
+                <ProductCard data={productState || []} grid={grid} />
               </div>
             </div>
           </div>
