@@ -45,7 +45,7 @@ router.post('/login', loginUserCtrl);
 router.post('/admin-login', loginAdmin);
 router.post('/cart', authMiddleware, userCart);
 router.post('/cart/applycoupon', authMiddleware, applyCoupon);
-router.post('/cart/cash-order', authMiddleware, createOrder);
+router.post('/cart/create-order', authMiddleware, createOrder);
 router.get('/all-users', getallUser);
 router.get('/get-user-orders', authMiddleware, getUserOrders);
 router.get('/get-all-orders', authMiddleware, isAdmin, getAllOrders);

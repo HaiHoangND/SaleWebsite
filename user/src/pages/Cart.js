@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import BreadCrumb from '../components/BreadCrumb';
-import Meta from '../components/Meta';
-import watch from '../images/watch.jpg';
-import { AiFillDelete } from 'react-icons/ai';
-import { Link } from 'react-router-dom';
-import Container from '../components/Container';
-import { useDispatch } from 'react-redux';
+import React, { useEffect, useState } from "react";
+import BreadCrumb from "../components/BreadCrumb";
+import Meta from "../components/Meta";
+import watch from "../images/watch.jpg";
+import { AiFillDelete } from "react-icons/ai";
+import { Link } from "react-router-dom";
+import Container from "../components/Container";
+import { useDispatch } from "react-redux";
 import {
   getUserCart,
   deleteCartProduct,
   updateCartProduct,
-} from '../features/user/userSlice';
-import { useSelector } from 'react-redux';
+} from "../features/user/userSlice";
+import { useSelector } from "react-redux";
 
 const Cart = () => {
   const dispatch = useDispatch();
@@ -70,7 +70,7 @@ const Cart = () => {
   }, [userCartState]);
   return (
     <>
-      <Meta title={'Cart'} />
+      <Meta title={"Cart"} />
       <BreadCrumb title="Cart" />
       <Container class1="cart-wrapper home-wrapper-2 py-5">
         <div className="row">
@@ -90,7 +90,13 @@ const Cart = () => {
                   >
                     <div className="cart-col-1 gap-15 d-flex align-items-center">
                       <div className="w-25">
-                        <img src={watch} className="img-fluid" alt="product" />
+                        <img
+                          src={item?.productId?.images[0]?.url}
+                          className="img-fluid"
+                          alt="product"
+                          width={100}
+                          height={100}
+                        />
                       </div>
                       <div className="w-75">
                         <p>{item?.productId?.title}</p>

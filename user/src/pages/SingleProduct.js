@@ -18,18 +18,18 @@ const SingleProduct = () => {
   const [quantity, setQuantity] = useState(1);
   const [alreadyAdded, setAlreadyAdded] = useState(false);
   const location = useLocation();
-  const natigate = useNavigate();
+  const navigate = useNavigate();
   const getProductId = location.pathname.split('/')[2];
   const dispatch = useDispatch();
   const productState = useSelector((state) => state?.product?.singleproduct);
-  const cartState = useSelector((state) => state.auth.cartProducts);
+  const cartState = useSelector((state) => state?.auth?.cartProducts);
   console.log(productState);
   useEffect(() => {
     dispatch(getAProducts(getProductId));
   }, []);
 
   useEffect(() => {
-    for (let i = 0; i < cartState.length; i++) {
+    for (let i = 0; i < cartState?.length; i++) {
       if (getProductId === cartState[i]?.productId?._id) {
         setAlreadyAdded(true);
       }
@@ -44,7 +44,7 @@ const SingleProduct = () => {
         price: productState?.price,
       })
     );
-    natigate('/cart');
+    navigate('/cart');
   };
   const props = {
     width: 594,
@@ -187,7 +187,7 @@ const SingleProduct = () => {
                       // data-bs-target="#staticBackdrop"
                       type="button"
                       onClick={() => {
-                        alreadyAdded ? natigate('/cart') : uploadCart();
+                        alreadyAdded ? navigate('/cart') : uploadCart();
                       }}
                     >
                       {alreadyAdded ? 'Go to cart' : 'Add to card'}
@@ -305,7 +305,7 @@ const SingleProduct = () => {
               <div className="reviews mt-4">
                 <div className="review">
                   <div className="d-flex gap-10 align-items-center">
-                    <h6 className="mb-0">Navdeep</h6>
+                    <h6 className="mb-0">Hai Hoang</h6>
                     <ReactStars
                       count={5}
                       size={24}
@@ -315,11 +315,7 @@ const SingleProduct = () => {
                     />
                   </div>
                   <p className="mt-3">
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                    Consectetur fugit ut excepturi quos. Id reprehenderit
-                    voluptatem placeat consequatur suscipit ex. Accusamus dolore
-                    quisquam deserunt voluptate, sit magni perspiciatis quas
-                    iste?
+                    Very nice
                   </p>
                 </div>
               </div>

@@ -13,7 +13,7 @@ const Header = () => {
     for (let index = 0; index < cartState?.length; index++) {
       sum =
         sum +
-        Number(cartState[index].quantity) * Number(cartState[index].price);
+        Number(cartState[index]?.quantity) * Number(cartState[index]?.price);
       setTotal(sum);
     }
   });
@@ -113,7 +113,7 @@ const Header = () => {
                     <img src="images/cart.svg" alt="cart" />
                     <div className="d-flex flex-column gap-10">
                       <span className="badge bg-white text-dark">
-                        {cartState?.length ? cartState.length : 0}
+                        {cartState?.length ? cartState?.length : 0}
                       </span>
                       <p className="mb-0">$ {total ? total : 0}</p>
                     </div>
