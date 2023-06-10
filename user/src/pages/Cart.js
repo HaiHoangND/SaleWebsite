@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from "react";
-import BreadCrumb from "../components/BreadCrumb";
-import Meta from "../components/Meta";
-import watch from "../images/watch.jpg";
-import { AiFillDelete } from "react-icons/ai";
-import { Link } from "react-router-dom";
-import Container from "../components/Container";
-import { useDispatch } from "react-redux";
+import React, { useEffect, useState } from 'react';
+import BreadCrumb from '../components/BreadCrumb';
+import Meta from '../components/Meta';
+import watch from '../images/watch.jpg';
+import { AiFillDelete } from 'react-icons/ai';
+import { Link } from 'react-router-dom';
+import Container from '../components/Container';
+import { useDispatch } from 'react-redux';
 import {
   getUserCart,
   deleteCartProduct,
   updateCartProduct,
-} from "../features/user/userSlice";
-import { useSelector } from "react-redux";
+} from '../features/user/userSlice';
+import { useSelector } from 'react-redux';
 
 const Cart = () => {
   const dispatch = useDispatch();
@@ -19,6 +19,7 @@ const Cart = () => {
   const [productUpdateDetail, setProductUpdateDetail] = useState({});
 
   const [totalAmount, setTotalAmount] = useState(null);
+  const [quantityErrors, setQuantityErrors] = useState([]);
   const userCartState = useSelector((state) => state?.auth?.cartProducts);
   useEffect(() => {
     dispatch(getUserCart());
@@ -68,9 +69,43 @@ const Cart = () => {
       setTotalAmount(sum);
     }
   }, [userCartState]);
+
+  const handleQuantityChange = (e, item) => {
+    const updatedQuantity = e.target.value;
+    const remainingQuantity = item?.productId?.quantity;
+
+    if (updatedQuantity > remainingQuantity) {
+      setQuantityError(
+        item._id,
+        `Exceeds available quantity (${remainingQuantity})`
+      );
+    } else {
+      setQuantityError(item._id, ''); // Clear the error for the specific item
+      const updatedProduct = {
+        cartItemId: item._id,
+        quantity: updatedQuantity,
+      };
+      setProductUpdateDetail((prevState) => ({
+        ...prevState,
+        [item._id]: updatedProduct,
+      }));
+    }
+  };
+
+  const setQuantityError = (itemId, error) => {
+    setQuantityErrors((prevState) => ({
+      ...prevState,
+      [itemId]: error,
+    }));
+  };
+
+  const getQuantityError = (itemId) => {
+    return quantityErrors[itemId] || '';
+  };
+
   return (
     <>
-      <Meta title={"Cart"} />
+      <Meta title={'Cart'} />
       <BreadCrumb title="Cart" />
       <Container class1="cart-wrapper home-wrapper-2 py-5">
         <div className="row">
@@ -83,6 +118,7 @@ const Cart = () => {
             </div>
             {userCartState &&
               userCartState?.map((item, index) => {
+                const quantityError = getQuantityError(item._id);
                 return (
                   <div
                     key={index}
@@ -125,17 +161,19 @@ const Cart = () => {
                           //     quantity: e.target.value,
                           //   });
                           // }}
-                          onChange={(e) => {
-                            const updatedProduct = {
-                              cartItemId: item._id,
-                              quantity: e.target.value,
-                            };
-                            setProductUpdateDetail((prevState) => ({
-                              ...prevState,
-                              [item._id]: updatedProduct,
-                            }));
-                          }}
+                          onChange={(e) => handleQuantityChange(e, item)}
                         />
+                        {quantityError && (
+                          <p
+                            style={{
+                              color: 'red',
+                              fontSize: '12px',
+                              margin: 0,
+                            }}
+                          >
+                            {quantityError}
+                          </p>
+                        )}
                       </div>
                       <div>
                         <AiFillDelete

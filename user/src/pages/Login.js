@@ -7,7 +7,7 @@ import CustomInput from '../components/CustomInput';
 import * as yup from 'yup';
 import { useFormik } from 'formik';
 import { useDispatch } from 'react-redux';
-import { loginUser } from '../features/user/userSlice';
+import { loginUser, getUserCart } from '../features/user/userSlice';
 import { useSelector } from 'react-redux';
 
 const loginSchema = yup.object({
@@ -22,16 +22,29 @@ const loginSchema = yup.object({
 const Login = () => {
   const authState = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-  const natigate = useNavigate();
+  const navigate = useNavigate();
   const formik = useFormik({
     initialValues: {
       email: '',
       password: '',
     },
     validationSchema: loginSchema,
+    // onSubmit: (values) => {
+    //   dispatch(loginUser(values));
+    //   natigate('/');
+    // },
     onSubmit: (values) => {
-      dispatch(loginUser(values));
-      natigate('/');
+      dispatch(loginUser(values))
+        .unwrap() // Unwrap the promise returned by loginUser
+        .then(() => {
+          // After successful login, fetch the user's cart data
+          // dispatch(getUserCart());
+          navigate('/');
+          window.location.reload();
+        })
+        .catch((error) => {
+          console.log('Login error:', error);
+        });
     },
   });
 
