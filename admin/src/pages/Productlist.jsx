@@ -278,7 +278,7 @@ const Productlist = () => {
   };
   const handleCloseModal = () => setShowModal(false);
 
-  const handleUploadImage = async (id, e) => {
+  const handleUploadImage = async (id, files) => {
     try {
       const token = JSON.parse(localStorage.getItem("access_token"));
       const decodedToken = jwt_decode(token);
@@ -294,11 +294,12 @@ const Productlist = () => {
           }
         );
         const newToken = response.data.accessToken;
-
         localStorage.setItem("access_token", JSON.stringify(newToken));
         // Tiếp tục sử dụng token mới
         const formData = new FormData();
-        formData.append("images", e.target.files[0]);
+        for (let i = 0; i < files.length; i++) {
+          formData.append("images", files[i]);
+        }
         await axios.put(
           `http://localhost:5000/api/product/upload/${id}`,
           formData,
@@ -313,7 +314,9 @@ const Productlist = () => {
       } else {
         // Token còn hiệu lực, tiếp tục sử dụng
         const formData = new FormData();
-        formData.append("images", e.target.files[0]);
+        for (let i = 0; i < files.length; i++) {
+          formData.append("images", files[i]);
+        }
         await axios.put(
           `http://localhost:5000/api/product/upload/${id}`,
           formData,
@@ -423,7 +426,10 @@ const Productlist = () => {
                     <input
                       type="file"
                       style={{ display: "none" }}
-                      onChange={(e) => handleUploadImage(value._id, e)}
+                      onChange={(e) =>
+                        handleUploadImage(value._id, e.target.files)
+                      }
+                      multiple
                     />
                   </label>
                 </td>

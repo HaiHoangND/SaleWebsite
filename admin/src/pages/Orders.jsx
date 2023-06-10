@@ -292,7 +292,7 @@ const Orders = () => {
                 <td>{index + 1}</td>
                 <td>
                   <button
-                    className="btn btn-link"
+                    className="btn btn-link text-decoration-none"
                     onClick={() => handleShowModalCustomer(value.user)}
                   >
                     {dataBuyer[value.user]}
@@ -307,7 +307,7 @@ const Orders = () => {
                       <p>
                         Product:
                         <button
-                          className="btn btn-link"
+                          className="btn btn-link text-decoration-none"
                           onClick={() => handleShowModalProduct(item.product)}
                         >
                           {dataOneProduct[item.product]}
