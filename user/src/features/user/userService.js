@@ -20,8 +20,9 @@ const login = async (userData) => {
   try {
     const response = await axios.post(`${base_url}user/login`, userData);
     if (response.data) {
-      return response.data;
+      localStorage.setItem('customer', JSON.stringify(response.data));
     }
+    return response.data;
   } catch (error) {
     // Handle any exceptions that occurred during the registration process
     throw new Error(error.message);
@@ -47,7 +48,11 @@ const addToCart = async (cartData) => {
 };
 
 const createAnOrder = async (orderData) => {
-  const response = await axios.post(`${base_url}user/cart/create-order`, orderData, config);
+  const response = await axios.post(
+    `${base_url}user/cart/create-order`,
+    orderData,
+    config
+  );
   if (response.data) {
     return response.data;
   }
