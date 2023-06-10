@@ -419,6 +419,14 @@ const createOrder = asyncHandler(async (req, res) => {
       totalPrice,
       user: _id,
     });
+    for (const item of orderItems) {
+      const { product, quantity } = item;
+
+      // Tìm và cập nhật thông tin sản phẩm
+      await Product.findByIdAndUpdate(product, {
+        $inc: { quantity: -quantity, sold: quantity },
+      });
+    }
     res.json({
       order,
       success: true,
