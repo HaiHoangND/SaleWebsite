@@ -7,18 +7,29 @@ import ProductCard from "../components/ProductCard";
 import { useEffect } from "react";
 import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllProducts } from "../features/products/productSlice";
+import {
+  getAllProductCategories,
+  getAllProducts,
+} from "../features/products/productSlice";
 import Container from "../components/Container";
 
 const OurStore = () => {
   const [grid, setGrid] = useState(4);
   const productState = useSelector((state) => state.product.product);
+  const productCategoriesState = useSelector(
+    (state) => state.product.productCategories
+  );
   useEffect(() => {
     getProducts();
+    getProductCategories();
   }, []);
   const dispatch = useDispatch();
   const getProducts = () => {
     dispatch(getAllProducts());
+  };
+
+  const getProductCategories = () => {
+    dispatch(getAllProductCategories());
   };
 
   return (
@@ -30,14 +41,16 @@ const OurStore = () => {
           <div className="col-3">
             <div className="filter-card mb-3">
               <h3 className="filter-title">Shop By Categories</h3>
-              <div>
-                <ul className="ps-0">
-                  <li>Watch</li>
-                  <li>Tv</li>
-                  <li>Camera</li>
-                  <li>Laptop</li>
-                </ul>
-              </div>
+              {productCategoriesState &&
+                productCategoriesState?.map((item, index) => {
+                  return (
+                    <div>
+                      <ul key={index} className="ps-0">
+                        <li>{item?.title}</li>
+                      </ul>
+                    </div>
+                  );
+                })}
             </div>
             <div className="filter-card mb-3">
               <h3 className="filter-title">Filter By</h3>
