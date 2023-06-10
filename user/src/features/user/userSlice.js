@@ -1,9 +1,9 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { authService } from "./userService";
-import { toast } from "react-toastify";
+import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
+import { authService } from './userService';
+import { toast } from 'react-toastify';
 
 export const registerUser = createAsyncThunk(
-  "auth/register",
+  'auth/register',
   async (userData, thunkAPI) => {
     try {
       return await authService.register(userData);
@@ -14,7 +14,7 @@ export const registerUser = createAsyncThunk(
 );
 
 export const loginUser = createAsyncThunk(
-  "auth/login",
+  'auth/login',
   async (userData, thunkAPI) => {
     try {
       return await authService.login(userData);
@@ -25,7 +25,7 @@ export const loginUser = createAsyncThunk(
 );
 
 export const getUserProductWishlist = createAsyncThunk(
-  "user/wishlist",
+  'user/wishlist',
   async (thunkAPI) => {
     try {
       return await authService.getUserWishlist();
@@ -36,7 +36,7 @@ export const getUserProductWishlist = createAsyncThunk(
 );
 
 export const addProdToCart = createAsyncThunk(
-  "user/cart/add",
+  'user/cart/add',
   async (cartData, thunkAPI) => {
     try {
       return await authService.addToCart(cartData);
@@ -47,7 +47,7 @@ export const addProdToCart = createAsyncThunk(
 );
 
 export const createUserOrder = createAsyncThunk(
-  "user/cart/create-order",
+  'user/cart/create-order',
   async (orderData, thunkAPI) => {
     try {
       return await authService.createAnOrder(orderData);
@@ -58,7 +58,7 @@ export const createUserOrder = createAsyncThunk(
 );
 
 export const getUserCart = createAsyncThunk(
-  "user/cart/get",
+  'user/cart/get',
   async (thunkAPI) => {
     try {
       return await authService.getCart();
@@ -69,7 +69,7 @@ export const getUserCart = createAsyncThunk(
 );
 
 export const deleteCartProduct = createAsyncThunk(
-  "user/product/delete",
+  'user/product/delete',
   async (cartItemId, thunkAPI) => {
     try {
       return await authService.removeProductFromCart(cartItemId);
@@ -80,7 +80,7 @@ export const deleteCartProduct = createAsyncThunk(
 );
 
 export const updateCartProduct = createAsyncThunk(
-  "user/cart/product/update",
+  'user/cart/product/update',
   async (cartDetail, thunkAPI) => {
     try {
       return await authService.updateProductFromCart(cartDetail);
@@ -90,8 +90,8 @@ export const updateCartProduct = createAsyncThunk(
   }
 );
 
-const getCustomerFromLocalStorage = localStorage.getItem("customer")
-  ? JSON.parse(localStorage.getItem("customer"))
+const getCustomerFromLocalStorage = localStorage.getItem('customer')
+  ? JSON.parse(localStorage.getItem('customer'))
   : null;
 
 const initialState = {
@@ -99,11 +99,11 @@ const initialState = {
   isError: false,
   isSuccess: false,
   isLoading: false,
-  message: "",
+  message: '',
 };
 
 export const authSlice = createSlice({
-  name: "auth",
+  name: 'auth',
   initialState: initialState,
   reducers: {
     setUser: (state, action) => {
@@ -116,7 +116,7 @@ export const authSlice = createSlice({
         state.isLoading = true;
         state.isError = false;
         state.isSuccess = false;
-        state.message = "";
+        state.message = '';
       })
       .addCase(registerUser.fulfilled, (state, action) => {
         state.isLoading = false;
@@ -124,7 +124,7 @@ export const authSlice = createSlice({
         state.isSuccess = true;
         state.createUser = action.payload;
         if (state.isSuccess === true) {
-          toast.info("User Create Successfully");
+          toast.info('User Create Successfully');
         }
       })
       .addCase(registerUser.rejected, (state, action) => {
@@ -140,7 +140,7 @@ export const authSlice = createSlice({
         state.isLoading = true;
         state.isError = false;
         state.isSuccess = false;
-        state.message = "";
+        state.message = '';
       })
       .addCase(loginUser.fulfilled, (state, action) => {
         state.isLoading = false;
@@ -148,8 +148,8 @@ export const authSlice = createSlice({
         state.isSuccess = true;
         state.user = action.payload;
         if (state.isSuccess === true) {
-          localStorage.setItem("token", action.payload.token);
-          toast.info("User logged in Successfully");
+          localStorage.setItem('token', action.payload.token);
+          toast.info('User logged in Successfully');
         }
       })
       .addCase(loginUser.rejected, (state, action) => {
@@ -158,7 +158,7 @@ export const authSlice = createSlice({
         state.isSuccess = false;
         state.message = action.error;
         if (state.isError === true) {
-          toast.error("User Create failed");
+          toast.error('User Create failed');
           toast.error(action.error);
         }
       })
@@ -186,7 +186,7 @@ export const authSlice = createSlice({
         state.isSuccess = true;
         state.cartProduct = action.payload;
         if (state.isSuccess) {
-          toast.success("Product Added To Cart");
+          toast.success('Product Added To Cart');
         }
       })
       .addCase(addProdToCart.rejected, (state, action) => {
@@ -219,7 +219,7 @@ export const authSlice = createSlice({
         state.isSuccess = true;
         state.deleteCartProduct = action.payload;
         if (state.isSuccess) {
-          toast.success("Product delete from cart successfully!");
+          toast.success('Product delete from cart successfully!');
         }
       })
       .addCase(deleteCartProduct.rejected, (state, action) => {
@@ -228,7 +228,7 @@ export const authSlice = createSlice({
         state.isSuccess = false;
         state.message = action.error;
         if (state.isSuccess === false) {
-          toast.error("Something went wrong");
+          toast.error('Something went wrong');
         }
       })
       .addCase(updateCartProduct.pending, (state) => {
@@ -240,7 +240,7 @@ export const authSlice = createSlice({
         state.isSuccess = true;
         state.updateCartProduct = action.payload;
         if (state.isSuccess) {
-          toast.success("Product updated from cart successfully!");
+          toast.success('Product updated from cart successfully!');
         }
       })
       .addCase(updateCartProduct.rejected, (state, action) => {
@@ -249,7 +249,7 @@ export const authSlice = createSlice({
         state.isSuccess = false;
         state.message = action.error;
         if (state.isSuccess === false) {
-          toast.error("Something went wrong");
+          toast.error('Something went wrong');
         }
       })
       .addCase(createUserOrder.pending, (state) => {
@@ -261,7 +261,7 @@ export const authSlice = createSlice({
         state.isSuccess = true;
         state.order = action.payload;
         if (state.isSuccess) {
-          toast.success("Successfully checkout!");
+          toast.success('Successfully checkout!');
         }
       })
       .addCase(createUserOrder.rejected, (state, action) => {
@@ -270,7 +270,7 @@ export const authSlice = createSlice({
         state.isSuccess = false;
         state.message = action.error;
         if (state.isSuccess === false) {
-          toast.error("Something went wrong");
+          toast.error('Something went wrong');
         }
       });
   },

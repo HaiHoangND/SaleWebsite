@@ -1,39 +1,43 @@
-import React from "react";
-import { Link } from "react-router-dom";
-import BreadCrumb from "../components/BreadCrumb";
-import Meta from "../components/Meta";
-import Container from "../components/Container";
-import CustomInput from "../components/CustomInput";
-import * as yup from "yup";
-import { useFormik } from "formik";
-import { useDispatch } from "react-redux";
-import { loginUser } from "../features/user/userSlice";
+import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import BreadCrumb from '../components/BreadCrumb';
+import Meta from '../components/Meta';
+import Container from '../components/Container';
+import CustomInput from '../components/CustomInput';
+import * as yup from 'yup';
+import { useFormik } from 'formik';
+import { useDispatch } from 'react-redux';
+import { loginUser } from '../features/user/userSlice';
+import { useSelector } from 'react-redux';
 
 const loginSchema = yup.object({
   email: yup
     .string()
     .nullable()
-    .email("Email should be valid")
-    .required("Email is required"),
-  password: yup.string().required("Password is required"),
+    .email('Email should be valid')
+    .required('Email is required'),
+  password: yup.string().required('Password is required'),
 });
 
 const Login = () => {
+  const authState = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+  const natigate = useNavigate();
   const formik = useFormik({
     initialValues: {
-      email: "",
-      password: "",
+      email: '',
+      password: '',
     },
     validationSchema: loginSchema,
     onSubmit: (values) => {
       dispatch(loginUser(values));
+      natigate('/');
     },
   });
 
   return (
     <>
-      <Meta title={"Login"} />
+      <Meta title={'Login'} />
       <BreadCrumb title="Login" />
 
       <Container class1="login-wrapper py-5 home-wrapper-2">
@@ -50,8 +54,8 @@ const Login = () => {
                   type="email"
                   name="email"
                   placeholder="Email"
-                  onChange={formik.handleChange("email")}
-                  onBlur={formik.handleBlur("email")}
+                  onChange={formik.handleChange('email')}
+                  onBlur={formik.handleBlur('email')}
                   value={formik.values.email}
                 />
                 <div className="error">
@@ -61,8 +65,8 @@ const Login = () => {
                   type="password"
                   name="password"
                   placeholder="Password"
-                  onChange={formik.handleChange("password")}
-                  onBlur={formik.handleBlur("password")}
+                  onChange={formik.handleChange('password')}
+                  onBlur={formik.handleBlur('password')}
                   value={formik.values.password}
                 />
                 <div className="error">
