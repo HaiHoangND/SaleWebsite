@@ -52,6 +52,7 @@ const loginUserCtrl = asyncHandler(async (req, res) => {
       lastname: findUser?.lastname,
       email: findUser?.email,
       mobile: findUser?.mobile,
+      role: findUser?.role,
       token: generateToken(findUser?._id),
     });
   } else {
@@ -91,6 +92,7 @@ const loginAdmin = asyncHandler(async (req, res) => {
         mobile: findAdmin?.mobile,
         role: findAdmin?.role,
         token: generateToken(findAdmin?._id),
+        refreshToken: refreshToken,
       });
     } else {
       return res.json({ data: "Invalid Credentials" });
@@ -101,6 +103,7 @@ const loginAdmin = asyncHandler(async (req, res) => {
 //handle refresh token
 const handleRefreshToken = asyncHandler(async (req, res) => {
   const cookie = req.cookies;
+  console.log(cookie);
   if (!cookie?.refreshToken) throw new Error("No Refresh Token in Cookies");
   const refreshToken = cookie.refreshToken;
   const user = await User.findOne({ refreshToken });
@@ -147,28 +150,9 @@ const updatedUser = asyncHandler(async (req, res) => {
       {
         firstname: req?.body?.firstname,
         lastname: req?.body?.lastname,
+        address: req?.body?.address,
         email: req?.body?.email,
         mobile: req?.body?.mobile,
-      },
-      {
-        new: true,
-      }
-    );
-    res.json(updatedUser);
-  } catch (error) {
-    throw new Error(error);
-  }
-});
-
-//save user Address
-const saveAddress = asyncHandler(async (req, res, next) => {
-  const { _id } = req.user;
-  validateMongoDbId(_id);
-  try {
-    const updatedUser = await User.findByIdAndUpdate(
-      _id,
-      {
-        address: req?.body?.address,
       },
       {
         new: true,
@@ -276,7 +260,7 @@ const updatePassword = asyncHandler(async (req, res) => {
 const forgotPasswordToken = asyncHandler(async (req, res) => {
   const { email } = req.body;
   const user = await User.findOne({ email });
-  if (!user) throw new Error("User not found with this email");
+  if (!user) return res.json({ msg: "User not found with this email" });
   try {
     const token = await user.createPasswordResetToken();
     await user.save();
@@ -575,7 +559,6 @@ module.exports = {
   resetPassword,
   loginAdmin,
   getWishlist,
-  saveAddress,
   userCart,
   getUserCart,
   emptyCart,

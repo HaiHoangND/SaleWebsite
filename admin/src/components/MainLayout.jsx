@@ -6,7 +6,6 @@ import {
   AiOutlineUser,
 } from "react-icons/ai";
 import { RiCouponLine } from "react-icons/ri";
-import { Link } from "react-router-dom";
 import { Outlet } from "react-router-dom";
 import { ImBlog } from "react-icons/im";
 import { IoIosNotifications } from "react-icons/io";
@@ -15,7 +14,8 @@ import { SiBrandfolder } from "react-icons/si";
 import { BiCategoryAlt } from "react-icons/bi";
 import { Layout, Menu, theme } from "antd";
 import { useNavigate } from "react-router-dom";
-// import { useSelector } from "react-redux";
+import Cookies from "js-cookie";
+
 const { Header, Sider, Content } = Layout;
 
 const MainLayout = () => {
@@ -24,14 +24,19 @@ const MainLayout = () => {
     token: { colorBgContainer },
   } = theme.useToken();
   const navigate = useNavigate();
-  // const user = useSelector((state) => state.auth.login?.currentUser);
+
+  const handleSignOut = () => {
+    localStorage.removeItem("access_token");
+    Cookies.remove("refreshToken");
+    navigate("/");
+  };
   return (
     <Layout>
       <Sider trigger={null} collapsible collapsed={collapsed}>
         <div className="logo">
           <h2 className="text-white fs-5 text-center py-3 mb-0">
-            <span className="sm-logo">SW</span>
-            <span className="lg-logo">Sales Website</span>
+            <span className="sm-logo">G16</span>
+            <span className="lg-logo">GROUP 16</span>
           </h2>
         </div>
         <Menu
@@ -199,13 +204,13 @@ const MainLayout = () => {
               </div>
               <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
                 <li>
-                  <Link
+                  <button
                     className="dropdown-item py-1 mb-1"
                     style={{ height: "auto", lineHeight: "20px" }}
-                    to="/"
+                    onClick={handleSignOut}
                   >
                     Sign Out
-                  </Link>
+                  </button>
                 </li>
               </div>
             </div>

@@ -3,6 +3,8 @@ import axios from "axios";
 import { Modal } from "react-bootstrap";
 import { MdDeleteForever } from "react-icons/md";
 import { AiOutlineEdit } from "react-icons/ai";
+import jwt_decode from "jwt-decode";
+import Cookies from "js-cookie";
 
 const Categorylist = () => {
   const [data, setData] = useState([]);
@@ -14,13 +16,31 @@ const Categorylist = () => {
   const fetchData = async () => {
     try {
       const token = JSON.parse(localStorage.getItem("access_token"));
-      if (
-        token &&
-        token.expirationDate &&
-        new Date() > new Date(token.expirationDate)
-      ) {
+      const decodedToken = jwt_decode(token);
+      const currentTime = Date.now() / 1000; // Chuyển đổi thời gian hiện tại sang đơn vị giây
+
+      if (decodedToken.exp < currentTime) {
         // Token đã hết hạn, xử lý tương ứng (ví dụ: đăng nhập lại)
-        alert("Token is expired, please login again.");
+        Cookies.get("refreshToken");
+        const response = await axios.get(
+          "http://localhost:5000/api/user/refresh",
+          {
+            withCredentials: true, // Gửi các cookie cùng với yêu cầu
+          }
+        );
+        const newToken = response.data.accessToken;
+
+        localStorage.setItem("access_token", JSON.stringify(newToken));
+        // Tiếp tục sử dụng token mới
+        const res = await axios.get(
+          "http://localhost:5000/api/prodcategory/",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        setData(res.data);
       } else {
         // Token còn hiệu lực, tiếp tục sử dụng
         const response = await axios.get(
@@ -44,13 +64,28 @@ const Categorylist = () => {
     if (window.confirm("Bạn có chắc chắn muốn xóa dữ liệu này không?")) {
       try {
         const token = JSON.parse(localStorage.getItem("access_token"));
-        if (
-          token &&
-          token.expirationDate &&
-          new Date() > new Date(token.expirationDate)
-        ) {
+        const decodedToken = jwt_decode(token);
+        const currentTime = Date.now() / 1000; // Chuyển đổi thời gian hiện tại sang đơn vị giây
+
+        if (decodedToken.exp < currentTime) {
           // Token đã hết hạn, xử lý tương ứng (ví dụ: đăng nhập lại)
-          alert("Token is expired, please login again.");
+          Cookies.get("refreshToken");
+          const response = await axios.get(
+            "http://localhost:5000/api/user/refresh",
+            {
+              withCredentials: true, // Gửi các cookie cùng với yêu cầu
+            }
+          );
+          const newToken = response.data.accessToken;
+
+          localStorage.setItem("access_token", JSON.stringify(newToken));
+          // Tiếp tục sử dụng token mới
+          await axios.delete(`http://localhost:5000/api/prodcategory/${id}`, {
+            headers: {
+              Authorization: `Bearer ${newToken}`,
+            },
+          });
+          fetchData();
         } else {
           // Token còn hiệu lực, tiếp tục sử dụng
           await axios.delete(`http://localhost:5000/api/prodcategory/${id}`, {
@@ -76,13 +111,33 @@ const Categorylist = () => {
     const { id, title } = updateData;
     try {
       const token = JSON.parse(localStorage.getItem("access_token"));
-      if (
-        token &&
-        token.expirationDate &&
-        new Date() > new Date(token.expirationDate)
-      ) {
+      const decodedToken = jwt_decode(token);
+      const currentTime = Date.now() / 1000; // Chuyển đổi thời gian hiện tại sang đơn vị giây
+
+      if (decodedToken.exp < currentTime) {
         // Token đã hết hạn, xử lý tương ứng (ví dụ: đăng nhập lại)
-        alert("Token is expired, please login again.");
+        Cookies.get("refreshToken");
+        const response = await axios.get(
+          "http://localhost:5000/api/user/refresh",
+          {
+            withCredentials: true, // Gửi các cookie cùng với yêu cầu
+          }
+        );
+        const newToken = response.data.accessToken;
+
+        localStorage.setItem("access_token", JSON.stringify(newToken));
+        // Tiếp tục sử dụng token mới
+        await axios.put(
+          `http://localhost:5000/api/prodcategory/${id}`,
+          { title },
+          {
+            headers: {
+              Authorization: `Bearer ${newToken}`,
+            },
+          }
+        );
+        handleCloseModal();
+        fetchData();
       } else {
         // Token còn hiệu lực, tiếp tục sử dụng
         await axios.put(

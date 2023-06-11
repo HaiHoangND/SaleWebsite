@@ -21,6 +21,11 @@ const Login = () => {
         "access_token",
         JSON.stringify(response.data?.token)
       );
+      // Tạo chuỗi cookie
+      const cookieValue = `refreshToken=${response.data?.refreshToken}; path=/;`;
+      // Lưu cookie
+      document.cookie = cookieValue;
+      
       if (response.data?.token) {
         if (response.data?.role === "admin") {
           navigate("/admin");

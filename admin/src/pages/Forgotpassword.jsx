@@ -1,33 +1,31 @@
 import React, { useState } from "react";
 import axios from "axios";
-// import CustomInput from "../components/CustomInput";
 
 const Forgotpassword = () => {
   const [email, setEmail] = useState("");
 
-  function isValidEmail(email) {
-    var regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return regex.test(email);
-  }
-
   const submit = async (e) => {
     try {
       e.preventDefault();
-      await axios.post("http://localhost:5000/api/user/forgot-password", {
-        email: email,
-      });
-
-      var _email = document.getElementById("email").value;
-
-      if (isValidEmail(_email)) {
+      const response = await axios.post(
+        "http://localhost:5000/api/user/forgot-password",
+        {
+          email: email,
+        }
+      );
+      if (!response.data.msg) {
+        localStorage.setItem(
+          "TokenResetPassword",
+          JSON.stringify(response.data)
+        );
         alert(
           "Password reset request has been sent successfully. Please check your email."
         );
       } else {
-        alert("Email address incorrectly!");
+        alert(response.data.msg);
       }
     } catch (error) {
-      throw new Error(error);
+      console.error(error);
     }
   };
 
@@ -42,7 +40,6 @@ const Forgotpassword = () => {
           Please Enter your register email to get reset password mail.
         </p>
         <form action="">
-          {/* <CustomInput type="password" label="Email Address" id="email" /> */}
           <input
             type="email"
             name="email"
