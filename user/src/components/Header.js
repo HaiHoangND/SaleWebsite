@@ -1,8 +1,37 @@
-import React from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { NavLink, Link, useNavigate } from 'react-router-dom';
 import { BsSearch } from 'react-icons/bs';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+const { logoutUser } = require('../features/user/userSlice');
 
 const Header = () => {
+  const dispatch = useDispatch();
+  const cartState = useSelector((state) => state?.auth?.cartProducts);
+  const authState = useSelector((state) => state.auth);
+  const [total, setTotal] = useState(null);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    let sum = 0;
+    if (!cartState?.length) {
+      setTotal(sum);
+    } else {
+      for (let index = 0; index < cartState?.length; index++) {
+        sum =
+          sum +
+          Number(cartState[index]?.quantity) * Number(cartState[index]?.price);
+        setTotal(sum);
+      }
+    }
+  });
+
+  const handleLogout = () => {
+    dispatch(logoutUser());
+    navigate('/login');
+    window.location.reload();
+  };
+
   return (
     <>
       <header className="header-top-strip py-3">
@@ -70,26 +99,20 @@ const Header = () => {
                 </div>
                 <div>
                   <Link
-                    to="/login"
-                    className="d-flex align-items-center gap-10 text-white"
-                  >
-                    <img src="images/user.svg" alt="user" />
-                    <p className="mb-0">
-                      My <br />
-                      Account
-                    </p>
-                  </Link>
-                </div>
-                <div>
-                  <Link
-                    to="/my-account"
-
+                    to={authState?.user === null ? '/login' : ''}
+                    onClick={authState?.user !== null ? handleLogout : null}
                     className="d-flex align-items-center gap-10 text-white"
                   >
                     <img src="images/login01.svg" alt="user" />
-                    <p className="mb-0">
-                      Log in <br /> Register
-                    </p>
+                    {authState?.user === null ? (
+                      <p className="mb-0">
+                        Log in <br /> My Account
+                      </p>
+                    ) : (
+                      <p className="mb-0">
+                        Welcome {authState?.user?.firstname} <br /> Log out
+                      </p>
+                    )}
                   </Link>
                 </div>
                 <div>
@@ -99,8 +122,10 @@ const Header = () => {
                   >
                     <img src="images/cart.svg" alt="cart" />
                     <div className="d-flex flex-column gap-10">
-                      <span className="badge bg-white text-dark">0</span>
-                      <p className="mb-0">$ 500</p>
+                      <span className="badge bg-white text-dark">
+                        {cartState?.length ? cartState?.length : 0}
+                      </span>
+                      <p className="mb-0">$ {total ? total : 0}</p>
                     </div>
                   </Link>
                 </div>

@@ -1,26 +1,38 @@
-import React from 'react';
-import BreadCrumb from '../components/BreadCrumb';
-import Meta from '../components/Meta';
-import ReactStars from 'react-stars';
-import { useState } from 'react';
-import ProductCard from '../components/ProductCard';
-import { useEffect } from 'react';
-import axios from 'axios';
-import { useDispatch, useSelector } from 'react-redux';
-import { getAllProducts } from '../features/products/productSlice';
-import Container from '../components/Container';
+import React from "react";
+import BreadCrumb from "../components/BreadCrumb";
+import Meta from "../components/Meta";
+import ReactStars from "react-stars";
+import { useState } from "react";
+import ProductCard from "../components/ProductCard";
+import { useEffect } from "react";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getAllProductCategories,
+  getAllProducts,
+} from "../features/products/productSlice";
+import Container from "../components/Container";
+import { sortByBestSelling } from "../features/products/productSlice";
 
 const OurStore = () => {
   const [grid, setGrid] = useState(4);
-  const productState = useSelector((state) => state.product.product)
+  const productState = useSelector((state) => state.product.product);
+  const productCategoriesState = useSelector(
+    (state) => state.product.productCategories
+  );
+  useEffect(() => {
+    getProducts();
+    getProductCategories();
+  }, []);
   const dispatch = useDispatch();
   const getProducts = () => {
-    dispatch(getAllProducts())
-  }
-  useEffect(()=>{
-    getProducts();
-  }, [])
-  
+    dispatch(getAllProducts());
+  };
+
+  const getProductCategories = () => {
+    dispatch(getAllProductCategories());
+  };
+
   return (
     <>
       <Meta title={"Our Store"} />
@@ -30,14 +42,16 @@ const OurStore = () => {
           <div className="col-3">
             <div className="filter-card mb-3">
               <h3 className="filter-title">Shop By Categories</h3>
-              <div>
-                <ul className="ps-0">
-                  <li>Watch</li>
-                  <li>Tv</li>
-                  <li>Camera</li>
-                  <li>Laptop</li>
-                </ul>
-              </div>
+              {productCategoriesState &&
+                productCategoriesState?.map((item, index) => {
+                  return (
+                    <div>
+                      <ul key={index} className="ps-0">
+                        <li>{item?.title}</li>
+                      </ul>
+                    </div>
+                  );
+                })}
             </div>
             <div className="filter-card mb-3">
               <h3 className="filter-title">Filter By</h3>
@@ -89,9 +103,7 @@ const OurStore = () => {
                   </div>
                 </div>
                 <h5 className="sub-title">Colors</h5>
-                <div>
-                  {/* <Color /> */}
-                </div>
+                <div>{/* <Color /> */}</div>
                 <h5 className="sub-title">Size</h5>
                 <div>
                   <div className="form-check">
@@ -214,7 +226,9 @@ const OurStore = () => {
                   </select>
                 </div>
                 <div className="d-flex align-items-center gap-10">
-                  <p className="totalproducts mb-0">21 Products</p>
+                  <p className="totalproducts mb-0">
+                    {Object.keys(productState).length} Products
+                  </p>
                   <div className="d-flex gap-10 align-items-center grid">
                     <img
                       onClick={() => {
@@ -255,7 +269,7 @@ const OurStore = () => {
             </div>
             <div className="products-list pb-5">
               <div className="d-flex gap-10 flex-wrap">
-                <ProductCard data={productState||[]} grid={grid} />
+                <ProductCard data={productState || []} grid={grid} />
               </div>
             </div>
           </div>
