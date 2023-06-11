@@ -1,31 +1,49 @@
-import React, { useEffect, useState } from "react";
-import ReactStars from "react-rating-stars-component";
-import BreadCrumb from "../components/BreadCrumb";
-import Meta from "../components/Meta";
-import ProductCard from "../components/ProductCard";
-import ReactImageZoom from "react-image-zoom";
-import Color from "../components/Color";
-import { TbGitCompare } from "react-icons/tb";
-import { AiOutlineHeart } from "react-icons/ai";
-import { Link, useLocation } from "react-router-dom";
-import watch from "../images/watch.jpg";
-import Container from "../components/Container";
-import { useDispatch, useSelector } from "react-redux";
-import { getAProducts } from "../features/products/productSlice";
-import { addProdToCart } from "../features/user/userSlice";
+import React, { useEffect, useState } from 'react';
+import ReactStars from 'react-rating-stars-component';
+import BreadCrumb from '../components/BreadCrumb';
+import Meta from '../components/Meta';
+import ProductCard from '../components/ProductCard';
+import ReactImageZoom from 'react-image-zoom';
+import Color from '../components/Color';
+import { TbGitCompare } from 'react-icons/tb';
+import { AiOutlineHeart } from 'react-icons/ai';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
+import watch from '../images/watch.jpg';
+import Container from '../components/Container';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAProducts } from '../features/products/productSlice';
+import { addProdToCart } from '../features/user/userSlice';
 
 const SingleProduct = () => {
   const [quantity, setQuantity] = useState(1);
+  const [alreadyAdded, setAlreadyAdded] = useState(false);
   const location = useLocation();
-  const getProductId = location.pathname.split("/")[2];
+  const navigate = useNavigate();
+  const getProductId = location.pathname.split('/')[2];
   const dispatch = useDispatch();
   const productState = useSelector((state) => state?.product?.singleproduct);
-  console.log(productState);
+  const cartState = useSelector((state) => state?.auth?.cartProducts);
   useEffect(() => {
     dispatch(getAProducts(getProductId));
   }, []);
 
+  useEffect(() => {
+    for (let i = 0; i < cartState?.length; i++) {
+      if (getProductId === cartState[i]?.productId?._id) {
+        setAlreadyAdded(true);
+      }
+    }
+  }, []);
+
   const uploadCart = () => {
+    if (quantity > productState?.quantity) {
+      // Hiển thị thông báo lỗi
+      alert(
+        `Số lượng sản phẩm vượt quá số lượng còn lại.(${productState?.quantity})`
+      );
+      return;
+    }
+
     dispatch(
       addProdToCart({
         productId: productState?._id,
@@ -33,7 +51,17 @@ const SingleProduct = () => {
         price: productState?.price,
       })
     );
+    navigate('/cart');
   };
+
+  useEffect(() => {
+    // Kiểm tra số lượng còn lại
+    if (productState?.quantity === 0) {
+      setQuantity(0);
+    } else if (productState?.quantity < quantity) {
+      setQuantity(productState?.quantity);
+    }
+  }, [productState]);
   const props = {
     width: 594,
     height: 600,
@@ -41,7 +69,7 @@ const SingleProduct = () => {
 
     img: productState?.images[0]?.url
       ? productState?.images[0]?.url
-      : "https://images.pexels.com/photos/190819/pexels-photo-190819.jpeg?cs=srgb&dl=pexels-fernando-arcos-190819.jpg&fm=jpg",
+      : 'https://images.pexels.com/photos/190819/pexels-photo-190819.jpeg?cs=srgb&dl=pexels-fernando-arcos-190819.jpg&fm=jpg',
   };
 
   const [orderedProduct, setorderedProduct] = useState(true);
@@ -49,18 +77,18 @@ const SingleProduct = () => {
     {
       /*thay thế chỗ này*/
     }
-    console.log("text", text);
+    console.log('text', text);
     try {
       await navigator.clipboard.writeText(text);
-      console.log("Copied to clipboard!");
+      console.log('Copied to clipboard!');
     } catch (err) {
-      console.error("Failed to copy: ", err);
+      console.error('Failed to copy: ', err);
     }
   };
   const closeModal = () => {};
   return (
     <>
-      <Meta title={"Product Name"} />
+      <Meta title={'Product Name'} />
       <BreadCrumb title="Product Name" />
       <Container class1="main-product-wrapper py-5 home-wrapper-2">
         <div className="row">
@@ -144,33 +172,43 @@ const SingleProduct = () => {
                   <Color />
                 </div>
                 <div className="d-flex align-items-center gap-15 flex-row mt-2 mb-3">
-                  <h3 className="product-heading">Quantity :</h3>
-                  <div className="">
-                    <input
-                      type="number"
-                      name=""
-                      min={1}
-                      max={10}
-                      className="form-control"
-                      style={{ width: "70px" }}
-                      id=""
-                      onChange={(e) => setQuantity(e.target.value)}
-                      value={quantity}
-                    />
-                  </div>
-                  <div className="d-flex align-items-center gap-30 ms-5">
+                  {alreadyAdded === false && (
+                    <>
+                      <h3 className="product-heading">Quantity :</h3>
+                      <div className="">
+                        <input
+                          type="number"
+                          name=""
+                          min={1}
+                          max={10}
+                          className="form-control"
+                          style={{ width: '70px' }}
+                          id=""
+                          onChange={(e) => setQuantity(e.target.value)}
+                          value={quantity}
+                        />
+                      </div>
+                    </>
+                  )}
+                  <div
+                    className={
+                      alreadyAdded
+                        ? 'ms-0'
+                        : ' ms-5' + 'd-flex align-items-center gap-30'
+                    }
+                  >
                     <button
                       className="button border-0"
                       // data-bs-toggle="modal"
                       // data-bs-target="#staticBackdrop"
                       type="button"
                       onClick={() => {
-                        uploadCart(productState?._id);
+                        alreadyAdded ? navigate('/cart') : uploadCart();
                       }}
                     >
-                      Add to Cart
+                      {alreadyAdded ? 'Go to cart' : 'Add to card'}
                     </button>
-                    <button className="button signup">Buy It Now</button>
+                    {/* <button className="button signup">Buy It Now</button> */}
                   </div>
                 </div>
                 <div className="d-flex align-items-center gap-15">
@@ -283,7 +321,7 @@ const SingleProduct = () => {
               <div className="reviews mt-4">
                 <div className="review">
                   <div className="d-flex gap-10 align-items-center">
-                    <h6 className="mb-0">Navdeep</h6>
+                    <h6 className="mb-0">Hai Hoang</h6>
                     <ReactStars
                       count={5}
                       size={24}
@@ -292,13 +330,7 @@ const SingleProduct = () => {
                       activeColor="#ffd700"
                     />
                   </div>
-                  <p className="mt-3">
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                    Consectetur fugit ut excepturi quos. Id reprehenderit
-                    voluptatem placeat consequatur suscipit ex. Accusamus dolore
-                    quisquam deserunt voluptate, sit magni perspiciatis quas
-                    iste?
-                  </p>
+                  <p className="mt-3">Very nice</p>
                 </div>
               </div>
             </div>

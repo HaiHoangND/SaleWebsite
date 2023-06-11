@@ -1,13 +1,21 @@
-import axios from 'axios';
-import { base_url, config } from '../../utils/axiosConfig';
+import axios from "axios";
+import { base_url, config } from "../../utils/axiosConfig";
 
-const getProducts = async (userData) => {
+const getProducts = async () => {
   try {
-    const response = await axios.get(`${base_url}product`, {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
-      },
-    });
+    const response = await axios.get(`${base_url}product`);
+    if (response.data) {
+      return response.data;
+    }
+  } catch (error) {
+    // Handle any exceptions that occurred during the registration process
+    throw new Error(error.message);
+  }
+};
+
+const getProductCategories = async () => {
+  try {
+    const response = await axios.get(`${base_url}prodcategory`);
     if (response.data) {
       return response.data;
     }
@@ -20,7 +28,7 @@ const getSingleProducts = async (id) => {
   try {
     const response = await axios.get(`${base_url}product/${id}`, {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     });
     if (response.data) {
@@ -38,7 +46,7 @@ const addToWishList = async (prodId) => {
     { prodId },
     {
       headers: {
-        Authorization: `Bearer ${localStorage.getItem('token')}`,
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
       },
     }
   );
@@ -51,4 +59,5 @@ export const productService = {
   getProducts,
   getSingleProducts,
   addToWishList,
+  getProductCategories,
 };
