@@ -36,7 +36,7 @@ const Categorylist = () => {
           "http://localhost:5000/api/prodcategory/",
           {
             headers: {
-              Authorization: `Bearer ${token}`,
+              Authorization: `Bearer ${newToken}`,
             },
           }
         );

@@ -110,7 +110,7 @@ const Dashboard = () => {
         // Tiếp tục sử dụng token mới
         const res = await axios.get("http://localhost:5000/api/product/", {
           headers: {
-            Authorization: `Bearer ${token}`,
+            Authorization: `Bearer ${newToken}`,
           },
         });
         const totalProducts = res.data.length;
