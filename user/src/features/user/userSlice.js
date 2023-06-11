@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { authService } from './userService';
+import { getAProducts } from '../products/productSlice';
 import { toast } from 'react-toastify';
 
 export const registerUser = createAsyncThunk(
@@ -84,6 +85,17 @@ export const updateCartProduct = createAsyncThunk(
   async (cartDetail, thunkAPI) => {
     try {
       return await authService.updateProductFromCart(cartDetail);
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
+export const logoutUser = createAsyncThunk(
+  'auth/logout',
+  async (_, thunkAPI) => {
+    try {
+      await authService.logout(); // Gọi hàm logout từ service hoặc API
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
@@ -272,6 +284,28 @@ export const authSlice = createSlice({
         if (state.isSuccess === false) {
           toast.error('Something went wrong');
         }
+      })
+      .addCase(logoutUser.pending, (state) => {
+        state.isLoading = true;
+        state.isError = false;
+        state.isSuccess = false;
+        state.message = '';
+      })
+      .addCase(logoutUser.fulfilled, (state) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.isSuccess = true;
+        state.user = null; // Đặt lại user về giá trị null khi logout thành công
+        state.cartProduct = null;
+        localStorage.removeItem('token'); // Xóa token từ localStorage hoặc bất kỳ nơi lưu trữ khác
+        toast.info('Logged out successfully'); // Thông báo thành công
+      })
+      .addCase(logoutUser.rejected, (state, action) => {
+        state.isLoading = false;
+        state.isError = true;
+        state.isSuccess = false;
+        state.message = action.error;
+        toast.error('Logout failed'); // Thông báo thất bại
       });
   },
 });

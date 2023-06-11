@@ -12,6 +12,7 @@ import {
   getAllProducts,
 } from "../features/products/productSlice";
 import Container from "../components/Container";
+import { sortByBestSelling } from "../features/products/productSlice";
 
 const OurStore = () => {
   const [grid, setGrid] = useState(4);
@@ -225,7 +226,9 @@ const OurStore = () => {
                   </select>
                 </div>
                 <div className="d-flex align-items-center gap-10">
-                  <p className="totalproducts mb-0">21 Products</p>
+                  <p className="totalproducts mb-0">
+                    {Object.keys(productState).length} Products
+                  </p>
                   <div className="d-flex gap-10 align-items-center grid">
                     <img
                       onClick={() => {

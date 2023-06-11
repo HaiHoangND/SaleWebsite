@@ -1,24 +1,37 @@
 import React, { useEffect, useState } from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink, Link, useNavigate } from 'react-router-dom';
 import { BsSearch } from 'react-icons/bs';
 import { useDispatch } from 'react-redux';
 import { useSelector } from 'react-redux';
+const { logoutUser } = require('../features/user/userSlice');
 
 const Header = () => {
   const dispatch = useDispatch();
   const cartState = useSelector((state) => state?.auth?.cartProducts);
   const authState = useSelector((state) => state.auth);
-  console.log(authState);
   const [total, setTotal] = useState(null);
+  const navigate = useNavigate();
+
   useEffect(() => {
     let sum = 0;
-    for (let index = 0; index < cartState?.length; index++) {
-      sum =
-        sum +
-        Number(cartState[index]?.quantity) * Number(cartState[index]?.price);
+    if (!cartState?.length) {
       setTotal(sum);
+    } else {
+      for (let index = 0; index < cartState?.length; index++) {
+        sum =
+          sum +
+          Number(cartState[index]?.quantity) * Number(cartState[index]?.price);
+        setTotal(sum);
+      }
     }
   });
+
+  const handleLogout = () => {
+    dispatch(logoutUser());
+    navigate('/login');
+    window.location.reload();
+  };
+
   return (
     <>
       <header className="header-top-strip py-3">
@@ -87,6 +100,7 @@ const Header = () => {
                 <div>
                   <Link
                     to={authState?.user === null ? '/login' : ''}
+                    onClick={authState?.user !== null ? handleLogout : null}
                     className="d-flex align-items-center gap-10 text-white"
                   >
                     <img src="images/login01.svg" alt="user" />
@@ -96,7 +110,7 @@ const Header = () => {
                       </p>
                     ) : (
                       <p className="mb-0">
-                        Welcome {authState?.user?.firstname}
+                        Welcome {authState?.user?.firstname} <br /> Log out
                       </p>
                     )}
                   </Link>

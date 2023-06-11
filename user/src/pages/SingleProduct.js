@@ -23,7 +23,6 @@ const SingleProduct = () => {
   const dispatch = useDispatch();
   const productState = useSelector((state) => state?.product?.singleproduct);
   const cartState = useSelector((state) => state?.auth?.cartProducts);
-  console.log(productState);
   useEffect(() => {
     dispatch(getAProducts(getProductId));
   }, []);
@@ -37,6 +36,14 @@ const SingleProduct = () => {
   }, []);
 
   const uploadCart = () => {
+    if (quantity > productState?.quantity) {
+      // Hiển thị thông báo lỗi
+      alert(
+        `Số lượng sản phẩm vượt quá số lượng còn lại.(${productState?.quantity})`
+      );
+      return;
+    }
+
     dispatch(
       addProdToCart({
         productId: productState?._id,
@@ -46,6 +53,15 @@ const SingleProduct = () => {
     );
     navigate('/cart');
   };
+
+  useEffect(() => {
+    // Kiểm tra số lượng còn lại
+    if (productState?.quantity === 0) {
+      setQuantity(0);
+    } else if (productState?.quantity < quantity) {
+      setQuantity(productState?.quantity);
+    }
+  }, [productState]);
   const props = {
     width: 594,
     height: 600,
@@ -314,9 +330,7 @@ const SingleProduct = () => {
                       activeColor="#ffd700"
                     />
                   </div>
-                  <p className="mt-3">
-                    Very nice
-                  </p>
+                  <p className="mt-3">Very nice</p>
                 </div>
               </div>
             </div>

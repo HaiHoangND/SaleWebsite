@@ -1,18 +1,19 @@
-import React, { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import Marquee from "react-fast-marquee";
-import SpecialProducts from "../components/SpecialProducts";
-import { useDispatch, useSelector } from "react-redux";
-import { getAllProducts } from "../features/products/productSlice";
-import { getAllBlogs } from "../features/blogs/blogSlice";
-import ReactStars from "react-rating-stars-component";
-import prodcompare from "../images/prodcompare.svg";
-import wish from "../images/wish.svg";
-import addcart from "../images/add-cart.svg";
-import BlogCard from "../components/BlogCard";
-import view from "../images/view.svg";
-import { addToWishList } from "../features/products/productSlice";
-import moment from "moment";
+import React, { useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import Marquee from 'react-fast-marquee';
+import SpecialProducts from '../components/SpecialProducts';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllProducts } from '../features/products/productSlice';
+import { getAllBlogs } from '../features/blogs/blogSlice';
+import ReactStars from 'react-rating-stars-component';
+import prodcompare from '../images/prodcompare.svg';
+import wish from '../images/wish.svg';
+import addcart from '../images/add-cart.svg';
+import BlogCard from '../components/BlogCard';
+import view from '../images/view.svg';
+import { addToWishList } from '../features/products/productSlice';
+import moment from 'moment';
+import { getUserCart } from '../features/user/userSlice';
 
 const Home = () => {
   const productState = useSelector((state) => state.product.product);
@@ -21,6 +22,10 @@ const Home = () => {
 
   useEffect(() => {
     getBlogs();
+  }, []);
+
+  useEffect(() => {
+    dispatch(getUserCart());
   }, []);
 
   const dispatch = useDispatch();

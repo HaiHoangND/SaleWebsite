@@ -83,6 +83,20 @@ const updateProductFromCart = async (cartDetail) => {
   }
 };
 
+const logout = async () => {
+  try {
+    // Xóa dữ liệu đăng nhập từ lưu trữ trình duyệt
+    localStorage.removeItem('customer');
+    localStorage.removeItem('token');
+
+    // Trả về thành công nếu không có lỗi xảy ra
+    return;
+  } catch (error) {
+    // Xử lý các ngoại lệ xảy ra trong quá trình đăng xuất
+    throw new Error(error.message);
+  }
+};
+
 export const authService = {
   register,
   login,
@@ -92,4 +106,5 @@ export const authService = {
   removeProductFromCart,
   updateProductFromCart,
   createAnOrder,
+  logout,
 };

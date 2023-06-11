@@ -1,9 +1,9 @@
-import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { toast } from 'react-toastify';
-import { productService } from './productService';
+import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { toast } from "react-toastify";
+import { productService } from "./productService";
 
 export const getAllProducts = createAsyncThunk(
-  'product/get',
+  "product/get",
   async (thunkAPI) => {
     try {
       return await productService.getProducts();
@@ -14,7 +14,7 @@ export const getAllProducts = createAsyncThunk(
 );
 
 export const getAllProductCategories = createAsyncThunk(
-  'product/getCategories',
+  "product/getCategories",
   async (thunkAPI) => {
     try {
       return await productService.getProductCategories();
@@ -25,7 +25,7 @@ export const getAllProductCategories = createAsyncThunk(
 );
 
 export const getAProducts = createAsyncThunk(
-  'product/getAProduct',
+  "product/getAProduct",
   async (id, thunkAPI) => {
     try {
       return await productService.getSingleProducts(id);
@@ -36,7 +36,7 @@ export const getAProducts = createAsyncThunk(
 );
 
 export const addToWishList = createAsyncThunk(
-  'product/wishlist',
+  "product/wishlist",
   async (prodId, thunkAPI) => {
     try {
       return await productService.addToWishList(prodId);
@@ -47,15 +47,15 @@ export const addToWishList = createAsyncThunk(
 );
 
 const productState = {
-  product: '',
+  product: "",
   isError: false,
   isSuccess: false,
   isLoading: false,
-  message: '',
+  message: "",
 };
 
 export const productSlice = createSlice({
-  name: 'product',
+  name: "product",
   initialState: productState,
   reducers: {},
   extraReducers: (builder) => {
@@ -98,7 +98,7 @@ export const productSlice = createSlice({
         state.isError = false;
         state.isSuccess = true;
         state.addToWishList = action.payload;
-        state.message = 'Product added to wishlist !';
+        state.message = "Product added to wishlist !";
       })
       .addCase(addToWishList.rejected, (state, action) => {
         action.isLoading = false;
@@ -114,7 +114,7 @@ export const productSlice = createSlice({
         state.isError = false;
         state.isSuccess = true;
         state.singleproduct = action.payload;
-        state.message = 'Product fetched susscessfully!';
+        state.message = "Product fetched susscessfully!";
       })
       .addCase(getAProducts.rejected, (state, action) => {
         action.isLoading = false;
