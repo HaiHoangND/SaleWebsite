@@ -99,6 +99,9 @@ export const productSlice = createSlice({
         state.isSuccess = true;
         state.addToWishList = action.payload;
         state.message = "Product added to wishlist !";
+        // if (state.isSuccess === true) {
+        //   toast.info('Product added to wishlist !');
+        // }
       })
       .addCase(addToWishList.rejected, (state, action) => {
         action.isLoading = false;

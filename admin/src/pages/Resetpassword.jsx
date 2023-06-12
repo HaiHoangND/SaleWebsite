@@ -9,7 +9,6 @@ const Resetpassword = () => {
     try {
       e.preventDefault();
       const token = JSON.parse(localStorage.getItem("TokenResetPassword"));
-      console.log(token);
       await axios.put(
         `http://localhost:5000/api/user/reset-password/${token}`,
         {

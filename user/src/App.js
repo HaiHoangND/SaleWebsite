@@ -23,6 +23,7 @@ import Cart from './pages/Cart';
 import Checkout from './pages/Checkout';
 import { PrivateRoutes } from './routing/PrivateRoutes';
 import { OpenRoutes } from './routing/OpenRoutes';
+import Order from './pages/Order';
 function App() {
   return (
     <>
@@ -69,6 +70,14 @@ function App() {
               }
             />
             <Route
+              path="order"
+              element={
+                <PrivateRoutes>
+                  <Order />
+                </PrivateRoutes>
+              }
+            />
+            <Route
               path="login"
               element={
                 <OpenRoutes>
@@ -78,7 +87,7 @@ function App() {
             />
             <Route path="forgot-password" element={<Forgotpassword />} />
             <Route path="signup" element={<Signup></Signup>} />
-            <Route path="reset-password" element={<Resetpassword />} />
+            <Route path="reset-password/:token" element={<Resetpassword />} />
             <Route path="privacy-policy" element={<PrivacyPolicy />} />
             <Route path="refund-policy" element={<RefundPolicy />} />
             <Route path="shipping-policy" element={<ShippingPolicy />} />
