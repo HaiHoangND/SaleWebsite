@@ -277,7 +277,7 @@ const Orders = () => {
             <tr>
               <th scope="col">No.</th>
               <th scope="col">Customer</th>
-              <th scope="col">Shipper</th>
+              <th scope="col">ShippingInfo</th>
               <th scope="col">OrderItems</th>
               <th scope="col">Paid At</th>
               <th scope="col">TotalPrice</th>

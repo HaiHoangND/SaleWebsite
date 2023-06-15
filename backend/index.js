@@ -23,13 +23,14 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "http://localhost:4000");
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type, Authorization");
-  res.setHeader("Access-Control-Allow-Credentials", true);
-  next();
-});
+app.use(
+  cors({
+    origin: ["http://localhost:4000", "http://localhost:3000"],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+  })
+);
 
 app.use("/api/user", authRouter);
 app.use("/api/product", productRouter);

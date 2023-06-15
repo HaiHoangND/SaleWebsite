@@ -31,6 +31,7 @@ const loginUserCtrl = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
   //check if user exists or not
   const findUser = await User.findOne({ email });
+  console.log(findUser);
   if (findUser && (await findUser.isPasswordMatched(password))) {
     const refreshToken = await generateRefreshToken(findUser?._id);
     const updateUser = await User.findByIdAndUpdate(
@@ -52,7 +53,6 @@ const loginUserCtrl = asyncHandler(async (req, res) => {
       lastname: findUser?.lastname,
       email: findUser?.email,
       mobile: findUser?.mobile,
-      role: findUser?.role,
       token: generateToken(findUser?._id),
     });
   } else {
@@ -103,7 +103,6 @@ const loginAdmin = asyncHandler(async (req, res) => {
 //handle refresh token
 const handleRefreshToken = asyncHandler(async (req, res) => {
   const cookie = req.cookies;
-  console.log(cookie);
   if (!cookie?.refreshToken) throw new Error("No Refresh Token in Cookies");
   const refreshToken = cookie.refreshToken;
   const user = await User.findOne({ refreshToken });
@@ -150,9 +149,28 @@ const updatedUser = asyncHandler(async (req, res) => {
       {
         firstname: req?.body?.firstname,
         lastname: req?.body?.lastname,
-        address: req?.body?.address,
         email: req?.body?.email,
         mobile: req?.body?.mobile,
+      },
+      {
+        new: true,
+      }
+    );
+    res.json(updatedUser);
+  } catch (error) {
+    throw new Error(error);
+  }
+});
+
+//save user Address
+const saveAddress = asyncHandler(async (req, res, next) => {
+  const { _id } = req.user;
+  validateMongoDbId(_id);
+  try {
+    const updatedUser = await User.findByIdAndUpdate(
+      _id,
+      {
+        address: req?.body?.address,
       },
       {
         new: true,
@@ -260,11 +278,11 @@ const updatePassword = asyncHandler(async (req, res) => {
 const forgotPasswordToken = asyncHandler(async (req, res) => {
   const { email } = req.body;
   const user = await User.findOne({ email });
-  if (!user) return res.json({ msg: "User not found with this email" });
+  if (!user) throw new Error("User not found with this email");
   try {
     const token = await user.createPasswordResetToken();
     await user.save();
-    const resetURL = `
+    const resetURL_admin = `
                             Hi, Please follow this link to reset your password. 
                             This link is valid till 10 minutes from now.
                             <a
@@ -273,11 +291,20 @@ const forgotPasswordToken = asyncHandler(async (req, res) => {
                                 Click here
                             </a>
                         `;
+    const resetURL_user = `
+                            Hi, Please follow this link to reset your password. 
+                            This link is valid till 10 minutes from now.
+                            <a
+                                href='http://localhost:3000/reset-password/${token}'
+                            >
+                                Click here
+                            </a>
+                        `;
     const data = {
       to: email,
       text: "Hey User",
       subject: "Forgot Password Link",
-      html: resetURL,
+      html: user.role === "admin" ? resetURL_admin : resetURL_user,
     };
     sendEmail(data);
     res.json(token);
@@ -498,13 +525,24 @@ const applyCoupon = asyncHandler(async (req, res) => {
 //   }
 // });
 
+// const getUserOrders = asyncHandler(async (req, res) => {
+//   const { _id } = req.user;
+//   validateMongoDbId(_id);
+//   try {
+//     const userorders = await Order.findOne({ orderby: _id })
+//       .populate("products.product")
+//       .exec();
+//     res.json(userorders);
+//   } catch (error) {
+//     throw new Error(error);
+//   }
+// });
+
 const getUserOrders = asyncHandler(async (req, res) => {
   const { _id } = req.user;
   validateMongoDbId(_id);
   try {
-    const userorders = await Order.findOne({ orderby: _id })
-      .populate("products.product")
-      .exec();
+    const userorders = await Order.find({ user: _id });
     res.json(userorders);
   } catch (error) {
     throw new Error(error);
@@ -559,6 +597,7 @@ module.exports = {
   resetPassword,
   loginAdmin,
   getWishlist,
+  saveAddress,
   userCart,
   getUserCart,
   emptyCart,

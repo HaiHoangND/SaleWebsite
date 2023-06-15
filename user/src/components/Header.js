@@ -99,6 +99,17 @@ const Header = () => {
                 </div>
                 <div>
                   <Link
+                    to="/order"
+                    className="d-flex align-items-center gap-10 text-white"
+                  >
+                    <img src="images/Order.png" alt="order"/>
+                    <p className="mb-0">
+                      Order
+                    </p>
+                  </Link>
+                </div>
+                <div>
+                  <Link
                     to={authState?.user === null ? '/login' : ''}
                     onClick={authState?.user !== null ? handleLogout : null}
                     className="d-flex align-items-center gap-10 text-white"
