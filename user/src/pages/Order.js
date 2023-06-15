@@ -1,22 +1,29 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import BreadCrumb from "../components/BreadCrumb";
 import Meta from "../components/Meta";
 import Container from "../components/Container";
 import { useDispatch } from "react-redux";
 import { getAnUserOrders } from "../features/user/userSlice";
 import { useSelector } from "react-redux";
-import { getAProducts } from "../features/products/productSlice";
-import axios from "axios";
 
 const Order = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     getUserOderFromDb();
   }, []);
+
   const getUserOderFromDb = () => {
     dispatch(getAnUserOrders());
   };
+
+  const setDate = (day) => {
+    const date = new Date(day);
+    const formattedDate = date.toLocaleString();
+    return formattedDate;
+  };
+
   const orderState = useSelector((state) => state?.auth?.orders);
+
   return (
     <>
       <Meta title={"Orders"} />
@@ -54,14 +61,18 @@ const Order = () => {
                           {item.orderItems.map((orderItem, index) => {
                             return (
                               <div key={index}>
-                                <p>Product: {orderItem.product}</p>
+                                <p>Product: {orderItem.product.title}</p>
+                                <img
+                                  src={orderItem.product.images[0].url}
+                                  width={50}
+                                />
                                 <p>Quantity: {orderItem.quantity}</p>
                                 <p>Price: {orderItem.price}</p>
                               </div>
                             );
                           })}
                         </td>
-                        <td>{item.paidAt}</td>
+                        <td>{setDate(item.paidAt)}</td>
                         <td>{item.totalPrice}</td>
                         <td>{item.orderStatus}</td>
                       </tr>

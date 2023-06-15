@@ -505,7 +505,7 @@ const applyCoupon = asyncHandler(async (req, res) => {
 //         amount: finalAmout,
 //         status: "Cash on Delivery",
 //         created: Date.now(),
-//         currency: "vnd",
+//         currency: "dollar",
 //       },
 //       orderby: user._id,
 //       orderStatus: "Cash on Delivery",
@@ -542,7 +542,9 @@ const getUserOrders = asyncHandler(async (req, res) => {
   const { _id } = req.user;
   validateMongoDbId(_id);
   try {
-    const userorders = await Order.find({ user: _id });
+    const userorders = await Order.find({ user: _id }).populate(
+      "orderItems.product"
+    );
     res.json(userorders);
   } catch (error) {
     throw new Error(error);
