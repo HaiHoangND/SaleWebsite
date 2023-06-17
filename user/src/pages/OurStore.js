@@ -16,6 +16,12 @@ import { sortByBestSelling } from "../features/products/productSlice";
 
 const OurStore = () => {
   const [grid, setGrid] = useState(4);
+  // const [sort, setSort] = useState("gf");
+  // const [category, setCategory] = useState("sdfg");
+  const [params, setParams] = useState({
+    sort: '',
+    category: ''
+  })
   const productState = useSelector((state) => state.product.product);
   const productCategoriesState = useSelector(
     (state) => state.product.productCategories
@@ -23,11 +29,12 @@ const OurStore = () => {
   useEffect(() => {
     getProducts();
     getProductCategories();
-  }, []);
+  }, [params]);
   const dispatch = useDispatch();
   const getProducts = () => {
-    dispatch(getAllProducts());
+    dispatch(getAllProducts(params));
   };
+
 
   const getProductCategories = () => {
     dispatch(getAllProductCategories());
@@ -42,7 +49,7 @@ const OurStore = () => {
           <div className="col-3">
             <div className="filter-card mb-3">
               <h3 className="filter-title">Shop By Categories</h3>
-              {productCategoriesState &&
+              {/* {productCategoriesState &&
                 productCategoriesState?.map((item, index) => {
                   return (
                     <div>
@@ -51,7 +58,26 @@ const OurStore = () => {
                       </ul>
                     </div>
                   );
-                })}
+                })} */}
+                <select
+                    name=""
+                    defaultValue={""}
+                    onChange={e => setParams({...params, category: e.target.value})}
+                    // value={sort}
+                    className="form-control form-select"
+                    id=""
+                  >
+                    <option value="">All category</option>
+                    {
+                      productCategoriesState?.map((item, index) => {
+                        return (
+                          <option key={index} value={item.title}>{item.title}</option>
+                        );
+                    }
+                      )
+                  }
+                    
+                  </select>
             </div>
             <div className="filter-card mb-3">
               <h3 className="filter-title">Filter By</h3>
@@ -209,20 +235,25 @@ const OurStore = () => {
                   </p>
                   <select
                     name=""
-                    defaultValue={"manula"}
+                    defaultValue={""}
+                    onChange={e => setParams({...params, sort: e.target.value})}
+                    // value={sort}
                     className="form-control form-select"
                     id=""
                   >
-                    <option value="manual">Featured</option>
-                    <option value="best-selling">Best selling</option>
+                    <option value="manual">Manual</option>
+                    {/* <option value="best-selling">Best selling</option>
                     <option value="title-ascending">Alphabetically, A-Z</option>
                     <option value="title-descending">
                       Alphabetically, Z-A
-                    </option>
-                    <option value="price-ascending">Price, low to high</option>
+                    </option> */}
+                    {/* <option value="title">Alphabetically, A-Z</option> */}
+                    <option value="price">Price, low to high</option>
+                    <option value="quantity">Quantity, low to high</option>
+                    {/* <option value="price-ascending">Price, low to high</option>
                     <option value="price-descending">Price, high to low</option>
                     <option value="created-ascending">Date, old to new</option>
-                    <option value="created-descending">Date, new to old</option>
+                    <option value="created-descending">Date, new to old</option> */}
                   </select>
                 </div>
                 <div className="d-flex align-items-center gap-10">

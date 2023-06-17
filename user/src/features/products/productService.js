@@ -1,9 +1,21 @@
 import axios from "axios";
 import { base_url, config } from "../../utils/axiosConfig";
 
-const getProducts = async () => {
+const getProducts = async (params) => {
+  console.log('params: ', params)
   try {
-    const response = await axios.get(`${base_url}product`);
+    let url = `${base_url}product?`;
+    if(params.sort){
+      url+= `sort=${params.sort}`
+    }
+    if(params.category){
+      if(!params.sort){
+        url+= `category=${params.category}`
+      }else{
+        url+= `&category=${params.category}`
+      }
+    }
+    const response = await axios.get(url);
     if (response.data) {
       return response.data;
     }
