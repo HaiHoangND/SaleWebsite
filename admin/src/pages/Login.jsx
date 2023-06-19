@@ -25,7 +25,7 @@ const Login = () => {
       const cookieValue = `refreshToken=${response.data?.refreshToken}; path=/;`;
       // Lưu cookie
       document.cookie = cookieValue;
-      
+
       if (response.data?.token) {
         if (response.data?.role === "admin") {
           navigate("/admin");
@@ -41,7 +41,7 @@ const Login = () => {
   };
 
   return (
-    <div className="py-5" style={{ background: "#ffd333", minHeight: "100vh" }}>
+    <div className="py-5" style={{ background: "#E9CAFA", minHeight: "100vh" }}>
       <br />
       <br />
       <br />

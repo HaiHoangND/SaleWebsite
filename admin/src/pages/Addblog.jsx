@@ -120,7 +120,7 @@ const Addblog = () => {
         window.location.href = "/";
       } else {
         console.error(error);
-        setMes("Error creating brand. Please try again.");
+        setMes("Error creating blog. Please try again.");
       }
     }
   };

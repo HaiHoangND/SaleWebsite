@@ -68,7 +68,7 @@ const Addcoupon = () => {
         window.location.href = "/";
       } else {
         console.error(error);
-        setMessage("Error creating brand. Please try again.");
+        setMessage("Error creating coupon. Please try again.");
       }
     }
   };

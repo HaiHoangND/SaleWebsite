@@ -13,6 +13,7 @@ const Addproduct = () => {
     brand: "",
     quantity: "",
     color: "",
+    tags: "",
   });
   const [brands, setBrands] = useState([]);
   useEffect(() => {
@@ -146,6 +147,7 @@ const Addproduct = () => {
           brand: data.brand,
           quantity: data.quantity,
           color: data.color,
+          tags: data.tags,
         };
         await axios.post(
           "http://localhost:5000/api/product/",
@@ -168,6 +170,7 @@ const Addproduct = () => {
           brand: data.brand,
           quantity: data.quantity,
           color: data.color,
+          tags: data.tags,
         };
         await axios.post(
           "http://localhost:5000/api/product/",
@@ -182,7 +185,7 @@ const Addproduct = () => {
         window.location.href = "/";
       } else {
         console.error(error);
-        setMessage("Error creating brand. Please try again.");
+        setMessage("Error creating product. Please try again.");
       }
     }
   };
@@ -279,6 +282,20 @@ const Addproduct = () => {
             <option value="Lam">Lam</option>
             <option value="Tràm">Tràm</option>
             <option value="Lục">Lục</option>
+            <option value="Black">Black</option>
+            <option value="Nâu">Nâu</option>
+          </select>
+          <select
+            name="tags"
+            className="form-control py-3 mb-3"
+            id="tags"
+            value={data.tags}
+            onChange={(e) => handle(e)}
+          >
+            <option value="">Select Tags</option>
+            <option value="featured">featured</option>
+            <option value="special">special</option>
+            <option value="popular">popular</option>
           </select>
 
           <button

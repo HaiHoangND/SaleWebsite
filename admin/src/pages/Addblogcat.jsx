@@ -70,7 +70,7 @@ const Addblogcat = () => {
         window.location.href = "/";
       } else {
         console.error(error);
-        setMessage("Error creating brand. Please try again.");
+        setMessage("Error creating blog category. Please try again.");
       }
     }
   };

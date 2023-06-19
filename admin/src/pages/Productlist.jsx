@@ -106,6 +106,7 @@ const Productlist = () => {
     brand: "",
     quantity: "",
     color: "",
+    tags: "",
   });
   const fetchData = async () => {
     try {
@@ -196,7 +197,8 @@ const Productlist = () => {
     category,
     brand,
     quantity,
-    color
+    color,
+    tags
   ) => {
     setUpdateData({
       id,
@@ -207,12 +209,22 @@ const Productlist = () => {
       brand,
       quantity,
       color,
+      tags,
     });
     setShowModal(true);
   };
   const handleUpdateProduct = async (e) => {
-    const { id, title, description, price, category, brand, quantity, color } =
-      updateData;
+    const {
+      id,
+      title,
+      description,
+      price,
+      category,
+      brand,
+      quantity,
+      color,
+      tags,
+    } = updateData;
     try {
       const token = JSON.parse(localStorage.getItem("access_token"));
       const decodedToken = jwt_decode(token);
@@ -241,6 +253,7 @@ const Productlist = () => {
             brand,
             quantity,
             color,
+            tags,
           },
           {
             headers: {
@@ -262,6 +275,7 @@ const Productlist = () => {
             brand,
             quantity,
             color,
+            tags,
           },
           {
             headers: {
@@ -351,6 +365,7 @@ const Productlist = () => {
               <th scope="col">Sold</th>
               <th scope="col">Image</th>
               <th scope="col">Color</th>
+              <th scope="col">Tags</th>
               <th scope="col">Ratings</th>
               <th scope="col">Total Rating</th>
               <th scope="col">Created At</th>
@@ -382,6 +397,7 @@ const Productlist = () => {
                   ))}
                 </td>
                 <td>{value.color}</td>
+                <td>{value.tags}</td>
                 <td>
                   {value.ratings.map((rating, index) => (
                     <div key={index}>
@@ -406,7 +422,8 @@ const Productlist = () => {
                         value.category,
                         value.brand,
                         value.quantity,
-                        value.color
+                        value.color,
+                        value.tags
                       )
                     }
                   >
@@ -501,7 +518,7 @@ const Productlist = () => {
                   setUpdateData({ ...updateData, category: e.target.value })
                 }
               >
-                <option value="">Select Category</option>
+                <option value="">Select Blog Category</option>
                 {categories.map((category) => (
                   <option key={category._id}>{category.title}</option>
                 ))}
@@ -561,6 +578,26 @@ const Productlist = () => {
                 <option value="Lam">Lam</option>
                 <option value="Tràm">Tràm</option>
                 <option value="Lục">Lục</option>
+                <option value="Black">Black</option>
+                <option value="Nâu">Nâu</option>
+              </select>
+
+              <label htmlFor="tags" className="form-label">
+                Tags:
+              </label>
+              <select
+                name="tags"
+                className="form-control py-3 mb-3"
+                id="tags"
+                value={updateData.tags}
+                onChange={(e) =>
+                  setUpdateData({ ...updateData, tags: e.target.value })
+                }
+              >
+                <option value="">Select Tags</option>
+                <option value="featured">featured</option>
+                <option value="special">special</option>
+                <option value="popular">popular</option>
               </select>
             </div>
           </form>
@@ -581,6 +618,7 @@ const Productlist = () => {
                 updateData.brand,
                 updateData.quantity,
                 updateData.color,
+                updateData.tags,
                 e
               )
             }

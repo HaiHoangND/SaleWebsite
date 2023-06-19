@@ -30,7 +30,7 @@ const Forgotpassword = () => {
   };
 
   return (
-    <div className="py-5" style={{ background: "#ffd333", minHeight: "100vh" }}>
+    <div className="py-5" style={{ background: "#E9CAFA", minHeight: "100vh" }}>
       <br />
       <br />
       <br />
