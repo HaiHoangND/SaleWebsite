@@ -20,9 +20,9 @@ const { Header, Sider, Content } = Layout;
 
 const MainLayout = () => {
   const [collapsed, setCollapsed] = useState(false);
-  const {
-    token: { colorBgContainer },
-  } = theme.useToken();
+  // const {
+  //   token: { colorBgContainer },
+  // } = theme.useToken();
   const navigate = useNavigate();
 
   const handleSignOut = () => {
@@ -159,7 +159,7 @@ const MainLayout = () => {
           className="d-flex justify-content-between ps-1 pe-5"
           style={{
             padding: 0,
-            background: colorBgContainer,
+            // background: colorBgContainer,
           }}
         >
           {React.createElement(
@@ -221,7 +221,7 @@ const MainLayout = () => {
             margin: "24px 16px",
             padding: 24,
             minHeight: 280,
-            background: colorBgContainer,
+            // background: colorBgContainer,
           }}
         >
           <Outlet />
