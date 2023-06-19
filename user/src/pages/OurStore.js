@@ -1,28 +1,52 @@
-import React from 'react';
-import BreadCrumb from '../components/BreadCrumb';
-import Meta from '../components/Meta';
-import ReactStars from 'react-stars';
-import { useState } from 'react';
-import ProductCard from '../components/ProductCard';
-import { useEffect } from 'react';
-import axios from 'axios';
-import { useDispatch, useSelector } from 'react-redux';
-import { getAllProducts } from '../features/products/productSlice';
+
+import React from "react";
+import BreadCrumb from "../components/BreadCrumb";
+import Meta from "../components/Meta";
+import ReactStars from "react-stars";
+import { useState } from "react";
+import ProductCard from "../components/ProductCard";
+import { useEffect } from "react";
+import axios from "axios";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  getAllProductCategories,
+  getAllProducts,
+} from "../features/products/productSlice";
 import { getUserCart } from '../features/user/userSlice';
-import Container from '../components/Container';
+import Container from "../components/Container";
+import { sortByBestSelling } from "../features/products/productSlice";
 
 const OurStore = () => {
   const [grid, setGrid] = useState(4);
+  // const [sort, setSort] = useState("gf");
+  // const [category, setCategory] = useState("sdfg");
+  const [params, setParams] = useState({
+    sort: '',
+    category: ''
+  })
   const productState = useSelector((state) => state.product.product);
+  const productCategoriesState = useSelector(
+    (state) => state.product.productCategories
+  );
   useEffect(() => {
     getProducts();
   }, []);
+  
   useEffect(() => {
     dispatch(getUserCart());
   }, []);
+  useEffect(() => {
+    getProductCategories();
+  }, [params]);
+
   const dispatch = useDispatch();
   const getProducts = () => {
-    dispatch(getAllProducts());
+    dispatch(getAllProducts(params));
+  };
+
+
+  const getProductCategories = () => {
+    dispatch(getAllProductCategories());
   };
 
   return (
@@ -34,14 +58,35 @@ const OurStore = () => {
           <div className="col-3">
             <div className="filter-card mb-3">
               <h3 className="filter-title">Shop By Categories</h3>
-              <div>
-                <ul className="ps-0">
-                  <li>Watch</li>
-                  <li>Tv</li>
-                  <li>Camera</li>
-                  <li>Laptop</li>
-                </ul>
-              </div>
+              {/* {productCategoriesState &&
+                productCategoriesState?.map((item, index) => {
+                  return (
+                    <div>
+                      <ul key={index} className="ps-0">
+                        <li>{item?.title}</li>
+                      </ul>
+                    </div>
+                  );
+                })} */}
+                <select
+                    name=""
+                    defaultValue={""}
+                    onChange={e => setParams({...params, category: e.target.value})}
+                    // value={sort}
+                    className="form-control form-select"
+                    id=""
+                  >
+                    <option value="">All category</option>
+                    {
+                      productCategoriesState?.map((item, index) => {
+                        return (
+                          <option key={index} value={item.title}>{item.title}</option>
+                        );
+                    }
+                      )
+                  }
+                    
+                  </select>
             </div>
             <div className="filter-card mb-3">
               <h3 className="filter-title">Filter By</h3>
@@ -199,24 +244,31 @@ const OurStore = () => {
                   </p>
                   <select
                     name=""
-                    defaultValue={'manula'}
+                    defaultValue={""}
+                    onChange={e => setParams({...params, sort: e.target.value})}
+                    // value={sort}
                     className="form-control form-select"
                     id=""
                   >
-                    <option value="manual">Featured</option>
-                    <option value="best-selling">Best selling</option>
+                    <option value="manual">Manual</option>
+                    {/* <option value="best-selling">Best selling</option>
                     <option value="title-ascending">Alphabetically, A-Z</option>
                     <option value="title-descending">
                       Alphabetically, Z-A
-                    </option>
-                    <option value="price-ascending">Price, low to high</option>
+                    </option> */}
+                    {/* <option value="title">Alphabetically, A-Z</option> */}
+                    <option value="price">Price, low to high</option>
+                    <option value="quantity">Quantity, low to high</option>
+                    {/* <option value="price-ascending">Price, low to high</option>
                     <option value="price-descending">Price, high to low</option>
                     <option value="created-ascending">Date, old to new</option>
-                    <option value="created-descending">Date, new to old</option>
+                    <option value="created-descending">Date, new to old</option> */}
                   </select>
                 </div>
                 <div className="d-flex align-items-center gap-10">
-                  <p className="totalproducts mb-0">21 Products</p>
+                  <p className="totalproducts mb-0">
+                    {Object.keys(productState).length} Products
+                  </p>
                   <div className="d-flex gap-10 align-items-center grid">
                     <img
                       onClick={() => {

@@ -31,6 +31,7 @@ const loginUserCtrl = asyncHandler(async (req, res) => {
   const { email, password } = req.body;
   //check if user exists or not
   const findUser = await User.findOne({ email });
+  console.log(findUser);
   if (findUser && (await findUser.isPasswordMatched(password))) {
     const refreshToken = await generateRefreshToken(findUser?._id);
     const updateUser = await User.findByIdAndUpdate(
@@ -91,6 +92,7 @@ const loginAdmin = asyncHandler(async (req, res) => {
         mobile: findAdmin?.mobile,
         role: findAdmin?.role,
         token: generateToken(findAdmin?._id),
+        refreshToken: refreshToken,
       });
     } else {
       return res.json({ data: "Invalid Credentials" });
@@ -280,7 +282,7 @@ const forgotPasswordToken = asyncHandler(async (req, res) => {
   try {
     const token = await user.createPasswordResetToken();
     await user.save();
-    const resetURL = `
+    const resetURL_admin = `
                             Hi, Please follow this link to reset your password. 
                             This link is valid till 10 minutes from now.
                             <a
@@ -289,11 +291,20 @@ const forgotPasswordToken = asyncHandler(async (req, res) => {
                                 Click here
                             </a>
                         `;
+    const resetURL_user = `
+                            Hi, Please follow this link to reset your password. 
+                            This link is valid till 10 minutes from now.
+                            <a
+                                href='http://localhost:3000/reset-password/${token}'
+                            >
+                                Click here
+                            </a>
+                        `;
     const data = {
       to: email,
       text: "Hey User",
       subject: "Forgot Password Link",
-      html: resetURL,
+      html: user.role === "admin" ? resetURL_admin : resetURL_user,
     };
     sendEmail(data);
     res.json(token);
@@ -419,6 +430,14 @@ const createOrder = asyncHandler(async (req, res) => {
       totalPrice,
       user: _id,
     });
+    for (const item of orderItems) {
+      const { product, quantity } = item;
+
+      // Tìm và cập nhật thông tin sản phẩm
+      await Product.findByIdAndUpdate(product, {
+        $inc: { quantity: -quantity, sold: quantity },
+      });
+    }
     res.json({
       order,
       success: true,
@@ -486,7 +505,7 @@ const applyCoupon = asyncHandler(async (req, res) => {
 //         amount: finalAmout,
 //         status: "Cash on Delivery",
 //         created: Date.now(),
-//         currency: "vnd",
+//         currency: "dollar",
 //       },
 //       orderby: user._id,
 //       orderStatus: "Cash on Delivery",
@@ -506,13 +525,26 @@ const applyCoupon = asyncHandler(async (req, res) => {
 //   }
 // });
 
+// const getUserOrders = asyncHandler(async (req, res) => {
+//   const { _id } = req.user;
+//   validateMongoDbId(_id);
+//   try {
+//     const userorders = await Order.findOne({ orderby: _id })
+//       .populate("products.product")
+//       .exec();
+//     res.json(userorders);
+//   } catch (error) {
+//     throw new Error(error);
+//   }
+// });
+
 const getUserOrders = asyncHandler(async (req, res) => {
   const { _id } = req.user;
   validateMongoDbId(_id);
   try {
-    const userorders = await Order.findOne({ orderby: _id })
-      .populate("products.product")
-      .exec();
+    const userorders = await Order.find({ user: _id }).populate(
+      "orderItems.product"
+    );
     res.json(userorders);
   } catch (error) {
     throw new Error(error);

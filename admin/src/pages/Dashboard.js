@@ -5,6 +5,8 @@ import { TiShoppingCart } from "react-icons/ti";
 import { FiUsers } from "react-icons/fi";
 import { Column } from "@ant-design/plots";
 import axios from "axios";
+import jwt_decode from "jwt-decode";
+import Cookies from "js-cookie";
 
 const Dashboard = () => {
   const data = [
@@ -30,31 +32,31 @@ const Dashboard = () => {
     },
     {
       type: "Jun",
-      sales: 38,
+      sales: 54,
     },
     {
       type: "July",
-      sales: 38,
+      sales: 45,
     },
     {
       type: "Aug",
-      sales: 38,
+      sales: 85,
     },
     {
       type: "Sep",
-      sales: 38,
+      sales: 62,
     },
     {
       type: "Oct",
-      sales: 38,
+      sales: 142,
     },
     {
       type: "Nov",
-      sales: 38,
+      sales: 136,
     },
     {
       type: "Dec",
-      sales: 38,
+      sales: 178,
     },
   ];
   const config = {
@@ -90,13 +92,29 @@ const Dashboard = () => {
   const fetchProducts = async () => {
     try {
       const token = JSON.parse(localStorage.getItem("access_token"));
-      if (
-        token &&
-        token.expirationDate &&
-        new Date() > new Date(token.expirationDate)
-      ) {
+      const decodedToken = jwt_decode(token);
+      const currentTime = Date.now() / 1000; // Chuyển đổi thời gian hiện tại sang đơn vị giây
+
+      if (decodedToken.exp < currentTime) {
         // Token đã hết hạn, xử lý tương ứng (ví dụ: đăng nhập lại)
-        alert("Token is expired, please login again.");
+        Cookies.get("refreshToken");
+        const response = await axios.get(
+          "http://localhost:5000/api/user/refresh",
+          {
+            withCredentials: true, // Gửi các cookie cùng với yêu cầu
+          }
+        );
+        const newToken = response.data.accessToken;
+
+        localStorage.setItem("access_token", JSON.stringify(newToken));
+        // Tiếp tục sử dụng token mới
+        const res = await axios.get("http://localhost:5000/api/product/", {
+          headers: {
+            Authorization: `Bearer ${newToken}`,
+          },
+        });
+        const totalProducts = res.data.length;
+        setCountProduct(totalProducts);
       } else {
         // Token còn hiệu lực, tiếp tục sử dụng
         const response = await axios.get("http://localhost:5000/api/product/", {
@@ -116,16 +134,38 @@ const Dashboard = () => {
   }, []);
 
   const [countOrder, setCountOrder] = useState(0);
+  const [totalPrice, setTotalPrice] = useState(0);
   const fetchOrders = async () => {
     try {
       const token = JSON.parse(localStorage.getItem("access_token"));
-      if (
-        token &&
-        token.expirationDate &&
-        new Date() > new Date(token.expirationDate)
-      ) {
+      const decodedToken = jwt_decode(token);
+      const currentTime = Date.now() / 1000; // Chuyển đổi thời gian hiện tại sang đơn vị giây
+
+      if (decodedToken.exp < currentTime) {
         // Token đã hết hạn, xử lý tương ứng (ví dụ: đăng nhập lại)
-        alert("Token is expired, please login again.");
+        Cookies.get("refreshToken");
+        const response = await axios.get(
+          "http://localhost:5000/api/user/refresh",
+          {
+            withCredentials: true, // Gửi các cookie cùng với yêu cầu
+          }
+        );
+        const newToken = response.data.accessToken;
+        localStorage.setItem("access_token", JSON.stringify(newToken));
+        // Tiếp tục sử dụng token mới
+        const res = await axios.get(
+          "http://localhost:5000/api/user/get-all-orders",
+          {
+            headers: {
+              Authorization: `Bearer ${newToken}`,
+            },
+          }
+        );
+        const totalOrders = res.data.length;
+        setCountOrder(totalOrders);
+        response.data.forEach((order) => {
+          setTotalPrice(order.totalPrice);
+        });
       } else {
         // Token còn hiệu lực, tiếp tục sử dụng
         const response = await axios.get(
@@ -138,6 +178,12 @@ const Dashboard = () => {
         );
         const totalOrders = response.data.length;
         setCountOrder(totalOrders);
+        console.log(response.data);
+        let sumPrice = 0;
+        response.data.forEach((order) => {
+          sumPrice += order.totalPrice;
+        });
+        setTotalPrice(sumPrice);
       }
     } catch (error) {
       throw new Error(error);
@@ -150,17 +196,43 @@ const Dashboard = () => {
   const [countUser, setCountUser] = useState(0);
   const fetchUsers = async () => {
     try {
-      const token = localStorage.getItem("access_token");
-      const response = await axios.get(
-        "http://localhost:5000/api/user/all-users",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      const totalUsers = response.data.length;
-      setCountUser(totalUsers);
+      const token = JSON.parse(localStorage.getItem("access_token"));
+      const decodedToken = jwt_decode(token);
+      const currentTime = Date.now() / 1000; // Chuyển đổi thời gian hiện tại sang đơn vị giây
+
+      if (decodedToken.exp < currentTime) {
+        // Token đã hết hạn, xử lý tương ứng (ví dụ: đăng nhập lại)
+        Cookies.get("refreshToken");
+        const res = await axios.get("http://localhost:5000/api/user/refresh", {
+          withCredentials: true, // Gửi các cookie cùng với yêu cầu
+        });
+        const newToken = res.data.accessToken;
+
+        localStorage.setItem("access_token", JSON.stringify(newToken));
+        // Tiếp tục sử dụng token mới
+        const response = await axios.get(
+          "http://localhost:5000/api/user/all-users",
+          {
+            headers: {
+              Authorization: `Bearer ${newToken}`,
+            },
+          }
+        );
+        const totalUsers = response.data.length;
+        setCountUser(totalUsers);
+      } else {
+        // Token còn hiệu lực, tiếp tục sử dụng
+        const response = await axios.get(
+          "http://localhost:5000/api/user/all-users",
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          }
+        );
+        const totalUsers = response.data.length;
+        setCountUser(totalUsers);
+      }
     } catch (error) {
       throw new Error(error);
     }
@@ -168,6 +240,7 @@ const Dashboard = () => {
   useEffect(() => {
     fetchUsers();
   }, []);
+
   return (
     <div>
       <h3 className="mb-4 title">Dashboard</h3>
@@ -178,7 +251,7 @@ const Dashboard = () => {
           </div>
           <div>
             <p className="desc">Total Sales</p>
-            <h4 className="mb-0 sub-title">$1100</h4>
+            <h4 className="mb-0 sub-title">{totalPrice} $</h4>
           </div>
         </div>
       </div>
@@ -219,13 +292,8 @@ const Dashboard = () => {
         </div>
       </div>
 
-      <div className="mt-4">
-        <h3 className="mb-5 title">Recent Orders</h3>
-        <div></div>
-      </div>
-
       <div className="my-4">
-        <h3 className="mb-5">Recent Reviews</h3>
+        <h3 className="mb-5 title">Recent Reviews</h3>
       </div>
     </div>
   );

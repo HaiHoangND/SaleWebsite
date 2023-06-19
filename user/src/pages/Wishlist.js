@@ -58,8 +58,8 @@ const Wishlist = () => {
                     <div className="wishlist-card-image bg-white">
                       <img
                         src={
-                          item?.images[0].url
-                            ? item?.images[0].url
+                          item?.images[0]?.url
+                            ? item?.images[0]?.url
                             : 'images/watch.jpg'
                         }
                         className="img-fluid d-block mx-auto"
@@ -71,6 +71,7 @@ const Wishlist = () => {
                     <div className="py-3 px-3">
                       <h5 className="title">{item?.title}</h5>
                       <h6 className="price">$ {item?.price}</h6>
+
                     </div>
                   </div>
                 </div>

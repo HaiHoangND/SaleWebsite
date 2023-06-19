@@ -1,12 +1,12 @@
-import axios from 'axios';
-import { base_url, config } from '../../utils/axiosConfig';
+import axios from "axios";
+import { base_url, config } from "../../utils/axiosConfig";
 
 const register = async (userData) => {
   try {
     const response = await axios.post(`${base_url}user/register`, userData);
     if (response.data) {
       if (response.data) {
-        localStorage.setItem('customer', JSON.stringify(response.data));
+        localStorage.setItem("customer", JSON.stringify(response.data));
       }
       return response.data;
     }
@@ -19,10 +19,12 @@ const register = async (userData) => {
 const login = async (userData) => {
   try {
     const response = await axios.post(`${base_url}user/login`, userData);
-    if (response.data) {
-      localStorage.setItem('customer', JSON.stringify(response.data));
+    if (response.data?.token) {
+      localStorage.setItem("customer", JSON.stringify(response.data));
+      return response.data;
+    } else {
+      alert("Sai thông tin tài khoản, vui lòng đăng nhập lại!");
     }
-    return response.data;
   } catch (error) {
     // Handle any exceptions that occurred during the registration process
     throw new Error(error.message);
@@ -32,6 +34,17 @@ const login = async (userData) => {
 const getUserWishlist = async () => {
   try {
     const response = await axios.get(`${base_url}user/wishlist`, config);
+    if (response.data) {
+      return response.data;
+    }
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
+
+const getUserOrder = async () => {
+  try {
+    const response = await axios.get(`${base_url}user/get-user-orders`, config);
     if (response.data) {
       return response.data;
     }
@@ -86,8 +99,8 @@ const updateProductFromCart = async (cartDetail) => {
 const logout = async () => {
   try {
     // Xóa dữ liệu đăng nhập từ lưu trữ trình duyệt
-    localStorage.removeItem('customer');
-    localStorage.removeItem('token');
+    localStorage.removeItem("customer");
+    localStorage.removeItem("token");
 
     // Trả về thành công nếu không có lỗi xảy ra
     return;
@@ -107,4 +120,5 @@ export const authService = {
   updateProductFromCart,
   createAnOrder,
   logout,
+  getUserOrder,
 };

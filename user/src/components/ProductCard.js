@@ -42,13 +42,13 @@ const ProductCard = (props) => {
               </div>
               <div className="product-image">
                 <img
-                  src={item?.images[0].url}
+                  src={item?.images[0]?.url}
                   className="img-fluid mx-auto"
                   alt="product"
                   width={160}
                 />
                 <img
-                  src={item?.images[1].url}
+                  src={item?.images[1]?.url}
                   className="img-fluid mx-auto"
                   alt="product"
                   width={160}

@@ -4,17 +4,22 @@ import Meta from "../components/Meta";
 import BlogCard from "../components/BlogCard";
 import Container from "../components/Container";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllBlogs } from "../features/blogs/blogSlice";
+import { getAllBlogCategories, getAllBlogs } from "../features/blogs/blogSlice";
 import moment from "moment";
 
 const Blog = () => {
   const blogState = useSelector((state) => state?.blog?.blog);
+  const blogcategoryState = useSelector((state) => state?.blog?.blogCategories);
   useEffect(() => {
     getBlogs();
+    getBlogCategories();
   }, []);
   const dispatch = useDispatch();
   const getBlogs = () => {
     dispatch(getAllBlogs());
+  };
+  const getBlogCategories = () => {
+    dispatch(getAllBlogCategories());
   };
   return (
     <>
@@ -25,14 +30,16 @@ const Blog = () => {
           <div className="col-3">
             <div className="filter-card mb-3">
               <h3 className="filter-title">Find By Categories</h3>
-              <div>
-                <ul className="ps-0">
-                  <li>Watch</li>
-                  <li>Tv</li>
-                  <li>Camera</li>
-                  <li>Laptop</li>
-                </ul>
-              </div>
+              {blogcategoryState &&
+                blogcategoryState?.map((item, index) => {
+                  return (
+                    <div key={index}>
+                      <ul className="ps-0">
+                        <li>{item?.title}</li>
+                      </ul>
+                    </div>
+                  );
+                })}
             </div>
           </div>
           <div className="col-9">
@@ -44,7 +51,7 @@ const Blog = () => {
                       id={item?._id}
                       title={item?.title}
                       description={item?.description}
-                      image={item?.images[0]}
+                      image={item?.images[0]?.url}
                       date={moment(item?.createdAt).format(
                         "MMMM Do YYYY, h:mm a"
                       )}

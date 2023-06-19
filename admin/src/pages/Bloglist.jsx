@@ -3,6 +3,8 @@ import axios from "axios";
 import { Modal } from "react-bootstrap";
 import { MdDeleteForever } from "react-icons/md";
 import { AiOutlineEdit, AiOutlineCloudUpload } from "react-icons/ai";
+import jwt_decode from "jwt-decode";
+import Cookies from "js-cookie";
 
 const Bloglist = () => {
   const [data, setData] = useState([]);
@@ -12,13 +14,31 @@ const Bloglist = () => {
     const fetchCategories = async () => {
       try {
         const token = JSON.parse(localStorage.getItem("access_token"));
-        if (
-          token &&
-          token.expirationDate &&
-          new Date() > new Date(token.expirationDate)
-        ) {
+        const decodedToken = jwt_decode(token);
+        const currentTime = Date.now() / 1000; // Chuyển đổi thời gian hiện tại sang đơn vị giây
+
+        if (decodedToken.exp < currentTime) {
           // Token đã hết hạn, xử lý tương ứng (ví dụ: đăng nhập lại)
-          alert("Token is expired, please login again.");
+          Cookies.get("refreshToken");
+          const response = await axios.get(
+            "http://localhost:5000/api/user/refresh",
+            {
+              withCredentials: true, // Gửi các cookie cùng với yêu cầu
+            }
+          );
+          const newToken = response.data.accessToken;
+
+          localStorage.setItem("access_token", JSON.stringify(newToken));
+          // Tiếp tục sử dụng token mới
+          const res = await axios.get(
+            "http://localhost:5000/api/blogcategory/",
+            {
+              headers: {
+                Authorization: `Bearer ${newToken}`,
+              },
+            }
+          );
+          setCategories(res.data);
         } else {
           // Token còn hiệu lực, tiếp tục sử dụng
           const response = await axios.get(
@@ -46,13 +66,28 @@ const Bloglist = () => {
   const fetchData = async () => {
     try {
       const token = JSON.parse(localStorage.getItem("access_token"));
-      if (
-        token &&
-        token.expirationDate &&
-        new Date() > new Date(token.expirationDate)
-      ) {
+      const decodedToken = jwt_decode(token);
+      const currentTime = Date.now() / 1000; // Chuyển đổi thời gian hiện tại sang đơn vị giây
+
+      if (decodedToken.exp < currentTime) {
         // Token đã hết hạn, xử lý tương ứng (ví dụ: đăng nhập lại)
-        alert("Token is expired, please login again.");
+        Cookies.get("refreshToken");
+        const response = await axios.get(
+          "http://localhost:5000/api/user/refresh",
+          {
+            withCredentials: true, // Gửi các cookie cùng với yêu cầu
+          }
+        );
+        const newToken = response.data.accessToken;
+
+        localStorage.setItem("access_token", JSON.stringify(newToken));
+        // Tiếp tục sử dụng token mới
+        const res = await axios.get("http://localhost:5000/api/blog/", {
+          headers: {
+            Authorization: `Bearer ${newToken}`,
+          },
+        });
+        setData(res.data);
       } else {
         // Token còn hiệu lực, tiếp tục sử dụng
         const response = await axios.get("http://localhost:5000/api/blog/", {
@@ -73,13 +108,28 @@ const Bloglist = () => {
     if (window.confirm("Bạn có chắc chắn muốn xóa dữ liệu này không?")) {
       try {
         const token = JSON.parse(localStorage.getItem("access_token"));
-        if (
-          token &&
-          token.expirationDate &&
-          new Date() > new Date(token.expirationDate)
-        ) {
+        const decodedToken = jwt_decode(token);
+        const currentTime = Date.now() / 1000; // Chuyển đổi thời gian hiện tại sang đơn vị giây
+
+        if (decodedToken.exp < currentTime) {
           // Token đã hết hạn, xử lý tương ứng (ví dụ: đăng nhập lại)
-          alert("Token is expired, please login again.");
+          Cookies.get("refreshToken");
+          const response = await axios.get(
+            "http://localhost:5000/api/user/refresh",
+            {
+              withCredentials: true, // Gửi các cookie cùng với yêu cầu
+            }
+          );
+          const newToken = response.data.accessToken;
+
+          localStorage.setItem("access_token", JSON.stringify(newToken));
+          // Tiếp tục sử dụng token mới
+          await axios.delete(`http://localhost:5000/api/blog/${id}`, {
+            headers: {
+              Authorization: `Bearer ${newToken}`,
+            },
+          });
+          fetchData();
         } else {
           // Token còn hiệu lực, tiếp tục sử dụng
           await axios.delete(`http://localhost:5000/api/blog/${id}`, {
@@ -108,13 +158,38 @@ const Bloglist = () => {
     const { id, title, category, description } = updateData;
     try {
       const token = JSON.parse(localStorage.getItem("access_token"));
-      if (
-        token &&
-        token.expirationDate &&
-        new Date() > new Date(token.expirationDate)
-      ) {
+      const decodedToken = jwt_decode(token);
+      const currentTime = Date.now() / 1000; // Chuyển đổi thời gian hiện tại sang đơn vị giây
+
+      if (decodedToken.exp < currentTime) {
         // Token đã hết hạn, xử lý tương ứng (ví dụ: đăng nhập lại)
-        alert("Token is expired, please login again.");
+        Cookies.get("refreshToken");
+        const response = await axios.get(
+          "http://localhost:5000/api/user/refresh",
+          {
+            withCredentials: true, // Gửi các cookie cùng với yêu cầu
+          }
+        );
+        const newToken = response.data.accessToken;
+
+        localStorage.setItem("access_token", JSON.stringify(newToken));
+        // Tiếp tục sử dụng token mới
+        await axios.put(
+          `http://localhost:5000/api/blog/${id}`,
+          {
+            title,
+            category,
+            description,
+          },
+          {
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: `Bearer ${newToken}`,
+            },
+          }
+        );
+        handleCloseModal();
+        fetchData();
       } else {
         // Token còn hiệu lực, tiếp tục sử dụng
         await axios.put(
@@ -140,20 +215,46 @@ const Bloglist = () => {
   };
   const handleCloseModal = () => setShowModal(false);
 
-  const handleUploadImage = async (id, e) => {
+  const handleUploadImage = async (id, files) => {
     try {
       const token = JSON.parse(localStorage.getItem("access_token"));
-      if (
-        token &&
-        token.expirationDate &&
-        new Date() > new Date(token.expirationDate)
-      ) {
+      const decodedToken = jwt_decode(token);
+      const currentTime = Date.now() / 1000; // Chuyển đổi thời gian hiện tại sang đơn vị giây
+
+      if (decodedToken.exp < currentTime) {
         // Token đã hết hạn, xử lý tương ứng (ví dụ: đăng nhập lại)
-        alert("Token is expired, please login again.");
+        Cookies.get("refreshToken");
+        const response = await axios.get(
+          "http://localhost:5000/api/user/refresh",
+          {
+            withCredentials: true, // Gửi các cookie cùng với yêu cầu
+          }
+        );
+        const newToken = response.data.accessToken;
+
+        localStorage.setItem("access_token", JSON.stringify(newToken));
+        // Tiếp tục sử dụng token mới
+        const formData = new FormData();
+        for (let i = 0; i < files.length; i++) {
+          formData.append("images", files[i]);
+        }
+        await axios.put(
+          `http://localhost:5000/api/blog/upload/${id}`,
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${newToken}`,
+              "Content-Type": "multipart/form-data", // Đặt header "Content-Type" là "multipart/form-data" để gửi dữ liệu dạng form-data
+            },
+          }
+        );
+        fetchData();
       } else {
         // Token còn hiệu lực, tiếp tục sử dụng
         const formData = new FormData();
-        formData.append("images", e.target.files[0]);
+        for (let i = 0; i < files.length; i++) {
+          formData.append("images", files[i]);
+        }
         await axios.put(
           `http://localhost:5000/api/blog/upload/${id}`,
           formData,
@@ -249,7 +350,10 @@ const Bloglist = () => {
                     <input
                       type="file"
                       style={{ display: "none" }}
-                      onChange={(e) => handleUploadImage(value._id, e)}
+                      onChange={(e) =>
+                        handleUploadImage(value._id, e.target.files)
+                      }
+                      multiple
                     />
                   </label>
                 </td>

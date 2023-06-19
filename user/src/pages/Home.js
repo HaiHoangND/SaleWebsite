@@ -252,7 +252,7 @@ const Home = () => {
               <div className="row">
                 {productState &&
                   productState?.map((item, index) => {
-                    if (item.tags === 'featured') {
+                    if (item.tags === "featured") {
                       return (
                         <div key={index} className="col-3">
                           <div className="product-card position-relative">
@@ -300,7 +300,7 @@ const Home = () => {
                                 <button className="border-0 bg-transparent">
                                   <img
                                     onClick={() =>
-                                      natigate('/product/' + item?._id)
+                                      natigate("/product/" + item?._id)
                                     }
                                     src={view}
                                     alt="view"
@@ -398,7 +398,7 @@ const Home = () => {
           <div className="row">
             {productState &&
               productState?.map((item, index) => {
-                if (item.tags === 'special') {
+                if (item.tags === "special") {
                   return (
                     <SpecialProducts
                       key={index}
@@ -409,6 +409,7 @@ const Home = () => {
                       price={item?.price}
                       sold={item?.sold}
                       quantity={item?.quantity}
+                      image={item?.images[0].url}
                     />
                   );
                 }
@@ -425,7 +426,7 @@ const Home = () => {
             <div className="row">
               {productState &&
                 productState?.map((item, index) => {
-                  if (item.tags === 'popular') {
+                  if (item.tags === "popular") {
                     return (
                       <div key={index} className="col-3">
                         <div className="product-card position-relative">
@@ -473,7 +474,7 @@ const Home = () => {
                               <button className="border-0 bg-transparent">
                                 <img
                                   onClick={() =>
-                                    natigate('/product/' + item?._id)
+                                    natigate("/product/" + item?._id)
                                   }
                                   src={view}
                                   alt="view"
@@ -544,9 +545,9 @@ const Home = () => {
                       id={item?._id}
                       title={item?.title}
                       description={item?.description}
-                      image={item?.images[0]}
+                      image={item?.images[0]?.url}
                       date={moment(item?.createdAt).format(
-                        'MMMM Do YYYY, h:mm a'
+                        "MMMM Do YYYY, h:mm a"
                       )}
                     />
                   </div>

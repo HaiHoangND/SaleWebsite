@@ -2,27 +2,32 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
 import { blogService } from "./blogService";
 
-export const getAllBlogs = createAsyncThunk(
-  "blogs/get",
+export const getAllBlogs = createAsyncThunk("blogs/get", async (thunkAPI) => {
+  try {
+    return await blogService.getBlogs();
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error);
+  }
+});
+
+export const getAllBlogCategories = createAsyncThunk(
+  "blog/getCategories",
   async (thunkAPI) => {
     try {
-      return await blogService.getBlogs();
+      return await blogService.getBlogCategories();
     } catch (error) {
       return thunkAPI.rejectWithValue(error);
     }
   }
 );
 
-export const getABlog = createAsyncThunk(
-  "blog/get",
-  async (id, thunkAPI) => {
-    try {
-      return await blogService.getBlog(id);
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
-    }
+export const getABlog = createAsyncThunk("blog/get", async (id, thunkAPI) => {
+  try {
+    return await blogService.getBlog(id);
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error);
   }
-);
+});
 
 const blogState = {
   blog: "",
@@ -53,6 +58,21 @@ export const blogSlice = createSlice({
         state.isSuccess = false;
         state.message = action.error;
       })
+      .addCase(getAllBlogCategories.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(getAllBlogCategories.fulfilled, (state, action) => {
+        state.isLoading = false;
+        state.isError = false;
+        state.isSuccess = true;
+        state.blogCategories = action.payload;
+      })
+      .addCase(getAllBlogCategories.rejected, (state, action) => {
+        state.isError = true;
+        state.isLoading = false;
+        state.isSuccess = false;
+        state.message = action.error;
+      })
       .addCase(getABlog.pending, (state) => {
         state.isLoading = true;
       })
@@ -67,7 +87,7 @@ export const blogSlice = createSlice({
         state.isLoading = false;
         state.isSuccess = false;
         state.message = action.error;
-      })
+      });
   },
 });
 
