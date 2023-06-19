@@ -4,6 +4,7 @@ import Meta from '../components/Meta';
 import Container from '../components/Container';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserProductWishlist } from '../features/user/userSlice';
+import { getUserCart } from '../features/user/userSlice';
 import { addToWishList } from '../features/products/productSlice';
 
 const Wishlist = () => {
@@ -11,6 +12,11 @@ const Wishlist = () => {
   useEffect(() => {
     getWishlistFromDb();
   }, []);
+
+  useEffect(() => {
+    dispatch(getUserCart());
+  }, []);
+
   const getWishlistFromDb = () => {
     dispatch(getUserProductWishlist());
   };
@@ -35,7 +41,10 @@ const Wishlist = () => {
           {WishlistState &&
             WishlistState?.map((item, index) => {
               return (
-                <div className="col-3" key={index}>
+                <div
+                  className="col-3 bg-white py-3 shadow rounded mx-2"
+                  key={index}
+                >
                   <div className="wishlist-card position-relative">
                     <img
                       onClick={() => {
@@ -56,11 +65,12 @@ const Wishlist = () => {
                         className="img-fluid d-block mx-auto"
                         alt="watch"
                         width={100}
+                        height={100}
                       />
                     </div>
                     <div className="py-3 px-3">
                       <h5 className="title">{item?.title}</h5>
-                      <h6 className="price">{item?.price}</h6>
+                      <h6 className="price">$ {item?.price}</h6>
                     </div>
                   </div>
                 </div>

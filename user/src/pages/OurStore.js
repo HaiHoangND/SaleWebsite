@@ -1,20 +1,24 @@
-import React from "react";
-import BreadCrumb from "../components/BreadCrumb";
-import Meta from "../components/Meta";
-import ReactStars from "react-stars";
-import { useState } from "react";
-import ProductCard from "../components/ProductCard";
-import { useEffect } from "react";
-import axios from "axios";
-import { useDispatch, useSelector } from "react-redux";
-import { getAllProducts } from "../features/products/productSlice";
-import Container from "../components/Container";
+import React from 'react';
+import BreadCrumb from '../components/BreadCrumb';
+import Meta from '../components/Meta';
+import ReactStars from 'react-stars';
+import { useState } from 'react';
+import ProductCard from '../components/ProductCard';
+import { useEffect } from 'react';
+import axios from 'axios';
+import { useDispatch, useSelector } from 'react-redux';
+import { getAllProducts } from '../features/products/productSlice';
+import { getUserCart } from '../features/user/userSlice';
+import Container from '../components/Container';
 
 const OurStore = () => {
   const [grid, setGrid] = useState(4);
   const productState = useSelector((state) => state.product.product);
   useEffect(() => {
     getProducts();
+  }, []);
+  useEffect(() => {
+    dispatch(getUserCart());
   }, []);
   const dispatch = useDispatch();
   const getProducts = () => {
@@ -23,7 +27,7 @@ const OurStore = () => {
 
   return (
     <>
-      <Meta title={"Our Store"} />
+      <Meta title={'Our Store'} />
       <BreadCrumb title="Our Store" />
       <Container class1="store-wrapper home-wrapper-2 py-5">
         <div className="row">
@@ -190,12 +194,12 @@ const OurStore = () => {
             <div className="filter-sort-grid mb-4">
               <div className="d-flex justify-content-between align-items-center">
                 <div className="d-flex align-items-center gap-10">
-                  <p className="mb-0 d-block" style={{ width: "100px" }}>
+                  <p className="mb-0 d-block" style={{ width: '100px' }}>
                     Sort By:
                   </p>
                   <select
                     name=""
-                    defaultValue={"manula"}
+                    defaultValue={'manula'}
                     className="form-control form-select"
                     id=""
                   >

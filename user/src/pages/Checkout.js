@@ -1,20 +1,20 @@
-import React, { useEffect, useState } from "react";
-import { Link, json, useNavigate } from "react-router-dom";
-import { BiArrowBack } from "react-icons/bi";
-import watch from "../images/watch.jpg";
-import Container from "../components/Container";
-import { useDispatch } from "react-redux";
-import { useSelector } from "react-redux";
-import { useFormik } from "formik";
-import * as yup from "yup";
-import { createUserOrder, getUserCart } from "../features/user/userSlice";
+import React, { useEffect, useState } from 'react';
+import { Link, json, useNavigate } from 'react-router-dom';
+import { BiArrowBack } from 'react-icons/bi';
+import watch from '../images/watch.jpg';
+import Container from '../components/Container';
+import { useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
+import { useFormik } from 'formik';
+import * as yup from 'yup';
+import { createUserOrder, getUserCart } from '../features/user/userSlice';
 
 const shippingSchema = yup.object({
-  firstName: yup.string().required("First Name is required"),
-  lastName: yup.string().required("Last name is required"),
-  address: yup.string().required("Address is required"),
-  city: yup.string().required("Address is required"),
-  country: yup.string().required("Country is required"),
+  firstName: yup.string().required('First Name is required'),
+  lastName: yup.string().required('Last name is required'),
+  address: yup.string().required('Address is required'),
+  city: yup.string().required('Address is required'),
+  country: yup.string().required('Country is required'),
 });
 
 const Checkout = () => {
@@ -39,11 +39,11 @@ const Checkout = () => {
   }, [cartState]);
   const formik = useFormik({
     initialValues: {
-      firstName: "",
-      lastName: "",
-      address: "",
-      city: "",
-      country: "",
+      firstName: '',
+      lastName: '',
+      address: '',
+      city: '',
+      country: '',
     },
     validationSchema: shippingSchema,
     onSubmit: (values) => {
@@ -72,18 +72,18 @@ const Checkout = () => {
       })
     );
     setTimeout(() => {
-      navigate("/");
+      navigate('/');
     }, 2000);
   };
   return (
     <>
-      <Container class1="checkout-wrapper py-5 home-wrapper-2">
+      <Container class1="checkout-wrapper py-5">
         <div className="row">
           <div className="col-7">
             <div className="checkout-left-data">
               <h3 className="website-name">Sale website</h3>
               <nav
-                style={{ "--bs-breadcrumb-divider": ">" }}
+                style={{ '--bs-breadcrumb-divider': '>' }}
                 aria-label="breadcrumb"
               >
                 <ol className="breadcrumb">
@@ -126,8 +126,8 @@ const Checkout = () => {
                   <select
                     name="country"
                     value={formik.values.country}
-                    onChange={formik.handleChange("country")}
-                    onBlur={formik.handleBlur("country")}
+                    onChange={formik.handleChange('country')}
+                    onBlur={formik.handleBlur('country')}
                     className="form-control form-select"
                     id=""
                   >
@@ -147,8 +147,8 @@ const Checkout = () => {
                     className="form-control"
                     name="firstName"
                     value={formik.values.firstName}
-                    onChange={formik.handleChange("firstName")}
-                    onBlur={formik.handleBlur("firstName")}
+                    onChange={formik.handleChange('firstName')}
+                    onBlur={formik.handleBlur('firstName')}
                   />
                   <div className="error ms-2 my-1">
                     {formik.touched.firstName && formik.errors.lastName}
@@ -161,8 +161,8 @@ const Checkout = () => {
                     className="form-control"
                     name="lastName"
                     value={formik.values.lastName}
-                    onChange={formik.handleChange("lastName")}
-                    onBlur={formik.handleBlur("lastName")}
+                    onChange={formik.handleChange('lastName')}
+                    onBlur={formik.handleBlur('lastName')}
                   />
                   <div className="error ms-2 my-1">
                     {formik.touched.lastName && formik.errors.lastName}
@@ -175,8 +175,8 @@ const Checkout = () => {
                     className="form-control"
                     name="address"
                     value={formik.values.address}
-                    onChange={formik.handleChange("address")}
-                    onBlur={formik.handleBlur("address")}
+                    onChange={formik.handleChange('address')}
+                    onBlur={formik.handleBlur('address')}
                   />
                   <div className="error ms-2 my-1">
                     {formik.touched.address && formik.errors.address}
@@ -189,8 +189,8 @@ const Checkout = () => {
                     className="form-control"
                     name="city"
                     value={formik.values.city}
-                    onChange={formik.handleChange("city")}
-                    onBlur={formik.handleBlur("city")}
+                    onChange={formik.handleChange('city')}
+                    onBlur={formik.handleBlur('city')}
                   />
                   <div className="error ms-2 my-1">
                     {formik.touched.city && formik.errors.city}
@@ -225,7 +225,7 @@ const Checkout = () => {
                       <div className="w-75 d-flex gap-10">
                         <div className="w-25 position-relative">
                           <span
-                            style={{ top: "-10px", right: "2px" }}
+                            style={{ top: '-10px', right: '2px' }}
                             className="badge bg-secondary text-white rounded-circle p-2 position-absolute"
                           >
                             {item?.quantity}
@@ -260,7 +260,7 @@ const Checkout = () => {
               <div className="d-flex justify-content-between align-items-center">
                 <p className="total">Subtotal</p>
                 <p className="total-price">
-                  $ {totalAmount ? totalAmount : "0"}
+                  $ {totalAmount ? totalAmount : '0'}
                 </p>
               </div>
               <div className="d-flex justify-content-between align-items-center">
@@ -271,7 +271,7 @@ const Checkout = () => {
             <div className="d-flex justify-content-between align-items-center border-bootom py-4">
               <h4 className="total">Total</h4>
               <h5 className="total-price">
-                $ {totalAmount ? totalAmount + 5 : "0"}
+                $ {totalAmount ? totalAmount + 5 : '0'}
               </h5>
             </div>
           </div>
