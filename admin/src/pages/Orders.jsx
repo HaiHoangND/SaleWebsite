@@ -77,7 +77,7 @@ const Orders = () => {
         localStorage.setItem("access_token", JSON.stringify(newToken));
         // Tiếp tục sử dụng token mới
         const res = await axios.get(`http://localhost:5000/api/product/${id}`);
-        const productTitle = res.data.title;
+        const productTitle = res.data?.title;
         setDataOneProduct((prevData) => ({
           ...prevData,
           [id]: productTitle,
@@ -87,7 +87,7 @@ const Orders = () => {
         const response = await axios.get(
           `http://localhost:5000/api/product/${id}`
         );
-        const productTitle = response.data.title;
+        const productTitle = response.data?.title;
         setDataOneProduct((prevData) => ({
           ...prevData,
           [id]: productTitle,
@@ -348,7 +348,7 @@ const Orders = () => {
 
       <Modal show={showModalProduct} onHide={handleCloseModalProduct}>
         <Modal.Header closeButton>
-          <Modal.Title>Customer Information</Modal.Title>
+          <Modal.Title>Product Information</Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div>

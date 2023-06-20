@@ -1,15 +1,19 @@
-import React, { useEffect } from 'react';
-import BreadCrumb from '../components/BreadCrumb';
-import Meta from '../components/Meta';
-import Container from '../components/Container';
-import { useDispatch, useSelector } from 'react-redux';
-import { getUserProductWishlist } from '../features/user/userSlice';
-import { addToWishList } from '../features/products/productSlice';
+import React, { useEffect } from "react";
+import BreadCrumb from "../components/BreadCrumb";
+import Meta from "../components/Meta";
+import Container from "../components/Container";
+import { useDispatch, useSelector } from "react-redux";
+import { getUserProductWishlist } from "../features/user/userSlice";
+import { addToWishList } from "../features/products/productSlice";
+import { getUserCart } from "../features/user/userSlice";
 
 const Wishlist = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     getWishlistFromDb();
+  }, []);
+  useEffect(() => {
+    dispatch(getUserCart());
   }, []);
   const getWishlistFromDb = () => {
     dispatch(getUserProductWishlist());
@@ -25,7 +29,7 @@ const Wishlist = () => {
 
   return (
     <>
-      <Meta title={'Wishlist'} />
+      <Meta title={"Wishlist"} />
       <BreadCrumb title="Wishlist" />
       <Container class1="wishlist-wrapper home-wrapper-2 py-5">
         <div className="row">
@@ -35,7 +39,10 @@ const Wishlist = () => {
           {WishlistState &&
             WishlistState?.map((item, index) => {
               return (
-                <div className="col-3" key={index}>
+                <div
+                  className="col-3 bg-white py-3 shadow rounded mx-2"
+                  key={index}
+                >
                   <div className="wishlist-card position-relative">
                     <img
                       onClick={() => {
@@ -51,7 +58,7 @@ const Wishlist = () => {
                         src={
                           item?.images[0]?.url
                             ? item?.images[0]?.url
-                            : 'images/watch.jpg'
+                            : "images/watch.jpg"
                         }
                         className="img-fluid d-block mx-auto"
                         alt="watch"

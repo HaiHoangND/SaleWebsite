@@ -6,6 +6,7 @@ import {
   AiOutlineUser,
 } from "react-icons/ai";
 import { RiCouponLine } from "react-icons/ri";
+import { Link } from "react-router-dom";
 import { Outlet } from "react-router-dom";
 import { ImBlog } from "react-icons/im";
 import { IoIosNotifications } from "react-icons/io";
@@ -14,29 +15,21 @@ import { SiBrandfolder } from "react-icons/si";
 import { BiCategoryAlt } from "react-icons/bi";
 import { Layout, Menu, theme } from "antd";
 import { useNavigate } from "react-router-dom";
-import Cookies from "js-cookie";
-
 const { Header, Sider, Content } = Layout;
 
 const MainLayout = () => {
   const [collapsed, setCollapsed] = useState(false);
-  // const {
-  //   token: { colorBgContainer },
-  // } = theme.useToken();
+  const {
+    token: { colorBgContainer },
+  } = theme.useToken();
   const navigate = useNavigate();
-
-  const handleSignOut = () => {
-    localStorage.removeItem("access_token");
-    Cookies.remove("refreshToken");
-    navigate("/");
-  };
   return (
     <Layout>
       <Sider trigger={null} collapsible collapsed={collapsed}>
         <div className="logo">
           <h2 className="text-white fs-5 text-center py-3 mb-0">
             <span className="sm-logo">G16</span>
-            <span className="lg-logo">GROUP 16</span>
+            <span className="lg-logo">Group 16</span>
           </h2>
         </div>
         <Menu
@@ -159,7 +152,7 @@ const MainLayout = () => {
           className="d-flex justify-content-between ps-1 pe-5"
           style={{
             padding: 0,
-            // background: colorBgContainer,
+            background: colorBgContainer,
           }}
         >
           {React.createElement(
@@ -204,13 +197,13 @@ const MainLayout = () => {
               </div>
               <div className="dropdown-menu" aria-labelledby="dropdownMenuLink">
                 <li>
-                  <button
+                  <Link
                     className="dropdown-item py-1 mb-1"
                     style={{ height: "auto", lineHeight: "20px" }}
-                    onClick={handleSignOut}
+                    to="/"
                   >
                     Sign Out
-                  </button>
+                  </Link>
                 </li>
               </div>
             </div>
@@ -221,7 +214,7 @@ const MainLayout = () => {
             margin: "24px 16px",
             padding: 24,
             minHeight: 280,
-            // background: colorBgContainer,
+            background: colorBgContainer,
           }}
         >
           <Outlet />

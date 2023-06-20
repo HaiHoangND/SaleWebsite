@@ -300,6 +300,7 @@ export const authSlice = createSlice({
         state.order = action.payload;
         if (state.isSuccess) {
           toast.success('Successfully checkout!');
+          authService.clearUserCart();
         }
       })
       .addCase(createUserOrder.rejected, (state, action) => {

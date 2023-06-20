@@ -5,11 +5,15 @@ import Container from "../components/Container";
 import { useDispatch } from "react-redux";
 import { getAnUserOrders } from "../features/user/userSlice";
 import { useSelector } from "react-redux";
+import { getUserCart } from "../features/user/userSlice";
 
 const Order = () => {
   const dispatch = useDispatch();
   useEffect(() => {
     getUserOderFromDb();
+  }, []);
+  useEffect(() => {
+    dispatch(getUserCart());
   }, []);
 
   const getUserOderFromDb = () => {
@@ -28,7 +32,7 @@ const Order = () => {
     <>
       <Meta title={"Orders"} />
       <BreadCrumb title="Orders" />
-      <Container class1="blog-wrapper home-wrapper-2 py-5">
+      <Container class1="blog-wrapper py-5">
         <div>
           <h3 className="mb-4 title">Orders</h3>
           <div className="container table-responsive">

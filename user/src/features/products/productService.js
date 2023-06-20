@@ -25,6 +25,22 @@ const getProducts = async (params) => {
   }
 };
 
+const getProduct = async (userData) => {
+  try {
+    const response = await axios.get(`${base_url}product`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('token')}`,
+      },
+    });
+    if (response.data) {
+      return response.data;
+    }
+  } catch (error) {
+    // Handle any exceptions that occurred during the registration process
+    throw new Error(error.message);
+  }
+};
+
 const getProductCategories = async () => {
   try {
     const response = await axios.get(`${base_url}prodcategory`);
@@ -69,6 +85,7 @@ const addToWishList = async (prodId) => {
 
 export const productService = {
   getProducts,
+  getProduct,
   getSingleProducts,
   addToWishList,
   getProductCategories,

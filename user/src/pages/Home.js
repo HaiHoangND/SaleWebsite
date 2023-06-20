@@ -1,22 +1,22 @@
-import React, { useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import Marquee from 'react-fast-marquee';
-import SpecialProducts from '../components/SpecialProducts';
-import { useDispatch, useSelector } from 'react-redux';
-import { getAllProducts } from '../features/products/productSlice';
-import { getAllBlogs } from '../features/blogs/blogSlice';
-import ReactStars from 'react-rating-stars-component';
-import prodcompare from '../images/prodcompare.svg';
-import wish from '../images/wish.svg';
-import addcart from '../images/add-cart.svg';
-import BlogCard from '../components/BlogCard';
-import view from '../images/view.svg';
-import { addToWishList } from '../features/products/productSlice';
-import moment from 'moment';
-import { getUserCart } from '../features/user/userSlice';
+import React, { useEffect } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import Marquee from "react-fast-marquee";
+import SpecialProducts from "../components/SpecialProducts";
+import { useDispatch, useSelector } from "react-redux";
+import { getAllProduct } from "../features/products/productSlice";
+import { getAllBlogs } from "../features/blogs/blogSlice";
+import ReactStars from "react-rating-stars-component";
+import prodcompare from "../images/prodcompare.svg";
+import wish from "../images/wish.svg";
+import addcart from "../images/add-cart.svg";
+import BlogCard from "../components/BlogCard";
+import view from "../images/view.svg";
+import { addToWishList } from "../features/products/productSlice";
+import moment from "moment";
+import { getUserCart } from "../features/user/userSlice";
 
 const Home = () => {
-  const productState = useSelector((state) => state.product.product);
+  const productState = useSelector((state) => state?.product?.products);
   const blogState = useSelector((state) => state?.blog?.blog);
   const natigate = useNavigate();
 
@@ -38,7 +38,7 @@ const Home = () => {
   };
 
   const getallProducts = () => {
-    dispatch(getAllProducts());
+    dispatch(getAllProduct());
   };
 
   const addToWish = (id) => {
@@ -417,7 +417,9 @@ const Home = () => {
           </div>
         </div>
       </section>
-      <section className="popular-wrapper home-wrapper-2 py-5">
+      <section
+        className="popular-wrapper home-wrapper-2 py-5"
+      >
         <div className="container-xxl">
           <div className="row">
             <div className="col-12">

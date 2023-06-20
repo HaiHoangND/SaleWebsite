@@ -60,6 +60,13 @@ const addToCart = async (cartData) => {
   }
 };
 
+const clearUserCart = async () => {
+  const response = await axios.delete(`${base_url}user/empty-cart`, config);
+  if (response.data) {
+    return response.data;
+  }
+};
+
 const createAnOrder = async (orderData) => {
   const response = await axios.post(
     `${base_url}user/cart/create-order`,
@@ -115,6 +122,7 @@ export const authService = {
   login,
   getUserWishlist,
   addToCart,
+  clearUserCart,
   getCart,
   removeProductFromCart,
   updateProductFromCart,

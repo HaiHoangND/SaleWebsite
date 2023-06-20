@@ -10,7 +10,7 @@ const SpecialProducts = (props) => {
           <div>
             <img
               src={image ? image : "images/watch.jpg"}
-              className="img-fluid"
+              className="img-fluid imgs"
               alt="watch"
               width={300}
             />

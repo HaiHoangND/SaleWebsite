@@ -5,36 +5,37 @@ import ReactStars from "react-stars";
 import { useState } from "react";
 import ProductCard from "../components/ProductCard";
 import { useEffect } from "react";
-import axios from "axios";
 import { useDispatch, useSelector } from "react-redux";
 import {
   getAllProductCategories,
   getAllProducts,
 } from "../features/products/productSlice";
 import Container from "../components/Container";
-import { sortByBestSelling } from "../features/products/productSlice";
+import { getUserCart } from "../features/user/userSlice";
 
 const OurStore = () => {
   const [grid, setGrid] = useState(4);
   // const [sort, setSort] = useState("gf");
   // const [category, setCategory] = useState("sdfg");
   const [params, setParams] = useState({
-    sort: '',
-    category: ''
-  })
-  const productState = useSelector((state) => state.product.product);
+    sort: "",
+    category: "",
+  });
+  const productState = useSelector((state) => state?.product?.product);
   const productCategoriesState = useSelector(
-    (state) => state.product.productCategories
+    (state) => state?.product?.productCategories
   );
   useEffect(() => {
     getProducts();
     getProductCategories();
   }, [params]);
+  useEffect(() => {
+    dispatch(getUserCart());
+  }, []);
   const dispatch = useDispatch();
   const getProducts = () => {
     dispatch(getAllProducts(params));
   };
-
 
   const getProductCategories = () => {
     dispatch(getAllProductCategories());
@@ -59,25 +60,25 @@ const OurStore = () => {
                     </div>
                   );
                 })} */}
-                <select
-                    name=""
-                    defaultValue={""}
-                    onChange={e => setParams({...params, category: e.target.value})}
-                    // value={sort}
-                    className="form-control form-select"
-                    id=""
-                  >
-                    <option value="">All category</option>
-                    {
-                      productCategoriesState?.map((item, index) => {
-                        return (
-                          <option key={index} value={item.title}>{item.title}</option>
-                        );
-                    }
-                      )
-                  }
-                    
-                  </select>
+              <select
+                name=""
+                defaultValue={""}
+                onChange={(e) =>
+                  setParams({ ...params, category: e.target.value })
+                }
+                // value={sort}
+                className="form-control form-select"
+                id=""
+              >
+                <option value="">All category</option>
+                {productCategoriesState?.map((item, index) => {
+                  return (
+                    <option key={index} value={item.title}>
+                      {item.title}
+                    </option>
+                  );
+                })}
+              </select>
             </div>
             <div className="filter-card mb-3">
               <h3 className="filter-title">Filter By</h3>
@@ -236,7 +237,9 @@ const OurStore = () => {
                   <select
                     name=""
                     defaultValue={""}
-                    onChange={e => setParams({...params, sort: e.target.value})}
+                    onChange={(e) =>
+                      setParams({ ...params, sort: e.target.value })
+                    }
                     // value={sort}
                     className="form-control form-select"
                     id=""
@@ -258,7 +261,8 @@ const OurStore = () => {
                 </div>
                 <div className="d-flex align-items-center gap-10">
                   <p className="totalproducts mb-0">
-                    {Object.keys(productState).length} Products
+                    {/* {Object.keys(productState)?.length} Products */}
+                    {productState?.length} Products
                   </p>
                   <div className="d-flex gap-10 align-items-center grid">
                     <img

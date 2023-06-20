@@ -1,17 +1,17 @@
-import React, { useEffect, useState } from 'react';
-import BreadCrumb from '../components/BreadCrumb';
-import Meta from '../components/Meta';
-import watch from '../images/watch.jpg';
-import { AiFillDelete } from 'react-icons/ai';
-import { Link } from 'react-router-dom';
-import Container from '../components/Container';
-import { useDispatch } from 'react-redux';
+import React, { useEffect, useState } from "react";
+import BreadCrumb from "../components/BreadCrumb";
+import Meta from "../components/Meta";
+import watch from "../images/watch.jpg";
+import { AiFillDelete } from "react-icons/ai";
+import { Link } from "react-router-dom";
+import Container from "../components/Container";
+import { useDispatch } from "react-redux";
 import {
   getUserCart,
   deleteCartProduct,
   updateCartProduct,
-} from '../features/user/userSlice';
-import { useSelector } from 'react-redux';
+} from "../features/user/userSlice";
+import { useSelector } from "react-redux";
 
 const Cart = () => {
   const dispatch = useDispatch();
@@ -80,7 +80,7 @@ const Cart = () => {
         `Exceeds available quantity (${remainingQuantity})`
       );
     } else {
-      setQuantityError(item._id, ''); // Clear the error for the specific item
+      setQuantityError(item._id, ""); // Clear the error for the specific item
       const updatedProduct = {
         cartItemId: item._id,
         quantity: updatedQuantity,
@@ -100,14 +100,14 @@ const Cart = () => {
   };
 
   const getQuantityError = (itemId) => {
-    return quantityErrors[itemId] || '';
+    return quantityErrors[itemId] || "";
   };
 
   return (
     <>
-      <Meta title={'Cart'} />
+      <Meta title={"Cart"} />
       <BreadCrumb title="Cart" />
-      <Container class1="cart-wrapper home-wrapper-2 py-5">
+      <Container class1="cart-wrapper py-5">
         <div className="row">
           <div className="col-12">
             <div className="cart-header py-3 d-flex justify-content-between align-items-center">
@@ -166,8 +166,8 @@ const Cart = () => {
                         {quantityError && (
                           <p
                             style={{
-                              color: 'red',
-                              fontSize: '12px',
+                              color: "red",
+                              fontSize: "12px",
                               margin: 0,
                             }}
                           >

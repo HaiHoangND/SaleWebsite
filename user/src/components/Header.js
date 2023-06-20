@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { NavLink, Link, useNavigate } from 'react-router-dom';
-import { BsSearch } from 'react-icons/bs';
-import { useDispatch } from 'react-redux';
-import { useSelector } from 'react-redux';
-const { logoutUser } = require('../features/user/userSlice');
+import React, { useEffect, useState } from "react";
+import { NavLink, Link, useNavigate } from "react-router-dom";
+import { BsSearch } from "react-icons/bs";
+import { useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
+const { logoutUser } = require("../features/user/userSlice");
 
 const Header = () => {
   const dispatch = useDispatch();
@@ -28,7 +28,7 @@ const Header = () => {
 
   const handleLogout = () => {
     dispatch(logoutUser());
-    navigate('/login');
+    navigate("/login");
     window.location.reload();
   };
 
@@ -38,13 +38,13 @@ const Header = () => {
         <div className="container-xxl">
           <div className="row">
             <div className="col-6">
-              <p className="text-white mb-0">Banner-Title</p>
+              <p className="text-white mb-0">Công nghệ web</p>
             </div>
             <div className="col-6">
               <p className="text-end text-white mb-0">
                 Hotline:
-                <a className="text-white" href="tel:+91 8264954234">
-                  00000000000
+                <a className="text-white" href="tel: 18008198 ">
+                  18008198
                 </a>
               </p>
             </div>
@@ -75,7 +75,7 @@ const Header = () => {
             </div>
             <div className="col-6">
               <div className="header-upper-links d-flex align-items-center justify-content-between">
-                <div>
+                {/* <div>
                   <Link
                     to="/compare-product"
                     className="d-flex align-items-center gap-10 text-white"
@@ -85,7 +85,7 @@ const Header = () => {
                       Compare <br /> Products
                     </p>
                   </Link>
-                </div>
+                </div> */}
                 <div>
                   <Link
                     to="/wishlist"
@@ -168,17 +168,17 @@ const Header = () => {
                     >
                       <li>
                         <Link className="dropdown-item text-white" to="">
-                          Product category 1
+                          Featured Product
                         </Link>
                       </li>
                       <li>
                         <Link className="dropdown-item text-white" to="">
-                          Product category 2
+                          Special Product
                         </Link>
                       </li>
                       <li>
                         <Link className="dropdown-item text-white" to="">
-                          Product category 3
+                          Popular Product
                         </Link>
                       </li>
                     </ul>
@@ -190,7 +190,6 @@ const Header = () => {
                     <NavLink to="/product">Our Store</NavLink>
                     <NavLink to="/blogs">Blogs</NavLink>
                     <NavLink to="/contact">Contact</NavLink>
-                    <NavLink to="/Event">Event</NavLink>
                   </div>
                 </div>
               </div>

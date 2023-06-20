@@ -447,13 +447,25 @@ const createOrder = asyncHandler(async (req, res) => {
   }
 });
 
+// const emptyCart = asyncHandler(async (req, res) => {
+//   const { _id } = req.user;
+//   validateMongoDbId(_id);
+//   try {
+//     const user = await User.findOne({ _id });
+//     const cart = await Cart.findOneAndRemove({ orderby: user._id });
+//     res.json(cart);
+//   } catch (error) {
+//     throw new Error(error);
+//   }
+// });
+
 const emptyCart = asyncHandler(async (req, res) => {
   const { _id } = req.user;
   validateMongoDbId(_id);
   try {
-    const user = await User.findOne({ _id });
-    const cart = await Cart.findOneAndRemove({ orderby: user._id });
-    res.json(cart);
+    // Xóa toàn bộ mục giỏ hàng có userId trùng khớp với _id của người dùng
+    const deleteAllCartItems = await Cart.deleteMany({ userId: _id });
+    res.json(deleteAllCartItems);
   } catch (error) {
     throw new Error(error);
   }
