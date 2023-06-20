@@ -746,3 +746,11 @@ footer:not(:first-child) {
   width: auto;
   max-height: 300px;
 }
+.img_blog{
+  width: auto;
+  max-height: 300px;
+}
+.img_blogcard{
+  width: auto;
+  max-height: 200px;
+}
